@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/router/router_delegate.dart';
 
 void main() {
@@ -23,6 +24,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
