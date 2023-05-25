@@ -19,6 +19,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   TextEditingController txtController = TextEditingController();
 
   late OpenAI openAI;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -75,6 +76,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       ///放自己的資料
       setState(() {
         ref.read(messageProvider.notifier).setMessage(Message(isBot: false, message: content));
+        _isLoading = true;
       });
 
       ///ChatGTP
@@ -85,10 +87,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       if (response != null) {
         setState(() {
           ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: response.choices.last.text));
+          _isLoading = false;
         });
       } else {
         setState(() {
           ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: "表達 練習更清楚一點"));
+          _isLoading = false;
         });
       }
     }
@@ -136,10 +140,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                       controller: txtController,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () => _sendMessage(txtController.text),
-                    icon: const Icon(Icons.send),
-                  ),
+                  _isLoading
+                      ? Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          height: 30,
+                          width: 30,
+                          child: const CircularProgressIndicator(),
+                        )
+                      : IconButton(
+                          onPressed: () => _sendMessage(txtController.text),
+                          icon: const Icon(Icons.send),
+                        ),
                 ],
               ),
             )
