@@ -68,7 +68,7 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
   }
 
   void _onSkipClick() {
-    _animationController?.animateTo(0.8, duration: Duration(milliseconds: 1200));
+    _animationController?.animateTo(0.8, duration: const Duration(milliseconds: 1200));
   }
 
   void _onBackClick() {
