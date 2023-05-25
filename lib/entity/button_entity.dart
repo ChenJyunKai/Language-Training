@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rpg/view/battle_page.dart';
 import 'package:rpg/view/chat_page.dart';
 
 class ButtonEntity {
@@ -46,6 +47,7 @@ class ButtonEntity {
       titleTxt: '對戰',
       startColor: '#B766AD',
       endColor: '#CA8EC2',
+      navigatorPage: const BattlePage(),
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/setting.json',

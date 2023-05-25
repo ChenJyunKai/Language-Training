@@ -4,6 +4,7 @@ import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/entity/message_entity.dart';
+import 'package:rpg/env/env.dart';
 import 'package:rpg/provider/message_provider.dart';
 import 'package:rpg/helper/screen_size.dart';
 
@@ -23,7 +24,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   void initState() {
     openAI = OpenAI.instance.build(
-      token: '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',
+      token: Env.openAIKey,
       baseOption: HttpSetup(
         receiveTimeout: const Duration(seconds: 20),
         connectTimeout: const Duration(seconds: 6),

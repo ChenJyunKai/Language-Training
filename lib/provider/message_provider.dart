@@ -9,4 +9,8 @@ class MessageData extends StateNotifier<List<Message>> {
   void setMessage(Message message) {
     state = [message, ...state];
   }
+  //
+  // void load() {
+  //   state = [Message(isBot: true, message: '米卡想想... (´･ω･`) '), ...state];
+  // }
 }

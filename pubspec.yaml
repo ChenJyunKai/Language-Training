@@ -15,11 +15,14 @@ dependencies:
   animated_text_kit: ^4.2.2
   lottie: ^2.3.2
   fluttertoast: ^8.2.2
+  envied: ^0.3.0+3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  envied_generator: ^0.3.0
+  build_runner: ^2.4.4
 
 flutter:
   uses-material-design: true
