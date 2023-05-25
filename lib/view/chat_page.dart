@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:flutter/material.dart';
@@ -69,34 +68,41 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     );
   }
 
-  void _sendMessage() async {
+  void _sendMessage(String content) async {
     FocusScope.of(context).requestFocus(FocusNode());
-
-    ///放自己的資料
-    setState(() {
-      ref.read(messageProvider.notifier).setMessage(Message(isBot: false, message: txtController.text));
-    });
-
-    ///ChatGTP
-    final request = CompleteText(prompt: txtController.text, model: Model.textDavinci3, maxTokens: 3500);
     txtController.text = "";
-    final response = await openAI.onCompletion(request: request).onError((error, stackTrace) => null);
-    log(response?.choices.last.text ?? 'null');
+    if (content != '') {
+      ///放自己的資料
+      setState(() {
+        ref.read(messageProvider.notifier).setMessage(Message(isBot: false, message: content));
+      });
 
-    if (response != null) {
-      setState(() {
-        ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: response.choices.last.text));
-      });
-    } else {
-      setState(() {
-        ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: "表達 練習更清楚一點"));
-      });
+      ///ChatGTP
+      final request = CompleteText(prompt: content, model: Model.textDavinci3, maxTokens: 3500);
+
+      final response = await openAI.onCompletion(request: request).onError((error, stackTrace) => null);
+
+      if (response != null) {
+        setState(() {
+          ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: response.choices.last.text));
+        });
+      } else {
+        setState(() {
+          ref.read(messageProvider.notifier).setMessage(Message(isBot: true, message: "表達 練習更清楚一點"));
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('聊天室'),
+        centerTitle: true,
+        elevation: 2,
+        shadowColor: Theme.of(context).shadowColor,
+      ),
       body: Form(
         key: _formKey,
         child: Column(
@@ -131,7 +137,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: _sendMessage,
+                    onPressed: () => _sendMessage(txtController.text),
                     icon: const Icon(Icons.send),
                   ),
                 ],
