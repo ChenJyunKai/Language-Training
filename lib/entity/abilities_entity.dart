@@ -11,6 +11,12 @@ class AbilitiesEntity {
     this.luk = 10,
   });
 
+  AbilitiesEntity copyWith(String? role){
+    return AbilitiesEntity(
+      role: role ?? this.role,
+    );
+  }
+
   final String? role; // 職業
   final int lv;
   final int exp;

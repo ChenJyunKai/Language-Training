@@ -6,11 +6,8 @@ final abilitiesProvider = StateNotifierProvider<AbilitiesNotifier, AbilitiesEnti
 class AbilitiesNotifier extends StateNotifier<AbilitiesEntity> {
   AbilitiesNotifier() : super(AbilitiesEntity());
 
-  void reset(){
+  void generate() async {
     state = AbilitiesEntity();
-  }
-
-  Future<String> generate() async{
-    return Future<String>.delayed(const Duration(seconds: 2), () => '冒險者');
+    Future.delayed(const Duration(seconds: 3), () => state = state.copyWith('test'));
   }
 }

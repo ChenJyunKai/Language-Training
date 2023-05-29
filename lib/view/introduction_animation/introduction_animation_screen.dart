@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/provider/abilities_provider.dart';
 import 'package:rpg/view/introduction_animation/components/island_view.dart';
 import 'package:rpg/view/introduction_animation/components/greet_view.dart';
 import 'package:rpg/view/introduction_animation/components/breakfast_view.dart';
@@ -6,14 +8,15 @@ import 'package:rpg/view/introduction_animation/components/top_back_skip_view.da
 import 'package:rpg/view/introduction_animation/components/welcome_view.dart';
 import 'package:flutter/material.dart';
 
-class IntroductionAnimationScreen extends StatefulWidget {
+class IntroductionAnimationScreen extends ConsumerStatefulWidget {
   const IntroductionAnimationScreen({Key? key}) : super(key: key);
 
   @override
-  State<IntroductionAnimationScreen> createState() => _IntroductionAnimationScreenState();
+  ConsumerState<IntroductionAnimationScreen> createState() => _IntroductionAnimationScreenState();
 }
 
-class _IntroductionAnimationScreenState extends State<IntroductionAnimationScreen> with TickerProviderStateMixin {
+class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimationScreen>
+    with TickerProviderStateMixin {
   AnimationController? _animationController;
 
   @override
@@ -90,6 +93,7 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
       _animationController?.animateTo(0.6);
     } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
       _animationController?.animateTo(0.8);
+      ref.read(abilitiesProvider.notifier).generate();
     } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
       _signUpClick();
     }
