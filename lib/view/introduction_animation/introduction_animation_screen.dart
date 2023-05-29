@@ -1,5 +1,5 @@
 import 'package:rpg/view/introduction_animation/components/island_view.dart';
-import 'package:rpg/view/introduction_animation/components/mood_diary_vew.dart';
+import 'package:rpg/view/introduction_animation/components/greet_view.dart';
 import 'package:rpg/view/introduction_animation/components/breakfast_view.dart';
 import 'package:rpg/view/introduction_animation/components/opening_view.dart';
 import 'package:rpg/view/introduction_animation/components/top_back_skip_view.dart';
@@ -47,8 +47,9 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
               animationController: _animationController!,
               onNextClick: _onNextClick,
             ),
-            MoodDiaryVew(
+            GreetView(
               animationController: _animationController!,
+              onNextClick: _onNextClick,
             ),
             WelcomeView(
               animationController: _animationController!,
