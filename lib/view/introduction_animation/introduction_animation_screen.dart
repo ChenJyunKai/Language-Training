@@ -1,4 +1,4 @@
-import 'package:rpg/view/introduction_animation/components/care_view.dart';
+import 'package:rpg/view/introduction_animation/components/island_view.dart';
 import 'package:rpg/view/introduction_animation/components/mood_diary_vew.dart';
 import 'package:rpg/view/introduction_animation/components/breakfast_view.dart';
 import 'package:rpg/view/introduction_animation/components/opening_view.dart';
@@ -43,8 +43,9 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
               animationController: _animationController!,
               onNextClick: _onNextClick,
             ),
-            CareView(
+            IslandView(
               animationController: _animationController!,
+              onNextClick: _onNextClick,
             ),
             MoodDiaryVew(
               animationController: _animationController!,
