@@ -31,7 +31,7 @@ flutter:
   assets:
     - assets/lottie/loader-cat.json
     - assets/lottie/dog.json
-    - assets/lottie/ghost.json
     - assets/lottie/sword.json
     - assets/lottie/setting.json
     - assets/lottie/chat.json
+    - assets/lottie/breakfast.json

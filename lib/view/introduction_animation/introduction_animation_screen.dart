@@ -1,7 +1,6 @@
 import 'package:rpg/view/introduction_animation/components/care_view.dart';
-import 'package:rpg/view/introduction_animation/components/center_next_button.dart';
 import 'package:rpg/view/introduction_animation/components/mood_diary_vew.dart';
-import 'package:rpg/view/introduction_animation/components/relax_view.dart';
+import 'package:rpg/view/introduction_animation/components/breakfast_view.dart';
 import 'package:rpg/view/introduction_animation/components/opening_view.dart';
 import 'package:rpg/view/introduction_animation/components/top_back_skip_view.dart';
 import 'package:rpg/view/introduction_animation/components/welcome_view.dart';
@@ -40,8 +39,9 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
             OpeningView(
               animationController: _animationController!,
             ),
-            RelaxView(
+            BreakfastView(
               animationController: _animationController!,
+              onNextClick: _onNextClick,
             ),
             CareView(
               animationController: _animationController!,
@@ -56,10 +56,6 @@ class _IntroductionAnimationScreenState extends State<IntroductionAnimationScree
               onBackClick: _onBackClick,
               onSkipClick: _onSkipClick,
               animationController: _animationController!,
-            ),
-            CenterNextButton(
-              animationController: _animationController!,
-              onNextClick: _onNextClick,
             ),
           ],
         ),
