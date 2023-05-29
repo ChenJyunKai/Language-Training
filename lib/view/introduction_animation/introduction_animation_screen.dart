@@ -69,6 +69,7 @@ class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimat
   }
 
   void _onSkipClick() {
+    ref.read(abilitiesProvider.notifier).generate();
     _animationController?.animateTo(0.8, duration: const Duration(milliseconds: 1200));
   }
 

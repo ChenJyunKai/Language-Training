@@ -98,7 +98,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
             position: welcomeFirstHalfAnimation,
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 32),
-              child: Text('職業生成中...', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+              child: Text('角色生成中...', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
             ),
           ),
         )
