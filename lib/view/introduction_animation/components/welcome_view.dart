@@ -115,26 +115,30 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
         children: [
           SlideTransition(
             position: welcomeImageAnimation,
-            child: Lottie.asset('assets/lottie/cute-tiger.json', height: 250),
+            child: Lottie.asset(ref.watch(abilitiesProvider).roleData!.imageAsset!, height: 250),
           ),
           SlideTransition(
             position: welcomeFirstHalfAnimation,
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 text: "你的職業為",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black),
-                children: [TextSpan(text: "「冒險家」", style: TextStyle(fontSize: 28, color: Colors.black54))],
+                style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black),
+                children: [
+                  TextSpan(
+                    text: "「${ref.watch(abilitiesProvider).role}」",
+                    style: const TextStyle(fontSize: 28, color: Colors.black54),
+                  ),
+                ],
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 24, left: 64, right: 64, bottom: 48),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 64, right: 64, bottom: 48),
             child: Text(
-              "「你是獨一無二的，因為我們都不希望再有第二個。」\n"
-              "— Theodore Roosevelt, 26th U.S. President",
+              ref.watch(abilitiesProvider).roleData!.describe!,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             ),
           ),
           AnimatedBuilder(

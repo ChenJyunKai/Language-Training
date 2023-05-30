@@ -10,8 +10,8 @@ class GreetView extends StatelessWidget {
   }) : super(key: key);
 
   final AnimationController animationController;
-  final VoidCallback onNextClick;
-  static const List<String> option = ["喵哈囉~☆", "我一個人住", "決鬥!! 由我先攻", "小孩的名子就叫.."];
+  final Function(int) onNextClick;
+  static const List<String> options = ["喵哈囉~☆", "我一個人住", "決鬥!! 由我先攻", "小孩的名子就叫.."];
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +97,12 @@ class GreetView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      for (String i in option)
+                      for (String i in options)
                         SizedBox(
                           height: 50,
                           width: screenWidth * 0.7,
                           child: ElevatedButton(
-                            onPressed: onNextClick,
+                            onPressed: () => onNextClick(options.indexOf(i)),
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.black,
                               backgroundColor: Colors.white70,

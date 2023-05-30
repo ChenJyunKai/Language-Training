@@ -18,6 +18,7 @@ class IntroductionAnimationScreen extends ConsumerStatefulWidget {
 class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimationScreen>
     with TickerProviderStateMixin {
   AnimationController? _animationController;
+  List<int> options = [0, 0, 0];
 
   @override
   void initState() {
@@ -69,8 +70,8 @@ class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimat
   }
 
   void _onSkipClick() {
-    ref.read(abilitiesProvider.notifier).generate();
     _animationController?.animateTo(0.8, duration: const Duration(milliseconds: 1200));
+    ref.read(abilitiesProvider.notifier).generate(option: options);
   }
 
   void _onBackClick() {
@@ -87,14 +88,17 @@ class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimat
     }
   }
 
-  void _onNextClick() {
+  _onNextClick(int option) {
     if (_animationController!.value >= 0 && _animationController!.value <= 0.2) {
+      options[0] = option;
       _animationController?.animateTo(0.4);
     } else if (_animationController!.value > 0.2 && _animationController!.value <= 0.4) {
+      options[1] = option;
       _animationController?.animateTo(0.6);
     } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
+      options[2] = option;
       _animationController?.animateTo(0.8);
-      ref.read(abilitiesProvider.notifier).generate();
+      ref.read(abilitiesProvider.notifier).generate(option: options);
     } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
       _signUpClick();
     }

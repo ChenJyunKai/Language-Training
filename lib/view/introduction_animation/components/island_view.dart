@@ -10,8 +10,8 @@ class IslandView extends StatelessWidget {
   }) : super(key: key);
 
   final AnimationController animationController;
-  final VoidCallback onNextClick;
-  static const List<String> option = ["紙船", "遙控車", "香菸", "熊玩偶"];
+  final Function(int) onNextClick;
+  static const List<String> options = ["紙船", "遙控車", "香菸", "熊玩偶"];
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +108,12 @@ class IslandView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (String i in option)
+                  for (String i in options)
                     SizedBox(
                       height: 50,
                       width: screenWidth * 0.7,
                       child: ElevatedButton(
-                        onPressed: onNextClick,
+                        onPressed: () => onNextClick(options.indexOf(i)),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.black,
                           backgroundColor: Colors.white70,

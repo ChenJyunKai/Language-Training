@@ -10,8 +10,8 @@ class BreakfastView extends StatelessWidget {
   }) : super(key: key);
 
   final AnimationController animationController;
-  final VoidCallback onNextClick;
-  static const List<String> eggSauce = ["醬油", "醬油膏", "番茄醬", "糖醋醬"];
+  final Function(int) onNextClick;
+  static const List<String> options = ["醬油", "醬油膏", "番茄醬", "糖醋醬"];
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +93,12 @@ class BreakfastView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (String i in eggSauce)
+                    for (String i in options)
                       SizedBox(
                         height: 50,
                         width: screenWidth * 0.7,
                         child: ElevatedButton(
-                          onPressed: onNextClick,
+                          onPressed: () => onNextClick(options.indexOf(i)),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.white70,
