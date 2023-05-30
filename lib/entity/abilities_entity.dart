@@ -1,4 +1,9 @@
+import 'dart:convert';
 import 'package:rpg/entity/role_entity.dart';
+
+AbilitiesEntity abilitiesEntityFromJson(String str) => AbilitiesEntity.fromJson(json.decode(str));
+
+String abilitiesEntityToJson(AbilitiesEntity data) => json.encode(data.toJson());
 
 class AbilitiesEntity {
   AbilitiesEntity({
@@ -15,33 +20,45 @@ class AbilitiesEntity {
     this.luk = 10,
   });
 
-  AbilitiesEntity copyWith(String? role) {
-    return AbilitiesEntity(
-      role: role ?? this.role,
-    );
-  }
-
   final String? role; // 職業
   final RoleEntity? roleData; // 角色資料
   final int lv;
   final int exp;
-  final int expL;
+  final int expL; // 下一級所需要經驗
   final int hp;
   final int mp;
   final int atk;
   final int def;
   final int agi;
   final int luk;
-}
 
-/*
-lv 等級
-exp 經驗值
-exp_l 下一級所需經驗
-hp 血量
-mp 魔量
-atk 攻擊力
-def 防禦力
-agi 敏捷
-luk 幸運
- */
+  AbilitiesEntity copyWith(String? role) {
+    return AbilitiesEntity(
+      role: role ?? this.role,
+    );
+  }
+
+  factory AbilitiesEntity.fromJson(Map<String, dynamic> json) => AbilitiesEntity(
+    role: json["role"],
+    roleData: RoleEntity.fromJson(json["role_data"]),
+    lv: json["lv"],
+    hp: json["hp"],
+    mp: json["mp"],
+    atk: json["atk"],
+    def: json["def"],
+    agi: json["agi"],
+    luk: json["luk"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "role": role,
+    "role_data": roleData!.toJson(),
+    "lv": lv,
+    "hp": hp,
+    "mp": mp,
+    "atk": atk,
+    "def": def,
+    "agi": agi,
+    "luk": luk,
+  };
+}

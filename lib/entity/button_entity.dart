@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:rpg/view/battle_page.dart';
-import 'package:rpg/view/chat_page.dart';
-import 'package:rpg/view/welcome/welcome_page.dart';
+import 'package:rpg/router/routes.dart';
 
 class ButtonEntity {
   ButtonEntity({
@@ -12,7 +9,7 @@ class ButtonEntity {
     this.titleTxt = '',
     this.startColor = '',
     this.endColor = '',
-    this.navigatorPage,
+    this.navigatorUrl,
   });
 
   final String imagePath;
@@ -22,7 +19,7 @@ class ButtonEntity {
   final String titleTxt;
   final String startColor;
   final String endColor;
-  final Widget? navigatorPage;
+  final String? navigatorUrl;
 
   static List<ButtonEntity> home = <ButtonEntity>[
     ButtonEntity(
@@ -38,7 +35,7 @@ class ButtonEntity {
       titleTxt: '聊天',
       startColor: '#FF5287',
       endColor: '#FE95B6',
-      navigatorPage: const ChatPage(),
+      navigatorUrl: chatUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/sword.json',
@@ -48,7 +45,7 @@ class ButtonEntity {
       titleTxt: '對戰',
       startColor: '#B766AD',
       endColor: '#CA8EC2',
-      navigatorPage: const BattlePage(),
+      navigatorUrl: battleUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/setting.json',
@@ -56,7 +53,7 @@ class ButtonEntity {
       titleTxt: '設定',
       startColor: '#46A3FF',
       endColor: '#84C1FF',
-      navigatorPage: const WelcomePage(),
+      navigatorUrl: welcomeUrl,
     ),
   ];
 }

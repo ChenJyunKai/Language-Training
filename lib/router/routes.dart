@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:rpg/view/battle_page.dart';
+import 'package:rpg/view/chat_page.dart';
 import 'package:rpg/view/home_page.dart';
+import 'package:rpg/view/welcome/welcome_page.dart';
 
-class RoutePage extends RouteSettings {
-  final Function? builder;
+const homeUrl = 'home';
+const welcomeUrl = 'welcome';
+const chatUrl = 'chat';
+const battleUrl = 'battle';
 
-  final String? path;
-
-  Widget get widget => builder!();
-
-  const RoutePage({
-    required String name,
-    Object? arguments,
-    this.builder,
-    this.path,
-  }) : super(name: name, arguments: arguments);
-
-  RoutePage.widget(Widget widget, int i) : this(name: 'widget$i', builder: () => widget);
-}
-
-RoutePage getRoutePage({required String name}) {
-  switch (name) {
-    case '/':
-      return RoutePage(name: "welcome", path: name, builder: () => const HomePage());
-    default:
-      return RoutePage(name: 'unknown', path: '/404', builder: () => const Scaffold());
-  }
-}
+final Map<String, WidgetBuilder> routes = {
+  homeUrl: (context) => const HomePage(),
+  welcomeUrl: (context) => const WelcomePage(),
+  chatUrl: (context) => const ChatPage(),
+  battleUrl: (context) => const BattlePage(),
+};

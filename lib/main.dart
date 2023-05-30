@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/router/router_delegate.dart';
+import 'package:rpg/router/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final hasData = prefs.getString('ability') != null;
+
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(hasData: hasData),
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.hasData});
+
+  final bool hasData;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final AppRouterDelegate _delegate = AppRouterDelegate();
-  final AppRouterParser _parser = AppRouterParser();
-
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      routerDelegate: _delegate,
-      routeInformationParser: _parser,
       builder: (context, child) => Scaffold(
         body: GestureDetector(
           onTap: () {
@@ -46,6 +49,10 @@ class _MyAppState extends State<MyApp> {
           child: child,
         ),
       ),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: routes[settings.name]!, settings: settings);
+      },
+      initialRoute: widget.hasData ? 'home' : 'welcome',
     );
   }
 }

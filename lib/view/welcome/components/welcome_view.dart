@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rpg/entity/abilities_entity.dart';
 import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/provider/abilities_provider.dart';
+import 'package:rpg/router/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeView extends ConsumerStatefulWidget {
   const WelcomeView({Key? key, required this.animationController}) : super(key: key);
@@ -145,7 +148,12 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
             animation: widget.animationController,
             builder: (context, child) {
               return InkWell(
-                onTap: () => Navigator.pop(context),
+                onTap: () async {
+                  final SharedPreferences prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('ability', abilitiesEntityToJson(ref.watch(abilitiesProvider)));
+                  if (!mounted) return;
+                  Navigator.pushReplacementNamed(context, homeUrl);
+                },
                 child: Container(
                   height: 58,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 56),

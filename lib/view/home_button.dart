@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/hex_color.dart';
-import 'package:rpg/router/router_delegate.dart';
 
 class HomeButton extends StatefulWidget {
   const HomeButton({
@@ -50,7 +49,7 @@ class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
           child: Transform(
             transform: Matrix4.translationValues(100 * (1.0 - animation.value), 0.0, 0.0),
             child: GestureDetector(
-              onTap: () => AppRouterDelegate.of(context).push(widget.data.navigatorPage!),
+              onTap: () => Navigator.pushNamed(context, widget.data.navigatorUrl!),
               child: Stack(
                 children: [
                   Padding(
