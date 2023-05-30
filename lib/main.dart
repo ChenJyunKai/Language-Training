@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
         primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme.light().copyWith(
+          background: AppTheme.background,
+        )
       ),
       builder: (context, child) => Scaffold(
         body: GestureDetector(
