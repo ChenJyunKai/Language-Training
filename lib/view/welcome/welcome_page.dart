@@ -1,21 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/provider/abilities_provider.dart';
-import 'package:rpg/view/introduction_animation/components/island_view.dart';
-import 'package:rpg/view/introduction_animation/components/greet_view.dart';
-import 'package:rpg/view/introduction_animation/components/breakfast_view.dart';
-import 'package:rpg/view/introduction_animation/components/opening_view.dart';
-import 'package:rpg/view/introduction_animation/components/top_back_skip_view.dart';
-import 'package:rpg/view/introduction_animation/components/welcome_view.dart';
+import 'package:rpg/view/welcome/components/island_view.dart';
+import 'package:rpg/view/welcome/components/greet_view.dart';
+import 'package:rpg/view/welcome/components/breakfast_view.dart';
+import 'package:rpg/view/welcome/components/opening_view.dart';
+import 'package:rpg/view/welcome/components/top_back_skip_view.dart';
+import 'package:rpg/view/welcome/components/welcome_view.dart';
 import 'package:flutter/material.dart';
 
-class IntroductionAnimationScreen extends ConsumerStatefulWidget {
-  const IntroductionAnimationScreen({Key? key}) : super(key: key);
+class WelcomePage extends ConsumerStatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<IntroductionAnimationScreen> createState() => _IntroductionAnimationScreenState();
+  ConsumerState<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _IntroductionAnimationScreenState extends ConsumerState<IntroductionAnimationScreen>
+class _WelcomePageState extends ConsumerState<WelcomePage>
     with TickerProviderStateMixin {
   AnimationController? _animationController;
   List<int> options = [0, 0, 0];

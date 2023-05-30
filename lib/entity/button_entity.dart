@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rpg/view/battle_page.dart';
 import 'package:rpg/view/chat_page.dart';
-import 'package:rpg/view/introduction_animation/introduction_animation_screen.dart';
+import 'package:rpg/view/welcome/welcome_page.dart';
 
 class ButtonEntity {
   ButtonEntity({
@@ -56,7 +56,7 @@ class ButtonEntity {
       titleTxt: '設定',
       startColor: '#46A3FF',
       endColor: '#84C1FF',
-      navigatorPage: const IntroductionAnimationScreen(),
+      navigatorPage: const WelcomePage(),
     ),
   ];
 }
