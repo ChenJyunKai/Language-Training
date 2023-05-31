@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/screen_size.dart';
+import 'package:rpg/provider/abilities_provider.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,16 +20,24 @@ void main() async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key, required this.hasData});
 
   final bool hasData;
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    if (widget.hasData) {
+      Future.delayed(Duration.zero, () => ref.read(abilitiesProvider.notifier).getAbility());
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -36,12 +46,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.blue,
-        colorScheme: const ColorScheme.light().copyWith(
-          background: AppTheme.background,
-        )
-      ),
+          useMaterial3: true,
+          primarySwatch: Colors.blue,
+          colorScheme: const ColorScheme.light().copyWith(
+            background: AppTheme.background,
+          )),
       builder: (context, child) => Scaffold(
         body: GestureDetector(
           onTap: () {
@@ -57,6 +66,15 @@ class _MyAppState extends State<MyApp> {
         return MaterialPageRoute(builder: routes[settings.name]!, settings: settings);
       },
       initialRoute: widget.hasData ? 'home' : 'welcome',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW'),
+        Locale('en', 'US'),
+      ],
     );
   }
 }
