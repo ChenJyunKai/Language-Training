@@ -7,6 +7,7 @@ String abilitiesEntityToJson(AbilitiesEntity data) => json.encode(data.toJson())
 
 class AbilitiesEntity {
   AbilitiesEntity({
+    this.userName,
     this.role,
     this.roleData,
     this.lv = 1,
@@ -20,6 +21,7 @@ class AbilitiesEntity {
     this.luk = 10,
   });
 
+  final String? userName; // 玩家名稱
   final String? role; // 職業
   final RoleEntity? roleData; // 角色資料
   final int lv;
@@ -39,6 +41,7 @@ class AbilitiesEntity {
   }
 
   factory AbilitiesEntity.fromJson(Map<String, dynamic> json) => AbilitiesEntity(
+    userName: json["user_name"],
     role: json["role"],
     roleData: RoleEntity.fromJson(json["role_data"]),
     lv: json["lv"],
@@ -51,6 +54,7 @@ class AbilitiesEntity {
   );
 
   Map<String, dynamic> toJson() => {
+    "user_name" : userName,
     "role": role,
     "role_data": roleData!.toJson(),
     "lv": lv,

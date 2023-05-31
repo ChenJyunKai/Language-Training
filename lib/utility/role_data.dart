@@ -1,8 +1,10 @@
 import 'package:rpg/entity/abilities_entity.dart';
 import 'package:rpg/entity/role_entity.dart';
+import 'package:rpg/helper/time_format.dart';
 
 // 冒險者
 final adventurerAbility = AbilitiesEntity(
+  userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '冒險者',
   roleData: adventurer,
 );
@@ -14,6 +16,7 @@ final adventurer = RoleEntity(
 
 // GM
 final gmAbility = AbilitiesEntity(
+  userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '封閉者',
   roleData: gm,
   lv: 200,
