@@ -17,7 +17,7 @@ final adventurer = RoleEntity(
 // GM
 final gmAbility = AbilitiesEntity(
   userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
-  role: '封閉者',
+  role: '封弊者',
   roleData: gm,
   lv: 200,
   hp: 99999,
