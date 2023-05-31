@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/screen_size.dart';
+import 'package:rpg/view/ability_view.dart';
 import 'package:rpg/view/home_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -142,12 +142,7 @@ class _HomePageState extends State<HomePage> {
     return __buildLayout(
       key: const ValueKey(false),
       backgroundColor: AppTheme.background,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.blue[200],
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
+      child: const AbilityView(),
     );
   }
 
