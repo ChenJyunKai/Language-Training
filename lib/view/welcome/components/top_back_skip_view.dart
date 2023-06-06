@@ -14,9 +14,7 @@ class TopBackSkipView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animation =
-        Tween<Offset>(begin: const Offset(0, -1), end: const Offset(0.0, 0.0))
-            .animate(CurvedAnimation(
+    final animation = Tween<Offset>(begin: const Offset(0, -1), end: const Offset(0.0, 0.0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
         0.0,
@@ -25,18 +23,7 @@ class TopBackSkipView extends StatelessWidget {
       ),
     ));
 
-    // final _backAnimation =
-    //     Tween<Offset>(begin: Offset(0, 0), end: Offset(-2, 0))
-    //         .animate(CurvedAnimation(
-    //   parent: animationController,
-    //   curve: Interval(
-    //     0.6,
-    //     0.8,
-    //     curve: Curves.fastOutSlowIn,
-    //   ),
-    // ));
-    final skipAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(2, 0))
-        .animate(CurvedAnimation(
+    final skipAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(2, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
         0.6,
@@ -56,9 +43,6 @@ class TopBackSkipView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // SlideTransition(
-                //   position: _backAnimation,
-                //   child:
                 IconButton(
                   onPressed: onBackClick,
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
