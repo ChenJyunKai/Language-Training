@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/hex_color.dart';
 import 'package:rpg/provider/abilities_provider.dart';
-import 'package:water_bottle/water_bottle.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 class AbilityView extends ConsumerStatefulWidget {
   const AbilityView({Key? key}) : super(key: key);
@@ -42,28 +43,51 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
           children: [
             Row(
               children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 70,
-                      width: 70,
-                      margin: const EdgeInsets.only(right: 15),
-                      child: SphericalBottle(
-                        waterColor: HexColor('FFBBDEFB'),
-                        bottleColor: HexColor('FFBBDEFB'),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.blue.withAlpha(40), width: 2),
+                        ),
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.grey.withAlpha(30), width: 2),
+                          ),
+                          child: ClipOval(
+                            child: WaveWidget(
+                              config: CustomConfig(
+                                colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
+                                durations: [5000, 4000, 3000],
+                                heightPercentages: [0.48, 0.49, 0.5],
+                              ),
+                              backgroundColor: Colors.white,
+                              size: const Size(double.infinity, double.infinity),
+                              waveAmplitude: 0,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: Text('lv${ability.lv}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                    ),
-                  ],
+                      Text('lv${ability.lv}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    ],
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('名稱: ${ability.userName}',style:  TextStyle(color: Colors.blueGrey[600]),),
+                    Text(
+                      '名稱: ${ability.userName}',
+                      style: TextStyle(color: Colors.blueGrey[600]),
+                    ),
                     Text('職業: ${ability.role}'),
                   ],
                 ),
