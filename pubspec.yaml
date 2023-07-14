@@ -27,6 +27,8 @@ dependencies:
   shared_preferences: ^2.1.1
   ## 水波動畫
   wave: ^0.2.2
+  ## 語音轉文字
+  speech_to_text: ^6.3.0
 
 dev_dependencies:
   flutter_test:
