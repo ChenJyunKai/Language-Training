@@ -17,17 +17,20 @@ class BattlePage extends ConsumerStatefulWidget {
 class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStateMixin {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
+  bool _fade = true;
   String _lastWord = '';
   late Future getData;
   late Language language;
   late AnimationController animationController;
   late AnimationController fadeAnimationController;
+  late AnimationController correctAnimationController;
 
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
     fadeAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    correctAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     getData = ref.read(wordProvider.notifier).getData();
     _initSpeech();
   }
@@ -36,6 +39,7 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
   void dispose() {
     animationController.dispose();
     fadeAnimationController.dispose();
+    correctAnimationController.dispose();
     super.dispose();
   }
 
@@ -194,7 +198,13 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _speechEnabled
-                      ? () => fadeAnimationController.forward()
+                      ? () => fadeAnimationController
+                        ..forward()
+                        ..addListener(() {
+                          if (fadeAnimationController.value > 0.01 && _fade) {
+                            setState(() {_fade = false;});
+                          }
+                        })
                       : () => Fluttertoast.showToast(
                             msg: "Speech not available",
                             toastLength: Toast.LENGTH_SHORT,
@@ -223,37 +233,66 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
         parent: fadeAnimationController,
         curve: const Interval(0.8, 1, curve: Curves.fastOutSlowIn),
       )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
+      child: _fade
+          ? const SizedBox()
+          : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(ref.watch(wordProvider).first.word, style: const TextStyle(fontSize: 48)),
-                Text(ref.watch(wordProvider).first.hiragana, style: const TextStyle(fontSize: 42)),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              correctAnimationController.forward().then((value) => correctAnimationController.reverse());
+                            },
+                            child: const Text('Error', style: TextStyle(fontSize: 20)),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              correctAnimationController.forward().then((value) => correctAnimationController.reverse());
+                            },
+                            child: const Text('Correct', style: TextStyle(fontSize: 20)),
+                          ),
+                        ],
+                      ),
+                      ScaleTransition(
+                        scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+                          parent: correctAnimationController,
+                          curve: Curves.fastOutSlowIn,
+                        )),
+                        child: Column(
+                          children: [
+                            Text(ref.watch(wordProvider).first.word, style: const TextStyle(fontSize: 48)),
+                            Text(ref.watch(wordProvider).first.hiragana, style: const TextStyle(fontSize: 42)),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: FloatingActionButton.large(
+                      onPressed: _speechToText.isNotListening ? _startListening : _stopListening,
+                      foregroundColor: Colors.blue,
+                      backgroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: FloatingActionButton.large(
-                onPressed: _speechToText.isNotListening ? _startListening : _stopListening,
-                foregroundColor: Colors.blue,
-                backgroundColor: Colors.white,
-                shape: const CircleBorder(),
-                child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
