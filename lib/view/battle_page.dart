@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,19 +21,24 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
   bool _speechEnabled = false;
   bool _fade = true;
   String _lastWord = '';
-  late Future getData;
+  late Future getData = ref.read(wordProvider.notifier).getData();
   late Language language;
-  late AnimationController animationController;
-  late AnimationController fadeAnimationController;
-  late AnimationController correctAnimationController;
+  late AnimationController animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+  late AnimationController fadeAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+  late AnimationController correctAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+  late AnimationController shackAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    fadeAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    correctAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
-    getData = ref.read(wordProvider.notifier).getData();
+    shackAnimationController.addListener(() {
+      if (shackAnimationController.status == AnimationStatus.completed) {
+        shackAnimationController.reset();
+      }
+    });
     _initSpeech();
   }
 
@@ -202,7 +209,9 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
                         ..forward()
                         ..addListener(() {
                           if (fadeAnimationController.value > 0.01 && _fade) {
-                            setState(() {_fade = false;});
+                            setState(() {
+                              _fade = false;
+                            });
                           }
                         })
                       : () => Fluttertoast.showToast(
@@ -247,28 +256,40 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
                         children: [
                           TextButton(
                             onPressed: () {
-                              correctAnimationController.forward().then((value) => correctAnimationController.reverse());
+                              shackAnimationController.forward();
                             },
                             child: const Text('Error', style: TextStyle(fontSize: 20)),
                           ),
                           TextButton(
                             onPressed: () {
-                              correctAnimationController.forward().then((value) => correctAnimationController.reverse());
+                              correctAnimationController
+                                  .forward()
+                                  .then((value) => correctAnimationController.reverse());
                             },
                             child: const Text('Correct', style: TextStyle(fontSize: 20)),
                           ),
                         ],
                       ),
-                      ScaleTransition(
-                        scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
-                          parent: correctAnimationController,
-                          curve: Curves.fastOutSlowIn,
-                        )),
-                        child: Column(
-                          children: [
-                            Text(ref.watch(wordProvider).first.word, style: const TextStyle(fontSize: 48)),
-                            Text(ref.watch(wordProvider).first.hiragana, style: const TextStyle(fontSize: 42)),
-                          ],
+                      AnimatedBuilder(
+                        animation: shackAnimationController,
+                        builder: (context, child) {
+                          final sineValue = sin(4 * 2 * pi * shackAnimationController.value);
+                          return Transform.translate(
+                            offset: Offset(sineValue * 10, 0),
+                            child: child,
+                          );
+                        },
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+                            parent: correctAnimationController,
+                            curve: Curves.fastOutSlowIn,
+                          )),
+                          child: Column(
+                            children: [
+                              Text(ref.watch(wordProvider).first.word, style: const TextStyle(fontSize: 48)),
+                              Text(ref.watch(wordProvider).first.hiragana, style: const TextStyle(fontSize: 42)),
+                            ],
+                          ),
                         ),
                       )
                     ],
