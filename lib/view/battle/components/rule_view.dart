@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/helper/screen_size.dart';
 
@@ -8,14 +7,12 @@ class RuleView extends StatelessWidget {
     super.key,
     required this.fadeAnimationController,
     required this.animationController,
-    required this.speechEnabled,
     required this.fade,
     required this.function,
   });
 
   final AnimationController fadeAnimationController;
   final AnimationController animationController;
-  final bool speechEnabled;
   final bool fade;
   final Function function;
 
@@ -63,22 +60,13 @@ class RuleView extends StatelessWidget {
               child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: speechEnabled
-                      ? () => fadeAnimationController
-                        ..forward()
-                        ..addListener(() {
-                          if (fadeAnimationController.value > 0.01 && fade) {
-                            function();
-                          }
-                        })
-                      : () => Fluttertoast.showToast(
-                            msg: "Speech not available",
-                            toastLength: Toast.LENGTH_SHORT,
-                            timeInSecForIosWeb: 1,
-                            textColor: Colors.white,
-                            backgroundColor: Colors.black.withAlpha(180),
-                            fontSize: 16,
-                          ),
+                  onPressed: () => fadeAnimationController
+                    ..forward()
+                    ..addListener(() {
+                      if (fadeAnimationController.value > 0.01 && fade) {
+                        function();
+                      }
+                    }),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xff132137),
