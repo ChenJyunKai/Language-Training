@@ -7,9 +7,8 @@ final wordProvider = StateNotifierProvider<WordNotifier, WordEntity>((ref) => Wo
 class WordNotifier extends StateNotifier<WordEntity> {
   WordNotifier() : super(WordEntity(words: [], languageId: 'ja_JA'));
 
-  Future<bool> getData() async {
+  void getData(String languageId) async {
     state = wordJpEntityFromJson(await rootBundle.loadString('assets/json/word_jp.json'));
-    return true;
   }
 
   void remove(String word) async {

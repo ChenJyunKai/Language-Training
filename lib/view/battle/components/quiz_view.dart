@@ -50,7 +50,6 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
 
   void _initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
-    ref.read(wordProvider.notifier).getData();
     setState(() {});
   }
 
@@ -68,10 +67,10 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
     if (result.finalResult) {
       if (result.recognizedWords == ref.watch(wordProvider).words.first.word) {
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
-              ref.read(wordProvider.notifier).remove(result.recognizedWords);
-              _lastWord = '';
-              setState(() {});
-            }));
+          ref.read(wordProvider.notifier).remove(result.recognizedWords);
+          _lastWord = '';
+          setState(() {});
+        }));
       } else {
         setState(() {
           _lastWord = result.recognizedWords;

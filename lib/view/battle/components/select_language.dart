@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/entity/language_entity.dart';
 import 'package:rpg/helper/screen_size.dart';
+import 'package:rpg/provider/word_provider.dart';
 
-class SelectLanguage extends StatelessWidget {
+class SelectLanguage extends ConsumerWidget {
   const SelectLanguage({
     super.key,
     required this.animationController,
-    required this.select,
   });
 
   final AnimationController animationController;
-  final Function(Language) select;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -49,7 +49,7 @@ class SelectLanguage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         animationController.animateTo(1);
-                        select(i);
+                        ref.read(wordProvider.notifier).getData(i.id);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
