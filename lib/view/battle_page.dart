@@ -63,21 +63,24 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
 
   void _stopListening() async {
     await _speechToText.stop();
-    if (_lastWord == ref.watch(wordProvider).first.word) {
-      ref.read(wordProvider.notifier).remove(_lastWord);
-      _lastWord = '';
-    }
     setState(() {});
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
-    setState(() {
-      _lastWord = result.recognizedWords;
-      if (_lastWord == ref.watch(wordProvider).first.word) {
-        ref.read(wordProvider.notifier).remove(_lastWord);
-        _lastWord = '';
+    if (result.finalResult) {
+      if (result.recognizedWords == ref.watch(wordProvider).first.word) {
+        correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
+              ref.read(wordProvider.notifier).remove(result.recognizedWords);
+              _lastWord = '';
+              setState(() {});
+            }));
+      } else {
+        setState(() {
+          _lastWord = result.recognizedWords;
+          shackAnimationController.forward();
+        });
       }
-    });
+    }
   }
 
   @override
@@ -251,25 +254,6 @@ class _BattlePageState extends ConsumerState<BattlePage> with TickerProviderStat
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              shackAnimationController.forward();
-                            },
-                            child: const Text('Error', style: TextStyle(fontSize: 20)),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              correctAnimationController
-                                  .forward()
-                                  .then((value) => correctAnimationController.reverse());
-                            },
-                            child: const Text('Correct', style: TextStyle(fontSize: 20)),
-                          ),
-                        ],
-                      ),
                       AnimatedBuilder(
                         animation: shackAnimationController,
                         builder: (context, child) {
