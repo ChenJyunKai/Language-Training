@@ -24,6 +24,7 @@ class QuizView extends ConsumerStatefulWidget {
 class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMixin {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
+  bool _tipVisable = false;
   String _lastWord = '';
 
   late AnimationController correctAnimationController =
@@ -70,6 +71,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
               ref.read(wordProvider.notifier).remove(result.recognizedWords);
               _lastWord = '';
+              _tipVisable = false;
               setState(() {});
             }));
       } else {
@@ -97,6 +99,13 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: Text(
+                          '${-(ref.watch(wordProvider).words.length - 11)} / 10 題',
+                          style: const TextStyle(fontSize: 26, color: Colors.blue),
+                        ),
+                      ),
                       AnimatedBuilder(
                         animation: shackAnimationController,
                         builder: (context, child) {
@@ -114,16 +123,38 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                           child: Column(
                             children: [
                               Text(ref.watch(wordProvider).words.first.word, style: const TextStyle(fontSize: 48)),
-                              Text(ref.watch(wordProvider).words.first.hiragana, style: const TextStyle(fontSize: 42)),
+                              Text(
+                                ref.watch(wordProvider).words.first.hiragana,
+                                style: TextStyle(fontSize: 42, color: _tipVisable ? Colors.black : Colors.transparent),
+                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton.icon(
+                              onPressed: () => setState(() => _tipVisable = true),
+                              icon: const Icon(Icons.tips_and_updates, size: 30),
+                              label: const Text('提示', style: TextStyle(fontSize: 24)),
+                            ),
+                            const Text('|'),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.skip_next, size: 30),
+                              label: const Text('跳過', style: TextStyle(fontSize: 24)),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
                 ),
                 Align(
@@ -155,12 +186,3 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
     );
   }
 }
-
-// Fluttertoast.showToast(
-// msg: "Speech not available",
-// toastLength: Toast.LENGTH_SHORT,
-// timeInSecForIosWeb: 1,
-// textColor: Colors.white,
-// backgroundColor: Colors.black.withAlpha(180),
-// fontSize: 16,
-// )
