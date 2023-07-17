@@ -1,21 +1,25 @@
 import 'dart:convert';
 
-WordJpEntity wordJpEntityFromJson(String str) => WordJpEntity.fromJson(json.decode(str));
+WordEntity wordJpEntityFromJson(String str) => WordEntity.fromJson(json.decode(str));
 
-String wordJpEntityToJson(WordJpEntity data) => json.encode(data.toJson());
+String wordJpEntityToJson(WordEntity data) => json.encode(data.toJson());
 
-class WordJpEntity {
+class WordEntity {
   List<Word> words;
+  String languageId;
 
-  WordJpEntity({
+  WordEntity({
     required this.words,
+    required this.languageId,
   });
 
-  factory WordJpEntity.fromJson(Map<String, dynamic> json) => WordJpEntity(
+  factory WordEntity.fromJson(Map<String, dynamic> json) => WordEntity(
+    languageId: json["language_id"],
     words: List<Word>.from(json["words"].map((x) => Word.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
+    "language_id": languageId,
     "words": List<dynamic>.from(words.map((x) => x.toJson())),
   };
 }
