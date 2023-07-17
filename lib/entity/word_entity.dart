@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-WordEntity wordJpEntityFromJson(String str) => WordEntity.fromJson(json.decode(str));
+WordEntity wordEntityFromJson(String str) => WordEntity.fromJson(json.decode(str));
 
-String wordJpEntityToJson(WordEntity data) => json.encode(data.toJson());
+String wordEntityToJson(WordEntity data) => json.encode(data.toJson());
 
 class WordEntity {
   List<Word> words;

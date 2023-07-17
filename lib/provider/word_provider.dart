@@ -8,7 +8,7 @@ class WordNotifier extends StateNotifier<WordEntity> {
   WordNotifier() : super(WordEntity(words: [], languageId: 'ja_JA'));
 
   void getData(String languageId) async {
-    state = wordJpEntityFromJson(await rootBundle.loadString('assets/json/word_jp.json'));
+    state = wordEntityFromJson(await rootBundle.loadString('assets/json/word_jp.json'));
   }
 
   void remove(String word) async {
