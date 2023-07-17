@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rpg/provider/word_provider.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -67,10 +68,10 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
     if (result.finalResult) {
       if (result.recognizedWords == ref.watch(wordProvider).words.first.word) {
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
-          ref.read(wordProvider.notifier).remove(result.recognizedWords);
-          _lastWord = '';
-          setState(() {});
-        }));
+              ref.read(wordProvider.notifier).remove(result.recognizedWords);
+              _lastWord = '';
+              setState(() {});
+            }));
       } else {
         setState(() {
           _lastWord = result.recognizedWords;
@@ -130,7 +131,18 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: FloatingActionButton.large(
-                      onPressed: _speechToText.isNotListening ? _startListening : _stopListening,
+                      onPressed: _speechEnabled
+                          ? _speechToText.isNotListening
+                              ? _startListening
+                              : _stopListening
+                          : () => Fluttertoast.showToast(
+                                msg: "Speech not available",
+                                toastLength: Toast.LENGTH_SHORT,
+                                timeInSecForIosWeb: 1,
+                                textColor: Colors.white,
+                                backgroundColor: Colors.black.withAlpha(180),
+                                fontSize: 16,
+                              ),
                       foregroundColor: Colors.blue,
                       backgroundColor: Colors.white,
                       shape: const CircleBorder(),
