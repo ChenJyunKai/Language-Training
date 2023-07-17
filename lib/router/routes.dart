@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rpg/view/battle_page.dart';
+import 'package:rpg/view/battle/battle_page.dart';
 import 'package:rpg/view/chat_page.dart';
 import 'package:rpg/view/home_page.dart';
 import 'package:rpg/view/welcome/welcome_page.dart';
