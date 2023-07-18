@@ -7,10 +7,12 @@ String wordEntityToJson(WordEntity data) => json.encode(data.toJson());
 class WordEntity {
   List<Word> words;
   String languageId;
+  int count;
 
   WordEntity({
     required this.words,
     required this.languageId,
+    this.count = 1,
   });
 
   factory WordEntity.fromJson(Map<String, dynamic> json) => WordEntity(
@@ -27,10 +29,13 @@ class WordEntity {
 class Word {
   String word;
   String hiragana;
+  // 得分
+  int score;
 
   Word({
     required this.word,
     required this.hiragana,
+    this.score = 0,
   });
 
   factory Word.fromJson(Map<String, dynamic> json) => Word(

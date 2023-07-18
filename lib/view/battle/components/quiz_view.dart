@@ -78,7 +78,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
     if (result.finalResult) {
       if (result.recognizedWords == ref.watch(wordProvider).words.first.word) {
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
-              ref.read(wordProvider.notifier).remove(result.recognizedWords);
+              ref.read(wordProvider.notifier).answer(_tipVisable ? 5 : 10);
               _lastWord = '';
               _tipVisable = false;
               setState(() {});
@@ -115,7 +115,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                         Padding(
                           padding: const EdgeInsets.only(bottom: 30),
                           child: Text(
-                            '${-(ref.watch(wordProvider).words.length - 11)} / 10 題',
+                            '${ref.watch(wordProvider).count} / 10 題',
                             style: const TextStyle(fontSize: 26, color: Colors.blue),
                           ),
                         ),
@@ -159,9 +159,11 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                             SlideTransition(
                               position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0)).animate(
                                   CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle)),
-                              child: ref.watch(wordProvider).words.length > 1
+                              child: ref.watch(wordProvider).count < 10
                                   ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
-                                  : const SizedBox(height: 150,),
+                                  : const SizedBox(
+                                      height: 150,
+                                    ),
                             )
                           ],
                         ),
@@ -178,12 +180,12 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                               const Text('|'),
                               TextButton.icon(
                                 onPressed: () {
-                                  if (ref.watch(wordProvider).words.length > 1) {
+                                  if (ref.watch(wordProvider).count < 10) {
                                     lottieAnimationController
                                         .forward()
                                         .then((value) => lottieAnimationController.reset());
                                     skipAnimationController.forward().then((value) {
-                                      ref.read(wordProvider.notifier).remove(null);
+                                      ref.read(wordProvider.notifier).answer(0);
                                       _tipVisable = false;
                                       _lastWord = '';
                                       skipAnimationController.reverse();
