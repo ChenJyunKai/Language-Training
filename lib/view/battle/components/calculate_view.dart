@@ -70,7 +70,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
   Widget calulate() {
     Map map = {};
     ref.watch(wordProvider).words.forEach((e) => map[e.score] = !map.containsKey(e.score) ? (1) : (map[e.score] + 1));
-    final level = ref.watch(wordProvider).totalScore ?? 0 ~/ 25;
+    final level = (ref.watch(wordProvider).totalScore ?? 0) ~/ 25;
 
     fadeAnimaionController.forward();
     return SlideTransition(
