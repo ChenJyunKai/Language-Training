@@ -24,4 +24,11 @@ class WordNotifier extends StateNotifier<WordEntity> {
     word.score = score;
     state = WordEntity(words: [...newWords, word], languageId: state.languageId, count: (state.count + 1));
   }
+
+  void calculate() async {
+    final totalScore = [for (final i in state.words) i.score].reduce((value, current) => value + current);
+    Future.delayed(const Duration(seconds: 3), (){
+      state = state.copywith(totalScore: totalScore);
+    });
+  }
 }

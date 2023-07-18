@@ -8,28 +8,40 @@ class WordEntity {
   List<Word> words;
   String languageId;
   int count;
+  int? totalScore;
 
   WordEntity({
     required this.words,
     required this.languageId,
     this.count = 1,
+    this.totalScore,
   });
 
+  WordEntity copywith({required int totalScore}) {
+    return WordEntity(
+      words: words,
+      languageId: languageId,
+      count: count,
+      totalScore: totalScore,
+    );
+  }
+
   factory WordEntity.fromJson(Map<String, dynamic> json) => WordEntity(
-    languageId: json["language_id"],
-    words: List<Word>.from(json["words"].map((x) => Word.fromJson(x))),
-  );
+        languageId: json["language_id"],
+        words: List<Word>.from(json["words"].map((x) => Word.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "language_id": languageId,
-    "words": List<dynamic>.from(words.map((x) => x.toJson())),
-  };
+        "language_id": languageId,
+        "words": List<dynamic>.from(words.map((x) => x.toJson())),
+      };
 }
 
 class Word {
   String word;
   String hiragana;
-  // 得分
+
+  // 每題得分
   int score;
 
   Word({
@@ -39,12 +51,12 @@ class Word {
   });
 
   factory Word.fromJson(Map<String, dynamic> json) => Word(
-    word: json["word"],
-    hiragana: json["hiragana"],
-  );
+        word: json["word"],
+        hiragana: json["hiragana"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "word": word,
-    "hiragana": hiragana,
-  };
+        "word": word,
+        "hiragana": hiragana,
+      };
 }
