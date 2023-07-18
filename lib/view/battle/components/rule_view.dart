@@ -31,7 +31,7 @@ class RuleView extends StatelessWidget {
               parent: animationController,
               curve: const Interval(0, 1, curve: Curves.fastOutSlowIn),
             )),
-            child: Lottie.asset('assets/lottie/animation_elf.json', height: 200),
+            child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
           ),
           SlideTransition(
             position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
