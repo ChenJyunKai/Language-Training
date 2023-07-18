@@ -29,6 +29,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   bool _speechEnabled = false;
   bool _tipVisable = false;
   String _lastWord = '';
+  bool _isCalculate = false;
 
   late AnimationController correctAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
@@ -108,6 +109,19 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        ref.read(wordProvider.notifier).calculate();
+                        setState(() {
+                          _isCalculate = true;
+                        });
+                        widget.animationController.animateTo(1);
+                      },
+                      child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                    ),
+                  ),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +173,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                             SlideTransition(
                               position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0)).animate(
                                   CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle)),
-                              child: ref.watch(wordProvider).count < 10
+                              child: !_isCalculate
                                   ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
                                   : const SizedBox(
                                       height: 150,
@@ -192,6 +206,9 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     });
                                   } else {
                                     ref.read(wordProvider.notifier).calculate();
+                                    setState(() {
+                                      _isCalculate = true;
+                                    });
                                     widget.animationController.animateTo(1);
                                   }
                                 },

@@ -49,7 +49,6 @@ class _BattlePageState extends State<BattlePage> with TickerProviderStateMixin {
               fade: _fade,
             ),
             CalculateView(
-              fadeAnimationController: fadeAnimationController,
               animationController: animationController,
             )
           ],
