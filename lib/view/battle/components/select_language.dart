@@ -20,7 +20,7 @@ class SelectLanguage extends ConsumerWidget {
         SlideTransition(
           position: Tween(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
             parent: animationController,
-            curve: const Interval(0, 1, curve: Curves.fastOutSlowIn),
+            curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn),
           )),
           child: Container(
             width: screenWidth,
@@ -41,14 +41,14 @@ class SelectLanguage extends ConsumerWidget {
                 SlideTransition(
                   position: Tween(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
                     parent: animationController,
-                    curve: Interval(0.1 * Language.list.indexWhere((e) => e == i), 1, curve: Curves.fastOutSlowIn),
+                    curve: Interval(0.06 * Language.list.indexWhere((e) => e == i), 0.5, curve: Curves.fastOutSlowIn),
                   )),
                   child: SizedBox(
                     height: 50,
                     width: screenWidth * 0.7,
                     child: ElevatedButton(
                       onPressed: () {
-                        animationController.animateTo(1);
+                        animationController.animateTo(0.5);
                         ref.read(wordProvider.notifier).getData(i.id);
                       },
                       style: ElevatedButton.styleFrom(
