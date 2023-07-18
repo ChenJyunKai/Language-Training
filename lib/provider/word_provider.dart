@@ -18,10 +18,11 @@ class WordNotifier extends StateNotifier<WordEntity> {
     state = WordEntity(words: words.toList(), languageId: languageId);
   }
 
-  void remove(String word) async {
+  void remove(String? word) async {
+    final target = word ?? state.words.first.word;
     state = WordEntity(words: [
       for (Word i in state.words)
-        if (i.word != word) i
+        if (i.word != target) i
     ], languageId: state.languageId);
   }
 }

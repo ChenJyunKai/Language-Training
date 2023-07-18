@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rpg/provider/word_provider.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -31,6 +32,10 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
       AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
   late AnimationController shackAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+  late AnimationController skipAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+  late AnimationController lottieAnimationController =
+      AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
   @override
   void initState() {
@@ -47,6 +52,8 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   void dispose() {
     correctAnimationController.dispose();
     shackAnimationController.dispose();
+    skipAnimationController.dispose();
+    lottieAnimationController.dispose();
     super.dispose();
   }
 
@@ -106,30 +113,49 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                           style: const TextStyle(fontSize: 26, color: Colors.blue),
                         ),
                       ),
-                      AnimatedBuilder(
-                        animation: shackAnimationController,
-                        builder: (context, child) {
-                          final sineValue = sin(4 * 2 * pi * shackAnimationController.value);
-                          return Transform.translate(
-                            offset: Offset(sineValue * 10, 0),
-                            child: child,
-                          );
-                        },
-                        child: ScaleTransition(
-                          scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
-                            parent: correctAnimationController,
-                            curve: Curves.fastOutSlowIn,
-                          )),
-                          child: Column(
-                            children: [
-                              Text(ref.watch(wordProvider).words.first.word, style: const TextStyle(fontSize: 48)),
-                              Text(
-                                ref.watch(wordProvider).words.first.hiragana,
-                                style: TextStyle(fontSize: 42, color: _tipVisable ? Colors.black : Colors.transparent),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          AnimatedBuilder(
+                            animation: shackAnimationController,
+                            builder: (context, child) {
+                              final sineValue = sin(4 * 2 * pi * shackAnimationController.value);
+                              return Transform.translate(
+                                offset: Offset(sineValue * 10, 0),
+                                child: child,
+                              );
+                            },
+                            child: ScaleTransition(
+                              scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+                                parent: correctAnimationController,
+                                curve: Curves.fastOutSlowIn,
+                              )),
+                              child: FadeTransition(
+                                opacity: Tween<double>(begin: 1.0, end: 0.0).animate(skipAnimationController),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      ref.watch(wordProvider).words.first.word,
+                                      style: const TextStyle(fontSize: 48),
+                                    ),
+                                    Text(
+                                      ref.watch(wordProvider).words.first.hiragana,
+                                      style: TextStyle(
+                                        fontSize: 42,
+                                        color: _tipVisable ? Colors.black : Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          SlideTransition(
+                            position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0))
+                                .animate(CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle)),
+                            child: Lottie.asset('assets/lottie/dog_running.json', height: 150),
+                          )
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
@@ -137,13 +163,20 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton.icon(
-                              onPressed: () => setState(() => _tipVisable = true),
+                              onPressed: _tipVisable ? null : () => setState(() => _tipVisable = true),
                               icon: const Icon(Icons.tips_and_updates, size: 30),
                               label: const Text('提示', style: TextStyle(fontSize: 24)),
                             ),
                             const Text('|'),
                             TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                lottieAnimationController.forward().then((value) => lottieAnimationController.reset());
+                                skipAnimationController.forward().then((value) {
+                                  ref.read(wordProvider.notifier).remove(null);
+                                  _tipVisable = false;
+                                  skipAnimationController.reverse();
+                                });
+                              },
                               icon: const Icon(Icons.skip_next, size: 30),
                               label: const Text('跳過', style: TextStyle(fontSize: 24)),
                             ),
