@@ -153,7 +153,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                           SlideTransition(
                             position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0))
                                 .animate(CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle)),
-                            child: Lottie.asset('assets/lottie/dog_running.json', height: 150),
+                            child: Lottie.asset('assets/lottie/dog-running.json', height: 150),
                           )
                         ],
                       ),
