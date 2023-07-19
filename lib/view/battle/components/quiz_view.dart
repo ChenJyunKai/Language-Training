@@ -88,7 +88,6 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
           setState(() {
             _isCalculate = true;
           });
-          ref.read(wordProvider.notifier).calculate();
           widget.animationController.animateTo(1);
         }
       } else {

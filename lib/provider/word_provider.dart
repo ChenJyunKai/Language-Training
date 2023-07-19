@@ -25,8 +25,11 @@ class WordNotifier extends StateNotifier<WordEntity> {
     state = WordEntity(
       words: state.count == 10 ? [word, ...newWords] : [...newWords, word],
       languageId: state.languageId,
-      count: (state.count < 11 ? state.count + 1 : state.count),
+      count: (state.count < 10 ? state.count + 1 : state.count),
     );
+    if (state.count == 10) {
+      calculate();
+    }
   }
 
   void calculate() async {
