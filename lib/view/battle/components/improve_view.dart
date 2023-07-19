@@ -78,7 +78,8 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
         curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
       )),
       child: FadeTransition(
-        opacity: Tween<double>(begin: 0.0,end: 1.0).animate(CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeIn)),
+        opacity: Tween<double>(begin: 0.0, end: 1.0)
+            .animate(CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeIn)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -140,7 +141,22 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(top: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(ability.userName!, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                  Row(
+                    children: [
+                      const Icon(Icons.military_tech_outlined, color: Colors.grey),
+                      Text(ability.role!, style: const TextStyle(fontSize: 20, color: Colors.grey)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Card(
                 elevation: 3,
                 surfaceTintColor: Colors.white,
@@ -167,6 +183,20 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blueGrey,
+                  ),
+                  child: const Text("回首頁", style: TextStyle(fontSize: 18)),
+                ),
+              ),
+            )
           ],
         ),
       ),
