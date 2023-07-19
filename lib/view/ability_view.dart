@@ -17,6 +17,7 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
   @override
   Widget build(BuildContext context) {
     final ability = ref.watch(abilitiesProvider);
+    final waterHeight = 1 - ability.exp / ability.expL;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
       decoration: BoxDecoration(
@@ -68,7 +69,7 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
                               config: CustomConfig(
                                 colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
                                 durations: [5000, 4000, 3000],
-                                heightPercentages: [0.48, 0.49, 0.5],
+                                heightPercentages: [waterHeight, waterHeight + 0.01, waterHeight + 0.02],
                               ),
                               backgroundColor: Colors.white,
                               size: const Size(double.infinity, double.infinity),
