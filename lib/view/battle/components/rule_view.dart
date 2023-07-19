@@ -29,14 +29,14 @@ class RuleView extends StatelessWidget {
           SlideTransition(
             position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
               parent: animationController,
-              curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn),
+              curve: const Interval(0, 0.333, curve: Curves.fastOutSlowIn),
             )),
             child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
           ),
           SlideTransition(
             position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
               parent: animationController,
-              curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn),
+              curve: const Interval(0, 0.333, curve: Curves.fastOutSlowIn),
             )),
             child: Align(
               alignment: Alignment.center,
@@ -53,7 +53,7 @@ class RuleView extends StatelessWidget {
           SlideTransition(
             position: Tween(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
               parent: animationController,
-              curve: const Interval(0.2, 0.5, curve: Curves.fastOutSlowIn),
+              curve: const Interval(0.2, 0.333, curve: Curves.fastOutSlowIn),
             )),
             child: Padding(
               padding: const EdgeInsets.only(top: 20),

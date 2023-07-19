@@ -88,7 +88,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
           setState(() {
             _isCalculate = true;
           });
-          widget.animationController.animateTo(1);
+          widget.animationController.animateTo(0.666);
         }
       } else {
         setState(() {
@@ -103,7 +103,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(
-        CurvedAnimation(parent: widget.animationController, curve: const Interval(0.5, 1, curve: Curves.fastOutSlowIn)),
+        CurvedAnimation(parent: widget.animationController, curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn)),
       ),
       child: FadeTransition(
         opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -123,7 +123,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                         setState(() {
                           _isCalculate = true;
                         });
-                        widget.animationController.animateTo(1);
+                        widget.animationController.animateTo(0.666);
                       },
                       child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
                     ),
@@ -215,7 +215,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     setState(() {
                                       _isCalculate = true;
                                     });
-                                    widget.animationController.animateTo(1);
+                                    widget.animationController.animateTo(0.666);
                                   }
                                 },
                                 icon: const Icon(Icons.skip_next, size: 30),

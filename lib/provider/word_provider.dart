@@ -34,8 +34,14 @@ class WordNotifier extends StateNotifier<WordEntity> {
 
   void calculate() async {
     final totalScore = [for (final i in state.words) i.score].reduce((value, current) => value + current);
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       state = state.copywith(totalScore: totalScore);
+    });
+  }
+
+  void getExp() async{
+    Future.delayed(const Duration(seconds: 2), () {
+      state = state.copywith(exp: 100);
     });
   }
 }

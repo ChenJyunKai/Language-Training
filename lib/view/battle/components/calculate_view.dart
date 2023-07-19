@@ -30,9 +30,15 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return (ref.watch(wordProvider).totalScore != null && widget.animationController.value == 1)
-        ? calulate()
-        : buildColumn();
+    return SlideTransition(
+      position: Tween(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
+        parent: widget.animationController,
+        curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
+      )),
+      child: (ref.watch(wordProvider).totalScore != null && widget.animationController.value >= 0.666)
+          ? calulate()
+          : buildColumn(),
+    );
   }
 
   Widget buildColumn() {
@@ -42,14 +48,14 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
         SlideTransition(
           position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
             parent: widget.animationController,
-            curve: const Interval(0.5, 1, curve: Curves.fastOutSlowIn),
+            curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
           )),
           child: Lottie.asset('assets/lottie/rikka.json', height: 200),
         ),
         SlideTransition(
           position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
             parent: widget.animationController,
-            curve: const Interval(0.5, 1, curve: Curves.fastOutSlowIn),
+            curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
           )),
           child: const Align(
             alignment: Alignment.center,
@@ -76,7 +82,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
     return SlideTransition(
       position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
-        curve: const Interval(0.5, 1, curve: Curves.fastOutSlowIn),
+        curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
       )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -187,7 +193,10 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
                       child: SizedBox(
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.animationController.animateTo(1);
+                            ref.read(wordProvider.notifier).getExp();
+                          },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.blueGrey,

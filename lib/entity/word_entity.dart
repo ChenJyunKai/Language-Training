@@ -9,20 +9,23 @@ class WordEntity {
   String languageId;
   int count;
   int? totalScore;
+  int? exp;
 
   WordEntity({
     required this.words,
     required this.languageId,
     this.count = 1,
     this.totalScore,
+    this.exp,
   });
 
-  WordEntity copywith({required int totalScore}) {
+  WordEntity copywith({int? totalScore,int? exp}) {
     return WordEntity(
       words: words,
       languageId: languageId,
       count: count,
       totalScore: totalScore,
+      exp: exp,
     );
   }
 
