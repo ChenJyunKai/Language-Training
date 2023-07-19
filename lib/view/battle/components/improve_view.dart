@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rpg/helper/hex_color.dart';
+import 'package:rpg/provider/abilities_provider.dart';
 import 'package:rpg/provider/word_provider.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 class ImproveView extends ConsumerStatefulWidget {
   const ImproveView({
@@ -16,34 +20,20 @@ class ImproveView extends ConsumerStatefulWidget {
 }
 
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
+  late AnimationController fadeAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+
+  @override
+  void dispose() {
+    fadeAnimationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return (ref.watch(wordProvider).exp != null && widget.animationController.value == 1)
         ? buildSlideTransition()
         : buildColumn();
-  }
-
-  SlideTransition buildSlideTransition() {
-    return SlideTransition(
-          position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
-          )),
-          child: Center(
-            child: SizedBox(
-              width: 200,
-              child: TweenAnimationBuilder<double>(
-                duration: const Duration(milliseconds: 1000),
-                curve: Curves.easeInOut,
-                tween: Tween<double>(
-                  begin: 0,
-                  end: 1,
-                ),
-                builder: (context, value, _) => LinearProgressIndicator(value: value),
-              ),
-            ),
-          ),
-        );
   }
 
   Widget buildColumn() {
@@ -55,7 +45,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
             parent: widget.animationController,
             curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
           )),
-          child: Lottie.asset('assets/lottie/rikka.json', height: 200),
+          child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
         ),
         SlideTransition(
           position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
@@ -67,7 +57,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
             child: Padding(
               padding: EdgeInsets.only(top: 16),
               child: Text(
-                "123結算中...",
+                "經驗結算中...",
                 style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -75,6 +65,111 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
           ),
         ),
       ],
+    );
+  }
+
+  SlideTransition buildSlideTransition() {
+    fadeAnimationController.forward();
+    final ability = ref.watch(abilitiesProvider);
+    final plusExp = ref.watch(wordProvider).exp ?? 0;
+    return SlideTransition(
+      position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
+        parent: widget.animationController,
+        curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
+      )),
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0,end: 1.0).animate(CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeIn)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text('本次獲得 +$plusExp Exp', style: const TextStyle(fontSize: 24)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text('距離下一級還需 ${ability.expL - plusExp} Exp', style: const TextStyle(fontSize: 24)),
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.blue.withAlpha(40), width: 2),
+                  ),
+                  child: Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey.withAlpha(30), width: 2),
+                    ),
+                    child: ClipOval(
+                      child: TweenAnimationBuilder<double>(
+                        duration: const Duration(milliseconds: 1500),
+                        curve: Curves.easeInOut,
+                        tween: Tween<double>(
+                          begin: ability.exp / ability.expL,
+                          end: (ability.exp + plusExp) / ability.expL,
+                        ),
+                        builder: (context, value, _) {
+                          final waterHeight = 1 - value;
+                          return WaveWidget(
+                            config: CustomConfig(
+                              colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
+                              durations: [5000, 4000, 3000],
+                              heightPercentages: [waterHeight, waterHeight + 0.01, waterHeight + 0.02],
+                            ),
+                            backgroundColor: Colors.white,
+                            size: const Size(double.infinity, double.infinity),
+                            waveAmplitude: 0,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  'lv ${ability.lv}',
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black54),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                elevation: 3,
+                surfaceTintColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 12),
+                  child: DefaultTextStyle(
+                    style: const TextStyle(fontSize: 20, color: Colors.black),
+                    child: GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: 1 / 0.3,
+                      children: [
+                        Text('血量: ${ability.hp}'),
+                        Text('魔力: ${ability.mp}'),
+                        Text('攻擊: ${ability.atk}'),
+                        Text('防禦: ${ability.def}'),
+                        Text('敏捷: ${ability.agi}'),
+                        Text('幸運: ${ability.luk}'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

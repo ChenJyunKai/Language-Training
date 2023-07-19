@@ -17,7 +17,7 @@ class CalculateView extends ConsumerStatefulWidget {
 
 class _CalculateViewState extends ConsumerState<CalculateView> with TickerProviderStateMixin {
   late AnimationController fadeAnimaionController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2500));
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
 
   static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 (*´▽`*)', '才華橫溢 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
   static const lottieList = ['sasuke', 'sakura', 'good_job', 'kakashi', 'lucia'];
@@ -50,7 +50,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
             parent: widget.animationController,
             curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
           )),
-          child: Lottie.asset('assets/lottie/rikka.json', height: 200),
+          child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
         ),
         SlideTransition(
           position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
