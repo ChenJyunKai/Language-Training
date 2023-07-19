@@ -19,8 +19,8 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
   late AnimationController fadeAnimaionController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 2500));
 
-  static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
-  static const lottieList = ['sasuke', 'sakura', 'kakashi', 'lucia'];
+  static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 (*´▽`*)', '才華橫溢 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
+  static const lottieList = ['sasuke', 'sakura', 'good_job', 'kakashi', 'lucia'];
 
   @override
   void dispose() {
@@ -172,34 +172,33 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
             ),
           ),
           AnimatedBuilder(
-            animation: fadeAnimaionController,
-            builder: (context, child) {
-              final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                parent: fadeAnimaionController,
-                curve: const Interval(0.8, 1, curve: Curves.easeIn),
-              ));
-              return FadeTransition(
-                opacity: btnAnimation,
-                child: Transform(
-                  transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blueGrey,
+              animation: fadeAnimaionController,
+              builder: (context, child) {
+                final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                  parent: fadeAnimaionController,
+                  curve: const Interval(0.8, 1, curve: Curves.easeIn),
+                ));
+                return FadeTransition(
+                  opacity: btnAnimation,
+                  child: Transform(
+                    transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blueGrey,
+                          ),
+                          child: const Text("Next", style: TextStyle(fontSize: 18)),
                         ),
-                        child: const Text("Next", style: TextStyle(fontSize: 18)),
                       ),
                     ),
                   ),
-                ),
-              );
-            }
-          ),
+                );
+              }),
         ],
       ),
     );
