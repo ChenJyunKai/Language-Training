@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:rpg/view/battle/components/calculate_view.dart';
-import 'package:rpg/view/battle/components/improve_view.dart';
-import 'package:rpg/view/battle/components/quiz_view.dart';
-import 'package:rpg/view/battle/components/rule_view.dart';
-import 'package:rpg/view/battle/components/select_language.dart';
+import 'package:rpg/view/train/components/calculate_view.dart';
+import 'package:rpg/view/train/components/improve_view.dart';
+import 'package:rpg/view/train/components/quiz_view.dart';
+import 'package:rpg/view/train/components/rule_view.dart';
+import 'package:rpg/view/train/components/select_language.dart';
 
-class BattlePage extends StatefulWidget {
-  const BattlePage({Key? key}) : super(key: key);
+class TrainPage extends StatefulWidget {
+  const TrainPage({Key? key}) : super(key: key);
 
   @override
-  State<BattlePage> createState() => _BattlePageState();
+  State<TrainPage> createState() => _TrainPageState();
 }
 
-class _BattlePageState extends State<BattlePage> with TickerProviderStateMixin {
+class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
   bool _fade = true;
   late AnimationController animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
   late AnimationController fadeAnimationController =

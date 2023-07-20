@@ -28,6 +28,7 @@ class ButtonEntity {
       titleTxt: '鍛鍊',
       startColor: '#FA7D82',
       endColor: '#FFB295',
+      navigatorUrl: trainUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/chat.json',
@@ -45,7 +46,6 @@ class ButtonEntity {
       titleTxt: '對戰',
       startColor: '#B766AD',
       endColor: '#CA8EC2',
-      navigatorUrl: battleUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/setting.json',
