@@ -24,6 +24,7 @@ class ImproveView extends ConsumerStatefulWidget {
 
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
   bool fall = false;
+  int plusExp = 0;
   late AbilitiesEntity ability;
   AbilitiesEntity improveAbility = AbilitiesEntity();
 
@@ -111,7 +112,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
 
   SlideTransition buildSlideTransition() {
     fadeAnimationController.forward();
-    final plusExp = ref.watch(wordProvider).exp ?? 0;
+    if (!fall) {
+      plusExp = ref.watch(wordProvider).exp!;
+    }
     final getExp = ref.watch(wordProvider).totalScore! * 10;
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
@@ -140,7 +143,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               curve: Curves.easeInOut,
               tween: Tween<double>(
                 begin: ability.exp / ability.expL,
-                end: ((ability.exp + plusExp) / ability.expL) >= 1 ? 1.1 : (ability.exp + plusExp) / ability.expL,
+                end: ((ability.exp + (fall ? 0 : plusExp)) / ability.expL) >= 1
+                    ? 1.1
+                    : (ability.exp + (fall ? 0 : plusExp)) / ability.expL,
               ),
               builder: (context, value, _) {
                 final waterHeight = 1 - value;
@@ -162,8 +167,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                       improvedAbility();
                     }
                     // 修改數值
+                    // plusExp == lastExp
+                    plusExp = lastExp;
                     ability = ability.copyWith(lv: newLv, exp: lastExp, expL: nextExpL);
-                    ref.read(wordProvider.notifier).lastExp(lastExp);
                     levelUpAnimationController.reverse();
                   });
                 }
@@ -269,7 +275,10 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    ref.read(abilitiesProvider.notifier).improveAbility(ability, improveAbility);
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blueGrey,
