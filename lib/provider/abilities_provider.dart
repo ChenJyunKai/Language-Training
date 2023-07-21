@@ -15,9 +15,27 @@ class AbilitiesNotifier extends StateNotifier<AbilitiesEntity> {
     Future.delayed(const Duration(seconds: 3), () => state = newCharacter);
   }
 
-  //獲取當前角色數據
+  // 獲取當前角色數據
   void getAbility() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     state = abilitiesEntityFromJson(prefs.getString('ability')!);
+  }
+
+  // 戰鬥後儲存資料
+  void improveAbility(AbilitiesEntity lvAbility, AbilitiesEntity ability) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    state = state.copyWith(
+      lv: lvAbility.lv,
+      exp: lvAbility.exp,
+      expL: lvAbility.expL,
+      hp: state.hp + ability.hp,
+      mp: state.mp + ability.mp,
+      atk: state.atk + ability.atk,
+      def: state.def + ability.def,
+      agi: state.agi + ability.agi,
+      luk: state.luk + ability.luk,
+    );
+    // 存檔
+    await prefs.setString('ability', abilitiesEntityToJson(state));
   }
 }
