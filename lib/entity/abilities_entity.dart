@@ -12,7 +12,7 @@ class AbilitiesEntity {
     this.roleData,
     this.lv = 1,
     this.exp = 0,
-    this.expL = 1000,
+    this.expL = 750,
     this.hp = 200,
     this.mp = 50,
     this.atk = 25,
@@ -34,13 +34,13 @@ class AbilitiesEntity {
   final int agi;
   final int luk;
 
-  AbilitiesEntity copyWith({String? role, int? lv, int? expL}) {
+  AbilitiesEntity copyWith({String? role, int? lv, int? exp, int? expL}) {
     return AbilitiesEntity(
       userName: userName,
       role: role ?? this.role,
       roleData: roleData,
       lv: lv ?? this.lv,
-      exp: exp,
+      exp: exp ?? this.exp,
       expL: expL ?? this.expL,
       hp: hp,
       mp: mp,

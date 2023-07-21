@@ -86,6 +86,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   SlideTransition buildSlideTransition() {
     fadeAnimationController.forward();
     final plusExp = ref.watch(wordProvider).exp ?? 0;
+    final getExp = ref.watch(wordProvider).totalScore! * 10;
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
@@ -99,7 +100,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Text('本次獲得 +$plusExp Exp', style: const TextStyle(fontSize: 24)),
+              child: Text('本次獲得 +$getExp Exp', style: const TextStyle(fontSize: 24)),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
@@ -118,10 +119,11 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               builder: (context, value, _) {
                 final waterHeight = 1 - value;
                 if (waterHeight < -0.1 && !fall) {
+                  // 確認只進入一次
                   fall = !fall;
                   levelUpAnimationController.forward().then((value) {
                     // 計算升等公式
-                    int lastExp = plusExp - ref.watch(abilitiesProvider).expL;
+                    int lastExp = getExp - ref.watch(abilitiesProvider).expL;
                     int newLv = ability.lv + 1;
                     int nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
                     nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
@@ -132,7 +134,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                       nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
                     }
                     // 修改數值
-                    ability = ability.copyWith(lv: newLv, expL: nextExpL);
+                    ability = ability.copyWith(lv: newLv, exp: lastExp, expL: nextExpL);
                     ref.read(wordProvider.notifier).lastExp(lastExp);
                     levelUpAnimationController.reverse();
                   });
