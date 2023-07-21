@@ -24,8 +24,8 @@ class WordEntity {
       words: words,
       languageId: languageId,
       count: count,
-      totalScore: totalScore,
-      exp: exp,
+      totalScore: totalScore ?? this.totalScore,
+      exp: exp ?? this.exp,
     );
   }
 

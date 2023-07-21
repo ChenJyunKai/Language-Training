@@ -34,35 +34,46 @@ class AbilitiesEntity {
   final int agi;
   final int luk;
 
-  AbilitiesEntity copyWith(String? role) {
+  AbilitiesEntity copyWith({String? role, int? lv, int? expL}) {
     return AbilitiesEntity(
+      userName: userName,
       role: role ?? this.role,
+      roleData: roleData,
+      lv: lv ?? this.lv,
+      exp: exp,
+      expL: expL ?? this.expL,
+      hp: hp,
+      mp: mp,
+      atk: atk,
+      def: def,
+      agi: agi,
+      luk: luk,
     );
   }
 
   factory AbilitiesEntity.fromJson(Map<String, dynamic> json) => AbilitiesEntity(
-    userName: json["user_name"],
-    role: json["role"],
-    roleData: RoleEntity.fromJson(json["role_data"]),
-    lv: json["lv"],
-    hp: json["hp"],
-    mp: json["mp"],
-    atk: json["atk"],
-    def: json["def"],
-    agi: json["agi"],
-    luk: json["luk"],
-  );
+        userName: json["user_name"],
+        role: json["role"],
+        roleData: RoleEntity.fromJson(json["role_data"]),
+        lv: json["lv"],
+        hp: json["hp"],
+        mp: json["mp"],
+        atk: json["atk"],
+        def: json["def"],
+        agi: json["agi"],
+        luk: json["luk"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "user_name" : userName,
-    "role": role,
-    "role_data": roleData!.toJson(),
-    "lv": lv,
-    "hp": hp,
-    "mp": mp,
-    "atk": atk,
-    "def": def,
-    "agi": agi,
-    "luk": luk,
-  };
+        "user_name": userName,
+        "role": role,
+        "role_data": roleData!.toJson(),
+        "lv": lv,
+        "hp": hp,
+        "mp": mp,
+        "atk": atk,
+        "def": def,
+        "agi": agi,
+        "luk": luk,
+      };
 }

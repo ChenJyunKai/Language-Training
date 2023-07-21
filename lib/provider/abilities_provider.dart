@@ -16,7 +16,7 @@ class AbilitiesNotifier extends StateNotifier<AbilitiesEntity> {
   }
 
   //獲取當前角色數據
-  void getAbility() async{
+  void getAbility() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     state = abilitiesEntityFromJson(prefs.getString('ability')!);
   }

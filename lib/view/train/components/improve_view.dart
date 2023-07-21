@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rpg/entity/abilities_entity.dart';
 import 'package:rpg/helper/hex_color.dart';
 import 'package:rpg/provider/abilities_provider.dart';
 import 'package:rpg/provider/word_provider.dart';
@@ -20,12 +21,26 @@ class ImproveView extends ConsumerStatefulWidget {
 }
 
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
+  bool fall = false;
+  late AbilitiesEntity ability;
+
   late AnimationController fadeAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+  late AnimationController levelUpAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      ability = ref.watch(abilitiesProvider);
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
     fadeAnimationController.dispose();
+    levelUpAnimationController.dispose();
     super.dispose();
   }
 
@@ -70,7 +85,6 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
 
   SlideTransition buildSlideTransition() {
     fadeAnimationController.forward();
-    final ability = ref.watch(abilitiesProvider);
     final plusExp = ref.watch(wordProvider).exp ?? 0;
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
@@ -89,56 +103,83 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Text('距離下一級還需 ${ability.expL - plusExp} Exp', style: const TextStyle(fontSize: 24)),
+              child: Text(
+                '距離下一級還需 ${(ability.expL - plusExp) < 0 ? 0 : ability.expL - plusExp} Exp',
+                style: const TextStyle(fontSize: 24),
+              ),
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.blue.withAlpha(40), width: 2),
-                  ),
-                  child: Container(
-                    height: 70,
-                    width: 70,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.withAlpha(30), width: 2),
-                    ),
-                    child: ClipOval(
-                      child: TweenAnimationBuilder<double>(
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.easeInOut,
-                        tween: Tween<double>(
-                          begin: ability.exp / ability.expL,
-                          end: (ability.exp + plusExp) / ability.expL,
+            TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 1500),
+              curve: Curves.easeInOut,
+              tween: Tween<double>(
+                begin: ability.exp / ability.expL,
+                end: ((ability.exp + plusExp) / ability.expL) >= 1 ? 1.1 : (ability.exp + plusExp) / ability.expL,
+              ),
+              builder: (context, value, _) {
+                final waterHeight = 1 - value;
+                if (waterHeight < -0.1 && !fall) {
+                  fall = !fall;
+                  levelUpAnimationController.forward().then((value) {
+                    // 計算升等公式
+                    int lastExp = plusExp - ref.watch(abilitiesProvider).expL;
+                    int newLv = ability.lv + 1;
+                    int nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+                    nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                    while (lastExp > nextExpL) {
+                      lastExp -= nextExpL;
+                      newLv++;
+                      nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+                      nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                    }
+                    // 修改數值
+                    ability = ability.copyWith(lv: newLv, expL: nextExpL);
+                    ref.read(wordProvider.notifier).lastExp(lastExp);
+                    levelUpAnimationController.reverse();
+                  });
+                }
+                return ScaleTransition(
+                  scale: Tween<double>(begin: 1.0, end: 1.1).animate(CurvedAnimation(
+                    parent: levelUpAnimationController,
+                    curve: Curves.easeOut,
+                  )),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.blue.withAlpha(40), width: 2),
                         ),
-                        builder: (context, value, _) {
-                          final waterHeight = 1 - value;
-                          return WaveWidget(
-                            config: CustomConfig(
-                              colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
-                              durations: [5000, 4000, 3000],
-                              heightPercentages: [waterHeight, waterHeight + 0.01, waterHeight + 0.02],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.grey.withAlpha(30), width: 2),
+                          ),
+                          child: ClipOval(
+                            child: WaveWidget(
+                              config: CustomConfig(
+                                colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
+                                durations: [5000, 4000, 3000],
+                                heightPercentages: [waterHeight, waterHeight + 0.01, waterHeight + 0.02],
+                              ),
+                              backgroundColor: Colors.white,
+                              size: const Size(double.infinity, double.infinity),
+                              waveAmplitude: 0,
                             ),
-                            backgroundColor: Colors.white,
-                            size: const Size(double.infinity, double.infinity),
-                            waveAmplitude: 0,
-                          );
-                        },
+                          ),
+                        ),
                       ),
-                    ),
+                      Text(
+                        'lv ${ability.lv}',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black54),
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  'lv ${ability.lv}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black54),
-                ),
-              ],
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(top: 24),
