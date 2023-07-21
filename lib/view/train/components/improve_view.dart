@@ -212,15 +212,28 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               },
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 24),
+              padding: const EdgeInsets.only(top: 24, left: 8, right: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(ability.userName!, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                  Text(ability.userName!, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  FadeTransition(
+                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                      CurvedAnimation(parent: improveAnimationController, curve: Curves.easeIn),
+                    ),
+                    child: const Text(
+                      'Level up!!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                   Row(
                     children: [
                       const Icon(Icons.military_tech_outlined, color: Colors.grey),
-                      Text(ability.role!, style: const TextStyle(fontSize: 20, color: Colors.grey)),
+                      Text(ability.role!, style: const TextStyle(fontSize: 16, color: Colors.grey)),
                     ],
                   ),
                 ],
