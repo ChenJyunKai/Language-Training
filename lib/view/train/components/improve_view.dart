@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -23,11 +25,14 @@ class ImproveView extends ConsumerStatefulWidget {
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
   bool fall = false;
   late AbilitiesEntity ability;
+  AbilitiesEntity improveAbility = AbilitiesEntity();
 
   late AnimationController fadeAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
   late AnimationController levelUpAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+  late AnimationController improveAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
 
   @override
   void initState() {
@@ -41,6 +46,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   void dispose() {
     fadeAnimationController.dispose();
     levelUpAnimationController.dispose();
+    improveAnimationController.dispose();
     super.dispose();
   }
 
@@ -49,6 +55,26 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     return (ref.watch(wordProvider).exp != null && widget.animationController.value == 1)
         ? buildSlideTransition()
         : buildColumn();
+  }
+
+  void improvedAbility() {
+    final hp = 50 + 50 * (Random().nextInt(3));
+    final mp = 10 + 5 * (Random().nextInt(3));
+    final atk = Random().nextInt(5);
+    final def = Random().nextInt(5);
+    final agi = Random().nextInt(5);
+    final luk = Random().nextInt(5);
+    setState(() {
+      improveAbility = AbilitiesEntity(
+        hp: hp,
+        mp: mp,
+        atk: atk,
+        def: def,
+        agi: agi,
+        luk: luk,
+      );
+    });
+    improveAnimationController.forward();
   }
 
   Widget buildColumn() {
@@ -127,11 +153,13 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                     int newLv = ability.lv + 1;
                     int nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
                     nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                    improvedAbility();
                     while (lastExp > nextExpL) {
                       lastExp -= nextExpL;
                       newLv++;
                       nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
                       nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                      improvedAbility();
                     }
                     // 修改數值
                     ability = ability.copyWith(lv: newLv, exp: lastExp, expL: nextExpL);
@@ -204,24 +232,21 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 elevation: 3,
                 surfaceTintColor: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 12),
-                  child: DefaultTextStyle(
-                    style: const TextStyle(fontSize: 20, color: Colors.black),
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 1 / 0.3,
-                      children: [
-                        Text('血量: ${ability.hp}'),
-                        Text('魔力: ${ability.mp}'),
-                        Text('攻擊: ${ability.atk}'),
-                        Text('防禦: ${ability.def}'),
-                        Text('敏捷: ${ability.agi}'),
-                        Text('幸運: ${ability.luk}'),
-                      ],
-                    ),
+                  padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1 / 0.3,
+                    children: [
+                      buildListTile('血量', ability.hp, improveAbility.hp, 0),
+                      buildListTile('魔力', ability.mp, improveAbility.mp, 1),
+                      buildListTile('攻擊', ability.atk, improveAbility.atk, 2),
+                      buildListTile('防禦', ability.def, improveAbility.def, 3),
+                      buildListTile('敏捷', ability.agi, improveAbility.agi, 4),
+                      buildListTile('幸運', ability.luk, improveAbility.luk, 5),
+                    ],
                   ),
                 ),
               ),
@@ -242,6 +267,26 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
             )
           ],
         ),
+      ),
+    );
+  }
+
+  ListTile buildListTile(String title, int ability, int improveAbility, double index) {
+    return ListTile(
+      contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 6),
+      title: Row(
+        children: [
+          Expanded(child: Text('$title: $ability', style: const TextStyle(fontSize: 18))),
+          FadeTransition(
+            opacity: Tween<double>(begin: 0, end: 1).animate(
+              CurvedAnimation(
+                parent: improveAnimationController,
+                curve: Interval(index / 6, (index + 1) / 6, curve: Curves.easeIn),
+              ),
+            ),
+            child: Text('+$improveAbility', style: const TextStyle(fontSize: 18, color: Colors.green)),
+          ),
+        ],
       ),
     );
   }
