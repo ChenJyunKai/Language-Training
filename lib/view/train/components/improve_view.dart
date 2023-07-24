@@ -34,6 +34,12 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
       AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
   late AnimationController improveAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+  late AnimationController nextAnimationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+  late Animation<double> nextAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    parent: nextAnimationController,
+    curve: const Interval(0, 1, curve: Curves.easeIn),
+  ));
 
   @override
   void initState() {
@@ -48,6 +54,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     fadeAnimationController.dispose();
     levelUpAnimationController.dispose();
     improveAnimationController.dispose();
+    nextAnimationController.dispose();
     super.dispose();
   }
 
@@ -122,8 +129,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
         curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
       )),
       child: FadeTransition(
-        opacity: Tween<double>(begin: 0.0, end: 1.0)
-            .animate(CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeIn)),
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeIn),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -146,6 +154,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 end: ((ability.exp + (fall ? 0 : plusExp)) / ability.expL) >= 1
                     ? 1.1
                     : (ability.exp + (fall ? 0 : plusExp)) / ability.expL,
+              ),
+              onEnd: () => Future.delayed(const Duration(milliseconds: 300)).then(
+                (value) => nextAnimationController.forward(),
               ),
               builder: (context, value, _) {
                 final waterHeight = 1 - value;
@@ -272,26 +283,37 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(abilitiesProvider.notifier).improveAbility(
-                          fall ? ability : ability.copyWith(exp: ability.exp + plusExp),
-                          improveAbility,
-                        );
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.blueGrey,
+            AnimatedBuilder(
+              animation: nextAnimationController,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: nextAnimation,
+                  child: Transform(
+                    transform: Matrix4.translationValues(100 * (1.0 - nextAnimation.value), 0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            ref.read(abilitiesProvider.notifier).improveAbility(
+                                  fall ? ability : ability.copyWith(exp: ability.exp + plusExp),
+                                  improveAbility,
+                                );
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blueGrey,
+                          ),
+                          child: const Text("回首頁", style: TextStyle(fontSize: 18)),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Text("回首頁", style: TextStyle(fontSize: 18)),
-                ),
-              ),
-            )
+                );
+              },
+            ),
           ],
         ),
       ),
