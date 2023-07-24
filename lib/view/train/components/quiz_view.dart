@@ -13,12 +13,10 @@ class QuizView extends ConsumerStatefulWidget {
     super.key,
     required this.fadeAnimationController,
     required this.animationController,
-    required this.fade,
   });
 
   final AnimationController fadeAnimationController;
   final AnimationController animationController;
-  final bool fade;
 
   @override
   ConsumerState<QuizView> createState() => _QuizViewState();
@@ -103,164 +101,170 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(
-        CurvedAnimation(parent: widget.animationController, curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn)),
+        CurvedAnimation(
+            parent: widget.animationController, curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn)),
       ),
-      child: FadeTransition(
-        opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: widget.fadeAnimationController,
-          curve: const Interval(0.8, 1, curve: Curves.fastOutSlowIn),
-        )),
-        child: widget.fade
-            ? const SizedBox()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                      child: TextButton(
-                        onPressed: () {
-                          ref.read(wordProvider.notifier).calculate();
-                          setState(() {
-                            _isCalculate = true;
-                          });
-                          widget.animationController.animateTo(0.666);
-                        },
-                        child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
+      child: AnimatedBuilder(
+          animation: widget.fadeAnimationController,
+          builder: (context, child) {
+            return FadeTransition(
+              opacity: Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                parent: widget.fadeAnimationController,
+                curve: const Interval(0.8, 1, curve: Curves.fastOutSlowIn),
+              )),
+              child: widget.fadeAnimationController.value == 0
+                  ? const SizedBox()
+                  : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: Text(
-                            '${ref.watch(wordProvider).count} / 10 題',
-                            style: const TextStyle(fontSize: 26, color: Colors.blue),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                            child: TextButton(
+                              onPressed: () {
+                                ref.read(wordProvider.notifier).calculate();
+                                setState(() {
+                                  _isCalculate = true;
+                                });
+                                widget.animationController.animateTo(0.666);
+                              },
+                              child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                            ),
                           ),
                         ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            AnimatedBuilder(
-                              animation: shackAnimationController,
-                              builder: (context, child) {
-                                final sineValue = sin(4 * 2 * pi * shackAnimationController.value);
-                                return Transform.translate(
-                                  offset: Offset(sineValue * 10, 0),
-                                  child: child,
-                                );
-                              },
-                              child: ScaleTransition(
-                                scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
-                                  parent: correctAnimationController,
-                                  curve: Curves.fastOutSlowIn,
-                                )),
-                                child: FadeTransition(
-                                  opacity: Tween<double>(begin: 1.0, end: 0.0).animate(skipAnimationController),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        ref.watch(wordProvider).words.first.word,
-                                        style: const TextStyle(fontSize: 48),
-                                      ),
-                                      Text(
-                                        ref.watch(wordProvider).words.first.hiragana,
-                                        style: TextStyle(
-                                          fontSize: 42,
-                                          color: _tipVisable ? Colors.black : Colors.transparent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SlideTransition(
-                              position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0)).animate(
-                                  CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle)),
-                              child: !_isCalculate
-                                  ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
-                                  : const SizedBox(
-                                      height: 150,
-                                    ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Row(
+                        Expanded(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextButton.icon(
-                                onPressed: _tipVisable ? null : () => setState(() => _tipVisable = true),
-                                icon: const Icon(Icons.tips_and_updates, size: 30),
-                                label: const Text('提示', style: TextStyle(fontSize: 24)),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 30),
+                                child: Text(
+                                  '${ref.watch(wordProvider).count} / 10 題',
+                                  style: const TextStyle(fontSize: 26, color: Colors.blue),
+                                ),
                               ),
-                              const Text('|'),
-                              TextButton.icon(
-                                onPressed: () {
-                                  if (ref.watch(wordProvider).count < 10) {
-                                    lottieAnimationController
-                                        .forward()
-                                        .then((value) => lottieAnimationController.reset());
-                                    skipAnimationController.forward().then((value) {
-                                      ref.read(wordProvider.notifier).answer(0);
-                                      _tipVisable = false;
-                                      _lastWord = '';
-                                      skipAnimationController.reverse();
-                                    });
-                                  } else {
-                                    ref.read(wordProvider.notifier).calculate();
-                                    setState(() {
-                                      _isCalculate = true;
-                                    });
-                                    widget.animationController.animateTo(0.666);
-                                  }
-                                },
-                                icon: const Icon(Icons.skip_next, size: 30),
-                                label: const Text('跳過', style: TextStyle(fontSize: 24)),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  AnimatedBuilder(
+                                    animation: shackAnimationController,
+                                    builder: (context, child) {
+                                      final sineValue = sin(4 * 2 * pi * shackAnimationController.value);
+                                      return Transform.translate(
+                                        offset: Offset(sineValue * 10, 0),
+                                        child: child,
+                                      );
+                                    },
+                                    child: ScaleTransition(
+                                      scale: Tween<double>(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+                                        parent: correctAnimationController,
+                                        curve: Curves.fastOutSlowIn,
+                                      )),
+                                      child: FadeTransition(
+                                        opacity: Tween<double>(begin: 1.0, end: 0.0).animate(skipAnimationController),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              ref.watch(wordProvider).words.first.word,
+                                              style: const TextStyle(fontSize: 48),
+                                            ),
+                                            Text(
+                                              ref.watch(wordProvider).words.first.hiragana,
+                                              style: TextStyle(
+                                                fontSize: 42,
+                                                color: _tipVisable ? Colors.black : Colors.transparent,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SlideTransition(
+                                    position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0))
+                                        .animate(CurvedAnimation(
+                                            parent: lottieAnimationController, curve: Curves.slowMiddle)),
+                                    child: !_isCalculate
+                                        ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
+                                        : const SizedBox(
+                                            height: 150,
+                                          ),
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 30),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton.icon(
+                                      onPressed: _tipVisable ? null : () => setState(() => _tipVisable = true),
+                                      icon: const Icon(Icons.tips_and_updates, size: 30),
+                                      label: const Text('提示', style: TextStyle(fontSize: 24)),
+                                    ),
+                                    const Text('|'),
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        if (ref.watch(wordProvider).count < 10) {
+                                          lottieAnimationController
+                                              .forward()
+                                              .then((value) => lottieAnimationController.reset());
+                                          skipAnimationController.forward().then((value) {
+                                            ref.read(wordProvider.notifier).answer(0);
+                                            _tipVisable = false;
+                                            _lastWord = '';
+                                            skipAnimationController.reverse();
+                                          });
+                                        } else {
+                                          ref.read(wordProvider.notifier).calculate();
+                                          setState(() {
+                                            _isCalculate = true;
+                                          });
+                                          widget.animationController.animateTo(0.666);
+                                        }
+                                      },
+                                      icon: const Icon(Icons.skip_next, size: 30),
+                                      label: const Text('跳過', style: TextStyle(fontSize: 24)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: FloatingActionButton.large(
+                              onPressed: _speechEnabled
+                                  ? _speechToText.isNotListening
+                                      ? _startListening
+                                      : _stopListening
+                                  : () => Fluttertoast.showToast(
+                                        msg: "Speech not available",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        backgroundColor: Colors.black.withAlpha(180),
+                                        fontSize: 16,
+                                      ),
+                              foregroundColor: Colors.blue,
+                              backgroundColor: Colors.white,
+                              shape: const CircleBorder(),
+                              child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: FloatingActionButton.large(
-                        onPressed: _speechEnabled
-                            ? _speechToText.isNotListening
-                                ? _startListening
-                                : _stopListening
-                            : () => Fluttertoast.showToast(
-                                  msg: "Speech not available",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  timeInSecForIosWeb: 1,
-                                  textColor: Colors.white,
-                                  backgroundColor: Colors.black.withAlpha(180),
-                                  fontSize: 16,
-                                ),
-                        foregroundColor: Colors.blue,
-                        backgroundColor: Colors.white,
-                        shape: const CircleBorder(),
-                        child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-      ),
+            );
+          }),
     );
   }
 }

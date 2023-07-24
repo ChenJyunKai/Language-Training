@@ -14,7 +14,6 @@ class TrainPage extends StatefulWidget {
 }
 
 class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
-  bool _fade = true;
   late AnimationController animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
   late AnimationController fadeAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
@@ -38,13 +37,10 @@ class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
             RuleView(
               fadeAnimationController: fadeAnimationController,
               animationController: animationController,
-              fade: _fade,
-              function: () => setState(() => _fade = false),
             ),
             QuizView(
               fadeAnimationController: fadeAnimationController,
               animationController: animationController,
-              fade: _fade,
             ),
             CalculateView(
               animationController: animationController,

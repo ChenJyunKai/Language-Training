@@ -7,14 +7,10 @@ class RuleView extends StatelessWidget {
     super.key,
     required this.fadeAnimationController,
     required this.animationController,
-    required this.fade,
-    required this.function,
   });
 
   final AnimationController fadeAnimationController;
   final AnimationController animationController;
-  final bool fade;
-  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +56,7 @@ class RuleView extends StatelessWidget {
               child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => fadeAnimationController
-                    ..forward()
-                    ..addListener(() {
-                      if (fadeAnimationController.value > 0.01 && fade) {
-                        function();
-                      }
-                    }),
+                  onPressed: () => fadeAnimationController.forward(),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xff132137),
