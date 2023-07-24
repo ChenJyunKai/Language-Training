@@ -10,7 +10,7 @@ class WordNotifier extends StateNotifier<WordEntity> {
   WordNotifier() : super(WordEntity(words: [], languageId: 'ja_JA'));
 
   void getData(String languageId) async {
-    final data = wordEntityFromJson(await rootBundle.loadString('assets/json/word_jp.json'));
+    final data = wordEntityFromJson(await rootBundle.loadString('assets/json/word_${languageId.substring(0, 2)}.json'));
     final words = <Word>{};
     while (words.length < 10) {
       words.add(data.words[Random().nextInt(data.words.length)]);

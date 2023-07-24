@@ -1,0 +1,89 @@
+{
+  "language_id": "en_US",
+  "words": [
+    {
+      "word": "cat",
+      "hiragana": "kӕt"
+    },
+    {
+      "word": "dog",
+      "hiragana": "dɒɡ"
+    },
+    {
+      "word": "book",
+      "hiragana": "bʊk"
+    },
+    {
+      "word": "computer",
+      "hiragana": "kəmˈpjuːtər"
+    },
+    {
+      "word": "friend",
+      "hiragana": "frɛnd"
+    },
+    {
+      "word": "hello",
+      "hiragana": "həˈloʊ"
+    },
+    {
+      "word": "goodbye",
+      "hiragana": "ɡʊdˈbaɪ"
+    },
+    {
+      "word": "apple",
+      "hiragana": "ˈæpəl"
+    },
+    {
+      "word": "banana",
+      "hiragana": "bəˈnænə"
+    },
+    {
+      "word": "car",
+      "hiragana": "kɑr"
+    },
+    {
+      "word": "house",
+      "hiragana": "haʊs"
+    },
+    {
+      "word": "school",
+      "hiragana": "skuːl"
+    },
+    {
+      "word": "water",
+      "hiragana": "ˈwɔːtər"
+    },
+    {
+      "word": "phone",
+      "hiragana": "foʊn"
+    },
+    {
+      "word": "sun",
+      "hiragana": "sʌn"
+    },
+    {
+      "word": "moon",
+      "hiragana": "muːn"
+    },
+    {
+      "word": "food",
+      "hiragana": "fuːd"
+    },
+    {
+      "word": "drink",
+      "hiragana": "drɪŋk"
+    },
+    {
+      "word": "time",
+      "hiragana": "taɪm"
+    },
+    {
+      "word": "money",
+      "hiragana": "ˈmʌni"
+    },
+    {
+      "word": "music",
+      "hiragana": "ˈmjuːzɪk"
+    }
+  ]
+}
