@@ -29,7 +29,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   AbilitiesEntity improveAbility = AbilitiesEntity();
 
   late AnimationController fadeAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
   late AnimationController levelUpAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
   late AnimationController improveAnimationController =
