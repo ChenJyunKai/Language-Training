@@ -7,6 +7,15 @@ final adventurerAbility = AbilitiesEntity(
   userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '冒險者',
   roleData: adventurer,
+  lv: 1,
+  exp: 0,
+  expL: 750,
+  hp: 200,
+  mp: 50,
+  atk: 25,
+  def: 25,
+  agi: 10,
+  luk: 10,
 );
 
 final adventurer = RoleEntity(
@@ -16,10 +25,12 @@ final adventurer = RoleEntity(
 
 // GM
 final gmAbility = AbilitiesEntity(
-  userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
+  userName: 'GM_${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '封弊者',
   roleData: gm,
   lv: 200,
+  exp: 0,
+  expL: 721868450,
   hp: 99999,
   mp: 99999,
   atk: 9999,

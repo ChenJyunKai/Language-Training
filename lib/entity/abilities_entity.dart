@@ -10,15 +10,15 @@ class AbilitiesEntity {
     this.userName,
     this.role,
     this.roleData,
-    this.lv = 1,
+    this.lv = 0,
     this.exp = 0,
-    this.expL = 750,
-    this.hp = 200,
-    this.mp = 50,
-    this.atk = 25,
-    this.def = 25,
-    this.agi = 10,
-    this.luk = 10,
+    this.expL = 0,
+    this.hp = 0,
+    this.mp = 0,
+    this.atk = 0,
+    this.def = 0,
+    this.agi = 0,
+    this.luk = 0,
   });
 
   final String? userName; // 玩家名稱
