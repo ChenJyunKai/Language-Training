@@ -117,15 +117,18 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        ref.read(wordProvider.notifier).calculate();
-                        setState(() {
-                          _isCalculate = true;
-                        });
-                        widget.animationController.animateTo(0.666);
-                      },
-                      child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                      child: TextButton(
+                        onPressed: () {
+                          ref.read(wordProvider.notifier).calculate();
+                          setState(() {
+                            _isCalculate = true;
+                          });
+                          widget.animationController.animateTo(0.666);
+                        },
+                        child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                      ),
                     ),
                   ),
                   Expanded(

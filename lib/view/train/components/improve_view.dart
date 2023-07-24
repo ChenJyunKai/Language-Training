@@ -123,6 +123,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
       plusExp = ref.watch(wordProvider).exp!;
     }
     final getExp = ref.watch(wordProvider).totalScore! * 10;
+    if (getExp == 0) {
+      nextAnimationController.forward();
+    }
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
@@ -264,20 +267,37 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 elevation: 3,
                 surfaceTintColor: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 1 / 0.3,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
                     children: [
-                      buildListTile('血量', ability.hp, improveAbility.hp, 0),
-                      buildListTile('魔力', ability.mp, improveAbility.mp, 1),
-                      buildListTile('攻擊', ability.atk, improveAbility.atk, 2),
-                      buildListTile('防禦', ability.def, improveAbility.def, 3),
-                      buildListTile('敏捷', ability.agi, improveAbility.agi, 4),
-                      buildListTile('幸運', ability.luk, improveAbility.luk, 5),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              buildListTile('血量', ability.hp, improveAbility.hp, 0),
+                              buildListTile('攻擊', ability.atk, improveAbility.atk, 2),
+                              buildListTile('敏捷', ability.agi, improveAbility.agi, 4),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              buildListTile('魔力', ability.mp, improveAbility.mp, 1),
+                              buildListTile('防禦', ability.def, improveAbility.def, 3),
+                              buildListTile('幸運', ability.luk, improveAbility.luk, 5),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

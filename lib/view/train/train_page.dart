@@ -4,6 +4,7 @@ import 'package:rpg/view/train/components/improve_view.dart';
 import 'package:rpg/view/train/components/quiz_view.dart';
 import 'package:rpg/view/train/components/rule_view.dart';
 import 'package:rpg/view/train/components/select_language.dart';
+import 'package:rpg/view/train/components/top_back_view.dart';
 
 class TrainPage extends StatefulWidget {
   const TrainPage({Key? key}) : super(key: key);
@@ -28,10 +29,6 @@ class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Speech Demo'),
-        centerTitle: true,
-      ),
       body: ClipRect(
         child: Stack(
           children: [
@@ -55,9 +52,21 @@ class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
             ImproveView(
               animationController: animationController,
             ),
+            TopBackView(
+              onBackClick: _onBackClick,
+              animationController: fadeAnimationController,
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _onBackClick() {
+    if (animationController.value == 0) {
+      Navigator.pop(context);
+    } else if (animationController.value > 0 && animationController.value <= 0.333) {
+      animationController.animateTo(0.0);
+    }
   }
 }
