@@ -134,7 +134,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                '距離下一級還需 ${(ability.expL - plusExp) < 0 ? 0 : ability.expL - plusExp} Exp',
+                '距離下一級還需 ${fall ? (ability.expL - plusExp) : (ability.expL - ability.exp - plusExp) > 0 ? ability.expL - ability.exp - plusExp : 0} Exp',
                 style: const TextStyle(fontSize: 24),
               ),
             ),
@@ -149,21 +149,23 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
               ),
               builder: (context, value, _) {
                 final waterHeight = 1 - value;
+                // 升等
                 if (waterHeight < -0.1 && !fall) {
                   // 確認只進入一次
                   fall = !fall;
                   levelUpAnimationController.forward().then((value) {
                     // 計算升等公式
-                    int lastExp = getExp - ref.watch(abilitiesProvider).expL;
+                    int lastExp = getExp - ability.expL + ability.exp;
                     int newLv = ability.lv + 1;
-                    int nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
-                    nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                    int nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+                    nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
                     improvedAbility();
+                    // 跳級計算
                     while (lastExp > nextExpL) {
                       lastExp -= nextExpL;
                       newLv++;
-                      nextExpL = (((newLv - 1) ^ 3 + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
-                      nextExpL = (50 - (nextExpL % 50).floor()) + nextExpL;
+                      nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+                      nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
                       improvedAbility();
                     }
                     // 修改數值
@@ -276,7 +278,10 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    ref.read(abilitiesProvider.notifier).improveAbility(ability, improveAbility);
+                    ref.read(abilitiesProvider.notifier).improveAbility(
+                          fall ? ability : ability.copyWith(exp: ability.exp + plusExp),
+                          improveAbility,
+                        );
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
