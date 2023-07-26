@@ -38,4 +38,12 @@ class AbilitiesNotifier extends StateNotifier<AbilitiesEntity> {
     // 存檔
     await prefs.setString('ability', abilitiesEntityToJson(state));
   }
+
+  // 修改玩家名稱
+  Future<bool> rename(String name) async {
+    await Future.delayed(const Duration(seconds: 1), () {
+      state = state.copyWith(userName: name);
+    });
+    return true;
+  }
 }

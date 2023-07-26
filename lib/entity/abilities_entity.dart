@@ -35,9 +35,9 @@ class AbilitiesEntity {
   final int luk;
 
   AbilitiesEntity copyWith(
-      {String? role, int? lv, int? exp, int? expL, int? hp, int? mp, int? atk, int? def, int? agi, int? luk}) {
+      {String? userName,String? role, int? lv, int? exp, int? expL, int? hp, int? mp, int? atk, int? def, int? agi, int? luk}) {
     return AbilitiesEntity(
-      userName: userName,
+      userName: userName ?? this.userName,
       role: role ?? this.role,
       roleData: roleData,
       lv: lv ?? this.lv,
