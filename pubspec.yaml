@@ -1,8 +1,7 @@
 name: rpg
 description: A new Flutter project.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 version: 1.0.0+1
-
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
@@ -20,7 +19,10 @@ dependencies:
   lottie: ^2.3.2
   animations: ^2.0.7
   intl: ^0.18.0
-
+  ## 生成工具
+  json_annotation: ^4.8.1
+  riverpod_annotation: ^2.1.1
+  freezed_annotation: ^2.4.1
   ## 環境變數
   envied: ^0.3.0+3
   ## 內存
@@ -33,9 +35,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^2.0.0
+  ## 生成工具
+  build_runner: ^2.4.6
   envied_generator: ^0.3.0
-  build_runner: ^2.4.4
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.2.3
+  freezed: ^2.4.1
 
 flutter:
   uses-material-design: true
