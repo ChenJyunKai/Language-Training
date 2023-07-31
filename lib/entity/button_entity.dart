@@ -46,7 +46,6 @@ class ButtonEntity {
       titleTxt: '對戰',
       startColor: '#B766AD',
       endColor: '#CA8EC2',
-      navigatorUrl: welcomeUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/setting.json',

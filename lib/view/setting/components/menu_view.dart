@@ -12,6 +12,44 @@ class MenuView extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback renameSet;
 
+  Widget _dialog(BuildContext context) {
+    return AlertDialog(
+      surfaceTintColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      title: const Column(
+        children: [
+          Icon(Icons.report_problem_outlined, size: 48),
+          Text('重生警告', style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+      content: Builder(
+        builder: (context) {
+          return SizedBox(
+            width: screenWidth * 0.5,
+            child: const Text(
+              '確認後當前資料將被銷毀，是否執行重生?',
+              style: TextStyle(fontSize: 16),
+            ),
+          );
+        },
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pushNamed(context, 'welcome'),
+          child: const Text("確定"),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(
+            "取消",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
@@ -45,7 +83,7 @@ class MenuView extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 // 卡控
-                if(animationController.value == 0){
+                if (animationController.value == 0) {
                   animationController.forward();
                   renameSet();
                 }
@@ -64,7 +102,18 @@ class MenuView extends StatelessWidget {
             height: 50,
             width: screenWidth * 0.7,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => showGeneralDialog(
+                context: context,
+                pageBuilder: (ctx, a1, a2) => const SizedBox(),
+                transitionBuilder: (ctx, a1, a2, child) {
+                  final curve = Curves.easeInOut.transform(a1.value);
+                  return Transform.scale(
+                    scale: curve,
+                    child: _dialog(ctx),
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 300),
+              ),
               style: ElevatedButton.styleFrom(
                 surfaceTintColor: Colors.transparent,
                 foregroundColor: Colors.red[300],
