@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/provider/abilities_provider.dart';
+import 'package:rpg/provider/abilities.dart';
 import 'package:rpg/view/welcome/components/island_view.dart';
 import 'package:rpg/view/welcome/components/greet_view.dart';
 import 'package:rpg/view/welcome/components/breakfast_view.dart';

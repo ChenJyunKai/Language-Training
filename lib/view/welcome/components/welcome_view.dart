@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/entity/abilities_entity.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/provider/abilities_provider.dart';
+import 'package:rpg/provider/abilities.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,7 +81,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
       position: firstHalfAnimation,
       child: SlideTransition(
         position: secondHalfAnimation,
-        child: ref.watch(abilitiesProvider).role != null ? buildFadeTransition() : buildColumn(),
+        child: ref.watch(abilitiesProvider).value!.role != null ? buildFadeTransition() : buildColumn(),
       ),
     );
   }
@@ -118,7 +119,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
         children: [
           SlideTransition(
             position: welcomeImageAnimation,
-            child: Lottie.asset(ref.watch(abilitiesProvider).roleData!.imageAsset!, height: 250),
+            child: Lottie.asset(ref.watch(abilitiesProvider).value!.roleData!.imageAsset!, height: 250),
           ),
           SlideTransition(
             position: welcomeFirstHalfAnimation,
@@ -128,7 +129,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
                 style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black),
                 children: [
                   TextSpan(
-                    text: "「${ref.watch(abilitiesProvider).role}」",
+                    text: "「${ref.watch(abilitiesProvider).value!.role}」",
                     style: const TextStyle(fontSize: 28, color: Colors.black54),
                   ),
                 ],
@@ -139,7 +140,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
           Padding(
             padding: const EdgeInsets.only(top: 24, left: 64, right: 64, bottom: 48),
             child: Text(
-              ref.watch(abilitiesProvider).roleData!.describe!,
+              ref.watch(abilitiesProvider).value!.roleData!.describe!,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 14),
             ),
@@ -150,7 +151,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
               return InkWell(
                 onTap: () async {
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('ability', abilitiesEntityToJson(ref.watch(abilitiesProvider)));
+                  await prefs.setString('ability', jsonEncode(ref.watch(abilitiesProvider).value!.toJson()));
                   if (!mounted) return;
                   Navigator.pushReplacementNamed(context, homeUrl);
                 },

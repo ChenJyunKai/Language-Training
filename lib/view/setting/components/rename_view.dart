@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/provider/abilities_provider.dart';
+import 'package:rpg/provider/abilities.dart';
 
 class RenameView extends ConsumerStatefulWidget {
   const RenameView({

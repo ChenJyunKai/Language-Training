@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/entity/abilities_entity.dart';
+import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/helper/hex_color.dart';
-import 'package:rpg/provider/abilities_provider.dart';
+import 'package:rpg/provider/abilities.dart';
 import 'package:rpg/provider/word_provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -25,8 +25,8 @@ class ImproveView extends ConsumerStatefulWidget {
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
   bool fall = false;
   int plusExp = 0;
-  late AbilitiesEntity ability;
-  AbilitiesEntity improveAbility = AbilitiesEntity();
+  late AbilityEntity ability;
+  AbilityEntity improveAbility = const AbilityEntity();
 
   late AnimationController fadeAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
@@ -44,7 +44,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      ability = ref.watch(abilitiesProvider);
+      ability = ref.watch(abilitiesProvider).value!;
     });
     super.initState();
   }
@@ -73,7 +73,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     final agi = Random().nextInt(5);
     final luk = Random().nextInt(5);
     setState(() {
-      improveAbility = AbilitiesEntity(
+      improveAbility = AbilityEntity(
         hp: hp,
         mp: mp,
         atk: atk,

@@ -1,9 +1,8 @@
-import 'package:rpg/entity/abilities_entity.dart';
-import 'package:rpg/entity/role_entity.dart';
+import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/helper/time_format.dart';
 
 // 冒險者
-final adventurerAbility = AbilitiesEntity(
+final adventurerAbility = AbilityEntity(
   userName: 'User${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '冒險者',
   roleData: adventurer,
@@ -18,13 +17,13 @@ final adventurerAbility = AbilitiesEntity(
   luk: 10,
 );
 
-final adventurer = RoleEntity(
+const adventurer = Role(
   imageAsset: 'assets/lottie/cute-tiger.json',
   describe: '「你是獨一無二的，因為我們都不希望再有第二個。」\n— Theodore Roosevelt, 26th U.S. President',
 );
 
 // GM
-final gmAbility = AbilitiesEntity(
+final gmAbility = AbilityEntity(
   userName: 'GM_${TimeFormat().local('hhmmss', DateTime.now())}',
   role: '封弊者',
   roleData: gm,
@@ -39,7 +38,7 @@ final gmAbility = AbilitiesEntity(
   luk: 9999,
 );
 
-final gm = RoleEntity(
+const gm = Role(
   imageAsset: 'assets/lottie/gm.json',
   describe: '「沒錯，我就是封弊者，今後請不要將那些菜鳥跟我混為一談。」\n— Kirito, Sword Art Online',
 );
