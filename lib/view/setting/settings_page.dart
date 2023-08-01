@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 import 'package:rpg/view/setting/components/menu_view.dart';
 import 'package:rpg/view/setting/components/rename_view.dart';
 
@@ -21,7 +21,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> with TickerProvider
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      editingController.text = ref.watch(abilitiesProvider).value!.userName!;
+      editingController.text = ref.watch(abilityProvider).userName!;
     });
     super.initState();
   }
@@ -34,7 +34,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> with TickerProvider
   }
 
   void renameGetData() {
-    editingController.text = ref.watch(abilitiesProvider).value!.userName!;
+    editingController.text = ref.watch(abilityProvider).userName!;
   }
 
   @override

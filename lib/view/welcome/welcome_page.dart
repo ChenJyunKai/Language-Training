@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 import 'package:rpg/view/welcome/components/island_view.dart';
 import 'package:rpg/view/welcome/components/greet_view.dart';
 import 'package:rpg/view/welcome/components/breakfast_view.dart';
@@ -71,7 +71,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
 
   void _onSkipClick() {
     _animationController?.animateTo(0.8, duration: const Duration(milliseconds: 1200));
-    ref.read(abilitiesProvider.notifier).generate(option: options);
+    ref.read(abilityProvider.notifier).generate(option: options);
   }
 
   void _onBackClick() {
@@ -98,7 +98,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
     } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
       options[2] = option;
       _animationController?.animateTo(0.8);
-      ref.read(abilitiesProvider.notifier).generate(option: options);
+      ref.read(abilityProvider.notifier).generate(option: options);
     } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
       _signUpClick();
     }

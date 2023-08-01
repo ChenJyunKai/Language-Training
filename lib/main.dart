@@ -3,29 +3,41 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 import 'package:rpg/router/routes.dart';
-import 'package:rpg/view/home_page.dart';
-import 'package:rpg/view/welcome/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final hasData = prefs.getString('ability') != null;
+
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(hasData: hasData),
     ),
   );
 }
 
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.hasData});
+
+  final bool hasData;
 
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    if (widget.hasData) {
+      Future.delayed(Duration.zero, () => ref.read(abilityProvider.notifier).getAbility());
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -54,11 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: routes[settings.name]!, settings: settings);
       },
-      home: ref.watch(abilitiesProvider).when(
-            data: (value) => value.userName != null ? const HomePage() : const WelcomePage(),
-            error: (_, __) => const Scaffold(),
-            loading: () => const Scaffold(),
-          ),
+      initialRoute: widget.hasData ? 'home' : 'welcome',
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/helper/screen_size.dart';
+import 'package:rpg/provider/ability.dart';
 
-class MenuView extends StatelessWidget {
+class MenuView extends ConsumerWidget {
   const MenuView({
     super.key,
     required this.animationController,
@@ -12,7 +14,7 @@ class MenuView extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback renameSet;
 
-  Widget _dialog(BuildContext context) {
+  Widget _dialog(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.white,
@@ -36,7 +38,10 @@ class MenuView extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.pushNamed(context, 'welcome'),
+          onPressed: () {
+            Navigator.pushNamed(context, 'welcome');
+            ref.read(abilityProvider.notifier).removeData();
+          },
           child: const Text("確定"),
         ),
         TextButton(
@@ -51,7 +56,7 @@ class MenuView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-1, 0)).animate(CurvedAnimation(
         parent: animationController,
@@ -109,7 +114,7 @@ class MenuView extends StatelessWidget {
                   final curve = Curves.easeInOut.transform(a1.value);
                   return Transform.scale(
                     scale: curve,
-                    child: _dialog(ctx),
+                    child: _dialog(ctx, ref),
                   );
                 },
                 transitionDuration: const Duration(milliseconds: 300),

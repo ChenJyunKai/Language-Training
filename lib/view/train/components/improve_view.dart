@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/helper/hex_color.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 import 'package:rpg/provider/word_provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -44,7 +44,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      ability = ref.watch(abilitiesProvider).value!;
+      ability = ref.watch(abilityProvider);
     });
     super.initState();
   }
@@ -316,7 +316,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            ref.read(abilitiesProvider.notifier).improveAbility(
+                            ref.read(abilityProvider.notifier).improveAbility(
                                   fall ? ability : ability.copyWith(exp: ability.exp + plusExp),
                                   improveAbility,
                                 );

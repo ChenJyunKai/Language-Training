@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 
 class RenameView extends ConsumerStatefulWidget {
   const RenameView({
@@ -105,7 +105,7 @@ class _RenameViewState extends ConsumerState<RenameView> {
       onPressed: () async {
         if (key.currentState!.validate()) {
           setState(() => buttonState = ButtonState.loading);
-          final isComplite = await ref.read(abilitiesProvider.notifier).rename(widget.editingController.text);
+          final isComplite = await ref.read(abilityProvider.notifier).rename(widget.editingController.text);
           if (isComplite) {
             setState(() => buttonState = ButtonState.done);
             await Future.delayed(

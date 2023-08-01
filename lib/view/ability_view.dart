@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/hex_color.dart';
-import 'package:rpg/provider/abilities.dart';
+import 'package:rpg/provider/ability.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -16,7 +16,7 @@ class AbilityView extends ConsumerStatefulWidget {
 class _AbilityViewState extends ConsumerState<AbilityView> {
   @override
   Widget build(BuildContext context) {
-    final ability = ref.watch(abilitiesProvider).value!;
+    final ability = ref.watch(abilityProvider);
     final waterHeight = 1 - ability.exp / ability.expL;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
