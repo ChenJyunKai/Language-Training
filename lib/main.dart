@@ -66,7 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: routes[settings.name]!, settings: settings);
       },
-      initialRoute: widget.hasData ? 'home' : 'welcome',
+      initialRoute: widget.hasData ? homeUrl : welcomeUrl,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

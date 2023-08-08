@@ -26,7 +26,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(project);
   Win32Window::Point origin(1200, 100);
-  Win32Window::Size size(460, 720);
+  Win32Window::Size size(430  , 760);
   if (!window.Create(L"rpg", origin, size)) {
     return EXIT_FAILURE;
   }
