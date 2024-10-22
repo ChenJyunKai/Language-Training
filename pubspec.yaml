@@ -3,46 +3,51 @@ description: A new Flutter project.
 publish_to: 'none'
 version: 1.0.0+1
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.3.4 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  chat_gpt_sdk: ^3.1.2
+  speech_to_text: ^7.0.0
+
+  ## UI
+  fluttertoast: ^8.2.8
+  animated_text_kit: ^4.2.2
+  lottie: ^3.1.3
+  animations: ^2.0.11
+  wave: ^0.2.2
+
+  ## State Management
+  flutter_riverpod: ^2.5.3
+  shared_preferences: ^2.3.2
+
+  ## Generate
+  riverpod_annotation: ^2.5.3fi
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.4
+
+  ## Env
+  envied: ^0.5.4+1
+
+  ## Localization
   flutter_localizations:
     sdk: flutter
-
-  cupertino_icons: ^1.0.2
-  chat_gpt_sdk: ^2.1.5
-  flutter_riverpod: ^2.3.6
-  fluttertoast: ^8.2.2
-  animated_text_kit: ^4.2.2
-  lottie: ^2.3.2
-  animations: ^2.0.7
-  intl: ^0.18.0
-  ## 生成工具
-  riverpod_annotation: ^2.1.1
-  json_annotation: ^4.8.1
-  freezed_annotation: ^2.4.1
-  ## 環境變數
-  envied: ^0.3.0+3
-  ## 內存
-  shared_preferences: ^2.1.1
-  ## 水波動畫
-  wave: ^0.2.2
-  ## 語音轉文字
-  speech_to_text: ^6.3.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  ## 生成工具
-  build_runner: ^2.4.6
-  envied_generator: ^0.3.0
-  riverpod_generator: ^2.2.3
-  json_serializable: ^6.7.1
-  freezed: ^2.4.1
+  ## Generate
+  build_runner: ^2.4.13
+  envied_generator: ^0.5.4+1
+  riverpod_generator: ^2.4.3
+  json_serializable: ^6.8.0
+  freezed: ^2.5.7
 
 flutter:
   uses-material-design: true

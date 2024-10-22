@@ -80,7 +80,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       });
 
       ///ChatGTP
-      final request = CompleteText(prompt: content, model: Model.textDavinci3, maxTokens: 3500);
+      final request = CompleteText(prompt: content, model: Gpt3TurboInstruct(), maxTokens: 3500);
 
       final response = await openAI.onCompletion(request: request).onError((error, stackTrace) => null);
 
