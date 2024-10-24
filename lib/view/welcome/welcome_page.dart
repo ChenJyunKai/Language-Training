@@ -69,39 +69,33 @@ class _WelcomePageState extends ConsumerState<WelcomePage> with TickerProviderSt
   }
 
   void _onSkipClick() {
-    _animationController?.animateTo(0.8, duration: const Duration(milliseconds: 1200));
+    _animationController?.animateTo(1, duration: const Duration(milliseconds: 1200));
     ref.read(abilityProvider.notifier).generate(option: options);
   }
 
   void _onBackClick() {
-    if (_animationController!.value >= 0 && _animationController!.value <= 0.2) {
+    if (_animationController!.value >= 0 && _animationController!.value <= 0.25) {
       _animationController?.animateTo(0.0);
-    } else if (_animationController!.value > 0.2 && _animationController!.value <= 0.4) {
-      _animationController?.animateTo(0.2);
-    } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
-      _animationController?.animateTo(0.4);
-    } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
-      _animationController?.animateTo(0.6).then((_) => ref.read(abilityProvider.notifier).removeData());
+    } else if (_animationController!.value > 0.25 && _animationController!.value <= 0.5) {
+      _animationController?.animateTo(0.25);
+    } else if (_animationController!.value > 0.5 && _animationController!.value <= 0.75) {
+      _animationController?.animateTo(0.5);
+    } else if (_animationController!.value > 0.75 && _animationController!.value <= 1) {
+      _animationController?.animateTo(0.75).then((_) => ref.read(abilityProvider.notifier).removeData());
     }
   }
 
   _onNextClick(int option) {
-    if (_animationController!.value >= 0 && _animationController!.value <= 0.2) {
+    if (_animationController!.value >= 0.25 && _animationController!.value < 0.5) {
       options[0] = option;
-      _animationController?.animateTo(0.4);
-    } else if (_animationController!.value > 0.2 && _animationController!.value <= 0.4) {
+      _animationController?.animateTo(0.5);
+    } else if (_animationController!.value >= 0.5 && _animationController!.value < 0.75) {
       options[1] = option;
-      _animationController?.animateTo(0.6);
-    } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
+      _animationController?.animateTo(0.75);
+    } else if (_animationController!.value >= 0.75 && _animationController!.value < 1) {
       options[2] = option;
-      _animationController?.animateTo(0.8);
+      _animationController?.animateTo(1);
       ref.read(abilityProvider.notifier).generate(option: options);
-    } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
-      _signUpClick();
     }
-  }
-
-  void _signUpClick() {
-    Navigator.pop(context);
   }
 }

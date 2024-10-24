@@ -20,7 +20,7 @@ class BreakfastView extends StatelessWidget {
         parent: animationController,
         curve: const Interval(
           0.0,
-          0.2,
+          0.25,
           curve: Curves.fastOutSlowIn,
         ),
       ),
@@ -29,8 +29,8 @@ class BreakfastView extends StatelessWidget {
       CurvedAnimation(
         parent: animationController,
         curve: const Interval(
-          0.2,
-          0.4,
+          0.25,
+          0.5,
           curve: Curves.fastOutSlowIn,
         ),
       ),
@@ -39,8 +39,8 @@ class BreakfastView extends StatelessWidget {
       CurvedAnimation(
         parent: animationController,
         curve: const Interval(
-          0.2,
-          0.4,
+          0.25,
+          0.5,
           curve: Curves.fastOutSlowIn,
         ),
       ),
@@ -49,8 +49,8 @@ class BreakfastView extends StatelessWidget {
       CurvedAnimation(
         parent: animationController,
         curve: const Interval(
-          0.2,
-          0.4,
+          0.25,
+          0.5,
           curve: Curves.fastOutSlowIn,
         ),
       ),
@@ -61,7 +61,7 @@ class BreakfastView extends StatelessWidget {
         parent: animationController,
         curve: const Interval(
           0.0,
-          0.2,
+          0.25,
           curve: Curves.fastOutSlowIn,
         ),
       ),

@@ -32,18 +32,8 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
     CurvedAnimation(
       parent: widget.animationController,
       curve: const Interval(
-        0.6,
-        0.8,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ),
-  );
-  late final secondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-1, 0)).animate(
-    CurvedAnimation(
-      parent: widget.animationController,
-      curve: const Interval(
-        0.8,
-        1.0,
+        0.75,
+        1,
         curve: Curves.fastOutSlowIn,
       ),
     ),
@@ -52,8 +42,8 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
     CurvedAnimation(
       parent: widget.animationController,
       curve: const Interval(
-        0.6,
-        0.8,
+        0.75,
+        1,
         curve: Curves.fastOutSlowIn,
       ),
     ),
@@ -62,8 +52,8 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
     CurvedAnimation(
       parent: widget.animationController,
       curve: const Interval(
-        0.6,
-        0.8,
+        0.75,
+        1,
         curve: Curves.fastOutSlowIn,
       ),
     ),
@@ -79,10 +69,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
   Widget build(BuildContext context) {
     return SlideTransition(
       position: firstHalfAnimation,
-      child: SlideTransition(
-        position: secondHalfAnimation,
-        child: ref.watch(abilityProvider).roleData != null ? buildFadeTransition() : buildColumn(),
-      ),
+      child: ref.watch(abilityProvider).roleData != null ? buildFadeTransition() : buildColumn(),
     );
   }
 

@@ -15,58 +15,52 @@ class IslandView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstHalfAnimation =
-        Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
+    final firstHalfAnimation = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.2,
-        0.4,
+        0.25,
+        0.5,
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    final secondHalfAnimation =
-        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-1, 0)).animate(CurvedAnimation(
+    final secondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-1, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.4,
-        0.6,
+        0.5,
+        0.75,
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    final titleFirstHalfAnimation =
-        Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
+    final titleFirstHalfAnimation = Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.2,
-        0.4,
+        0.25,
+        0.5,
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    final titleSecondHalfAnimation =
-        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
+    final titleSecondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.4,
-        0.6,
+        0.5,
+        0.75,
         curve: Curves.fastOutSlowIn,
       ),
     ));
 
-    final imageFirstHalfAnimation =
-        Tween<Offset>(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
+    final imageFirstHalfAnimation = Tween<Offset>(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.2,
-        0.4,
+        0.25,
+        0.5,
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    final imageSecondHalfAnimation =
-        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
+    final imageSecondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(
-        0.4,
-        0.6,
+        0.5,
+        0.75,
         curve: Curves.fastOutSlowIn,
       ),
     ));

@@ -82,7 +82,7 @@ class _OpeningViewState extends State<OpeningView> with TickerProviderStateMixin
                     transform: Matrix4.translationValues(100 * (1.0 - animation.value), 0.0, 0.0),
                     child: InkWell(
                       onTap: () {
-                        widget.animationController.animateTo(0.2);
+                        widget.animationController.animateTo(0.25);
                       },
                       child: Container(
                         height: 58,
