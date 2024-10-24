@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rpg/view/battle/battle_page.dart';
 import 'package:rpg/view/battle/components/battle_view.dart';
 import 'package:rpg/view/setting/settings_page.dart';
 import 'package:rpg/view/train/train_page.dart';
 import 'package:rpg/view/chat/chat_page.dart';
-import 'package:rpg/view/home_page.dart';
+import 'package:rpg/view/home/home_page.dart';
 import 'package:rpg/view/welcome/welcome_page.dart';
 
 const homeUrl = 'home';

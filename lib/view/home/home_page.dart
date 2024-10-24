@@ -1,13 +1,14 @@
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
 import 'package:rpg/helper/app_theme.dart';
 import 'package:rpg/helper/screen_size.dart';
-import 'package:rpg/view/ability_view.dart';
-import 'package:rpg/view/home_button.dart';
+import 'package:rpg/view/home/ability_view.dart';
+import 'package:rpg/view/home/home_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,26 +20,35 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _showFrontSide = true;
   final bool _flipXAxis = true;
+  DateTime? lastPressedAt;
+
+  bool closeOnConfirm() {
+    DateTime now = DateTime.now();
+    if (lastPressedAt == null || DateTime.now().difference(lastPressedAt!) > const Duration(seconds: 1)) {
+      lastPressedAt = now;
+      Fluttertoast.showToast(
+        msg: "再次點擊返回將關閉程序",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        backgroundColor: Colors.black.withAlpha(180),
+        fontSize: 16,
+      );
+      lastPressedAt = DateTime.now();
+      return false;
+    }
+    Fluttertoast.cancel();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    DateTime? lastPressedAt;
-    return WillPopScope(
-      onWillPop: () async {
-        if (lastPressedAt == null || DateTime.now().difference(lastPressedAt!) > const Duration(seconds: 1)) {
-          Fluttertoast.showToast(
-            msg: "再點一下返回離開。",
-            toastLength: Toast.LENGTH_SHORT,
-            timeInSecForIosWeb: 1,
-            textColor: Colors.white,
-            backgroundColor: Colors.black.withAlpha(180),
-            fontSize: 16,
-          );
-          lastPressedAt = DateTime.now();
-          return false;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (closeOnConfirm()) {
+          SystemNavigator.pop();
         }
-        Fluttertoast.cancel();
-        return true;
       },
       child: Scaffold(
         body: ListView(
@@ -79,9 +89,8 @@ class _HomePageState extends State<HomePage> {
         tilt *= isUnder ? -1.0 : 1.0;
         final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
         return Transform(
-          transform: _flipXAxis
-              ? (Matrix4.rotationY(value)..setEntry(3, 0, tilt))
-              : (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
+          transform:
+              _flipXAxis ? (Matrix4.rotationY(value)..setEntry(3, 0, tilt)) : (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
           alignment: Alignment.center,
           child: widget,
         );
@@ -107,28 +116,35 @@ class _HomePageState extends State<HomePage> {
     return __buildLayout(
       key: const ValueKey(true),
       backgroundColor: AppTheme.background,
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.only(top: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black26),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0.5, 0.5),
+              blurRadius: 1,
+              color: Colors.grey,
+            ),
+          ],
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 36,
-                  color: Colors.black,
-                ),
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'Welcome Back~',
-                      speed: const Duration(milliseconds: 200),
-                    ),
-                  ],
-                  isRepeatingAnimation: true,
-                  pause: const Duration(seconds: 2),
-                  totalRepeatCount: 1,
-                ),
+            DefaultTextStyle(
+              style: const TextStyle(fontSize: 30, color: Colors.black),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Welcome Back~',
+                    speed: const Duration(milliseconds: 200),
+                  ),
+                ],
+                isRepeatingAnimation: true,
+                pause: const Duration(seconds: 2),
+                totalRepeatCount: 1,
               ),
             ),
             Lottie.asset('assets/lottie/loader-cat.json', fit: BoxFit.fitHeight),

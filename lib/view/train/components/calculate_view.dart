@@ -20,7 +20,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
       AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
 
   static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 (*´▽`*)', '才華橫溢 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
-  static const lottieList = ['sasuke', 'sakura', 'good_job', 'kakashi', 'lucia'];
+  static const lottieList = ['sasuke', 'sakura', 'good-job', 'kakashi', 'lucia'];
 
   @override
   void dispose() {

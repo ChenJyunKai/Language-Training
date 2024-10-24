@@ -17,7 +17,7 @@ class _OpeningViewState extends State<OpeningView> with TickerProviderStateMixin
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     super.initState();
   }
 
@@ -62,7 +62,7 @@ class _OpeningViewState extends State<OpeningView> with TickerProviderStateMixin
                 animatedTexts: [
                   TypewriterAnimatedText(
                     '冒險者啊，你的命運正等待著你。勇敢的心將帶領你穿越奇幻的世界，挑戰無數的怪物與試煉。準備好了嗎？握緊你的武器，踏上屬於你的英雄之旅！',
-                    speed: const Duration(milliseconds: 100),
+                    speed: const Duration(milliseconds: 80),
                     textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),

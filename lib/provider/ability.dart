@@ -20,7 +20,6 @@ class Ability extends _$Ability {
     if (state != const AbilityEntity()) {
       await prefs.setString('ability', jsonEncode(state.toJson()));
     } else {
-      print('hi');
       await prefs.remove('ability');
     }
   }
@@ -35,7 +34,7 @@ class Ability extends _$Ability {
   void generate({required List<int> option}) async {
     AbilityEntity newCharacter = const AbilityEntity();
     newCharacter = (option[0] == 0 && option[1] == 3 && option[2] == 3) ? gmAbility : adventurerAbility;
-    await Future.delayed(const Duration(seconds: 3), () => state = newCharacter);
+    await Future.delayed(const Duration(seconds: 2), () => state = newCharacter);
   }
 
   // 戰鬥後儲存資料

@@ -15,14 +15,13 @@ class WelcomePage extends ConsumerStatefulWidget {
   ConsumerState<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends ConsumerState<WelcomePage>
-    with TickerProviderStateMixin {
+class _WelcomePageState extends ConsumerState<WelcomePage> with TickerProviderStateMixin {
   AnimationController? _animationController;
   List<int> options = [0, 0, 0];
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 8));
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 6));
     _animationController?.animateTo(0.0);
     super.initState();
   }
@@ -82,9 +81,7 @@ class _WelcomePageState extends ConsumerState<WelcomePage>
     } else if (_animationController!.value > 0.4 && _animationController!.value <= 0.6) {
       _animationController?.animateTo(0.4);
     } else if (_animationController!.value > 0.6 && _animationController!.value <= 0.8) {
-      _animationController?.animateTo(0.6);
-    } else if (_animationController!.value > 0.8 && _animationController!.value <= 1.0) {
-      _animationController?.animateTo(0.8);
+      _animationController?.animateTo(0.6).then((_) => ref.read(abilityProvider.notifier).removeData());
     }
   }
 

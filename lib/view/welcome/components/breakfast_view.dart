@@ -101,7 +101,7 @@ class BreakfastView extends StatelessWidget {
                           onPressed: () => onNextClick(options.indexOf(i)),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.black,
-                            backgroundColor: Colors.white70,
+                            backgroundColor: Colors.white,
                           ),
                           child: Text(i, style: const TextStyle(fontSize: 20)),
                         ),

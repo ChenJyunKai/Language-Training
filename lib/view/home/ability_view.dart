@@ -82,15 +82,19 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
                     ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '名稱: ${ability.userName}',
-                      style: TextStyle(color: Colors.blueGrey[600]),
-                    ),
-                    Text('職業: ${ability.role}'),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '名稱: ${ability.userName}',
+                        style: TextStyle(color: Colors.blueGrey[600], fontSize: 16,overflow: TextOverflow.ellipsis),
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 5),
+                      Text('職業: ${ability.role}', style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
               ],
             ),

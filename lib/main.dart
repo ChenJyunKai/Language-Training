@@ -45,13 +45,13 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Language Training',
       theme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.blue,
-          colorScheme: const ColorScheme.light().copyWith(
-            background: AppTheme.background,
-          )),
+        useMaterial3: true,
+        colorScheme: const ColorScheme.light(
+          primaryContainer: AppTheme.background,
+        ),
+      ),
       builder: (context, child) => Scaffold(
         body: GestureDetector(
           onTap: () {

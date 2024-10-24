@@ -152,8 +152,9 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
                 onTap: () async {
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
                   await prefs.setString('ability', jsonEncode(ref.watch(abilityProvider).toJson()));
-                  if (!mounted) return;
-                  Navigator.pushReplacementNamed(context, homeUrl);
+                  if (context.mounted) {
+                    Navigator.pushReplacementNamed(context, homeUrl);
+                  }
                 },
                 child: Container(
                   height: 58,
