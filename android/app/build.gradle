@@ -85,12 +85,12 @@ android {
 
     buildTypes {
         release {
-            if (signingConfigs.release.storePassword != null){
+            if (signingConfigs.release.storePassword != null) {
                 signingConfig signingConfigs.release
             }
         }
         debug {
-            if (signingConfigs.debug.storePassword != null){
+            if (signingConfigs.debug.storePassword != null) {
                 signingConfig signingConfigs.release
             }
         }

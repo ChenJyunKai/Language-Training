@@ -1,0 +1,55 @@
+name: builder
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Flutter action
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        run: |
+          echo $ENCODED_KEYSTORE | base64 -di > android/app/key.jks
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.KEYSTORE }}
+
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}
+
+      - name: Release Packages
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-*.apk"
+          allowUpdates: true

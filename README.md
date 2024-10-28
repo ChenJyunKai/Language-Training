@@ -1,16 +1,27 @@
-# rpg
+# Polyglot Trainer
 
-A new Flutter project.
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ChenJyunKai/Polyglot-Trainer/main.yml?color=%238BC34A&style=for-the-badge)
+[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ChenJyunKai/Polyglot-Trainer?include_prereleases&style=for-the-badge)](https://github.com/ChenJyunKai/Polyglot-Trainer/releases)
+[![GitHub all releases](https://img.shields.io/github/downloads/ChenJyunKai/Polyglot-Trainer/total?color=%234CAF50&style=for-the-badge)](https://github.com/ChenJyunKai/Polyglot-Trainer/releases)
+![GitHub Repo stars](https://img.shields.io/github/stars/ChenJyunKai/Polyglot-Trainer?color=%23FFC107&style=for-the-badge)
 
-## Getting Started
+A game designed to help you practice and learn words in different languages. It’s a mobile
+application developed using Flutter.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- Multiple Languages: Choose from a variety of languages to practice, including English, Korean,
+  Japanese, and more!
+- Experience Rewards and Class Selection: Earn experience points and choose different classes,
+  allowing your character to grow stronger as you progress through the training.
+- PVE Battles: Engage in player-vs-environment (PVE) battles where correct answers trigger different
+  skill-based attacks.
+- Multiplayer Connectivity: Compete against other players or team up to challenge bosses (coming
+  soon).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Contribution
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Feel free to [file an issue](https://github.com/ChenJyunKai/Polyglot-Trainer/issues/new) if you find
+a problem or [make pull requests](https://github.com/ChenJyunKai/Polyglot-Trainer/pulls).
+
+All contributions are welcome :)
