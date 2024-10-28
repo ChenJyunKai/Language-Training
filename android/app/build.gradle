@@ -30,10 +30,10 @@ if (keystorePropertiesFile.exists()) {
     }
 }
 
-def _storeFile = file(keystoreProperties.getProperty("storeFile"))
-def _storePassword = keystoreProperties.getProperty("storePassword")
-def _keyAlias = keystoreProperties.getProperty("keyAlias")
-def _keyPassword = keystoreProperties.getProperty("keyPassword")
+def _storeFile = file(System.getenv("KEYSTORE") ?: keystoreProperties.getProperty("storeFile") ?: "keystore.jks")
+def _storePassword = System.getenv("KEYSTORE_PASSWORD") ?: keystoreProperties.getProperty("storePassword")
+def _keyAlias = System.getenv("KEY_ALIAS") ?: keystoreProperties.getProperty("keyAlias")
+def _keyPassword = System.getenv("KEY_PASSWORD") ?: keystoreProperties.getProperty("keyPassword")
 
 android {
     namespace "com.example.rpg"
