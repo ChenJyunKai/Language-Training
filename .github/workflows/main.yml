@@ -1,14 +1,12 @@
 name: builder
 
+# git push --tags Compile when executing
 on:
   push:
     tags:
       - 'v*'
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
