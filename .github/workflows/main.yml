@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate env.g.dart
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
       - name: Decode keystore
         run: |
           echo $ENCODED_KEYSTORE | base64 -di > android/app/keystore.jks
