@@ -1,9 +1,13 @@
 # Polyglot Trainer
 
+<div align=center>
+
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ChenJyunKai/Polyglot-Trainer/main.yml?color=%238BC34A&style=for-the-badge)
 [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ChenJyunKai/Polyglot-Trainer?include_prereleases&style=for-the-badge)](https://github.com/ChenJyunKai/Polyglot-Trainer/releases)
 [![GitHub all releases](https://img.shields.io/github/downloads/ChenJyunKai/Polyglot-Trainer/total?color=%234CAF50&style=for-the-badge)](https://github.com/ChenJyunKai/Polyglot-Trainer/releases)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ChenJyunKai/Polyglot-Trainer?color=%23FFC107&style=for-the-badge)
+
+</div>
 
 A game designed to help you practice and learn words in different languages. It’s a mobile
 application developed using Flutter.
