@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Create .env file
+        run: echo "openAIKey=${{ secrets.OPENAI_KEY }}" > .env
+
       - name: Generate env.g.dart
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
