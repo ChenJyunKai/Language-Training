@@ -1,5 +1,7 @@
 # Polyglot Trainer
 
+Language: English | [繁體中文](README-ZH_TW.md)
+
 <div align=center>
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ChenJyunKai/Polyglot-Trainer/main.yml?color=%238BC34A&style=for-the-badge)
