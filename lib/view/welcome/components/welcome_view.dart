@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,13 +66,20 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: firstHalfAnimation,
-      child: ref.watch(abilityProvider).roleData != null ? buildFadeTransition() : buildColumn(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth,
+          child: SlideTransition(
+            position: firstHalfAnimation,
+            child: ref.watch(abilityProvider).roleData != null ? buildFadeTransition() : buildColumn(),
+          ),
+        );
+      },
     );
   }
 
-  Column buildColumn() {
+  Widget buildColumn() {
     _animationController.animateTo(0);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,15 +88,11 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
           position: welcomeImageAnimation,
           child: Lottie.asset('assets/lottie/rikka.json', height: 250),
         ),
-        Container(
-          alignment: Alignment.center,
-          width: screenWidth,
-          child: SlideTransition(
-            position: welcomeFirstHalfAnimation,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Text('角色生成中...', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            ),
+        SlideTransition(
+          position: welcomeFirstHalfAnimation,
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 32),
+            child: Text('角色生成中...', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
           ),
         )
       ],

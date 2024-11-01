@@ -54,3 +54,4 @@ flutter:
   assets:
     - assets/lottie/
     - assets/json/
+    - assets/image/

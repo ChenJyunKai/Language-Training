@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/provider/ability.dart';
 
 class RenameView extends ConsumerStatefulWidget {
@@ -27,10 +26,9 @@ class _RenameViewState extends ConsumerState<RenameView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SlideTransition(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SlideTransition(
           position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
             parent: widget.animationController,
             curve: Curves.easeIn,
@@ -38,6 +36,7 @@ class _RenameViewState extends ConsumerState<RenameView> {
           child: Form(
             key: key,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Padding(
                   padding: EdgeInsets.only(bottom: 20),
@@ -53,7 +52,7 @@ class _RenameViewState extends ConsumerState<RenameView> {
                 Lottie.asset(
                   'assets/lottie/writer-cat.json',
                   height: 200,
-                  width: screenWidth,
+                  width: constraints.maxWidth,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -85,7 +84,7 @@ class _RenameViewState extends ConsumerState<RenameView> {
                   padding: const EdgeInsets.only(top: 16),
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeIn,
-                  width: buttonState == ButtonState.init ? screenWidth * 0.35 : 60,
+                  width: buttonState == ButtonState.init ? constraints.maxWidth * 0.35 : 60,
                   height: 60,
                   onEnd: () => setState(() => isAnimation = !isAnimation),
                   child: isAnimation || buttonState == ButtonState.init
@@ -95,39 +94,46 @@ class _RenameViewState extends ConsumerState<RenameView> {
               ],
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
   Widget _buildButton() {
     return ElevatedButton(
       onPressed: () async {
-        if (key.currentState!.validate()) {
-          setState(() => buttonState = ButtonState.loading);
-          final isComplite = await ref.read(abilityProvider.notifier).rename(widget.editingController.text);
-          if (isComplite) {
-            setState(() => buttonState = ButtonState.done);
-            await Future.delayed(
-              const Duration(milliseconds: 500),
-              () => widget.animationController.reverse().then(
-                    (value) => setState(() => buttonState = ButtonState.init),
-                  ),
-            );
+        if (widget.editingController.text == ref.watch(abilityProvider).userName) {
+          FocusScope.of(context).requestFocus(FocusNode());
+          widget.animationController.reverse();
+        } else {
+          if (key.currentState!.validate()) {
+            FocusScope.of(context).requestFocus(FocusNode());
+            setState(() => buttonState = ButtonState.loading);
+            final isComplite = await ref.read(abilityProvider.notifier).rename(widget.editingController.text);
+            if (isComplite) {
+              setState(() => buttonState = ButtonState.done);
+              await Future.delayed(
+                const Duration(milliseconds: 500),
+                () => widget.animationController.reverse().then((value) => setState(() => buttonState = ButtonState.init)),
+              );
+            }
           }
         }
       },
       style: ElevatedButton.styleFrom(
         surfaceTintColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: Colors.green,
-        side: const BorderSide(color: Colors.green),
+        foregroundColor: widget.editingController.text != ref.watch(abilityProvider).userName ? Colors.green : Colors.grey,
+        side: BorderSide(
+          color: widget.editingController.text != ref.watch(abilityProvider).userName ? Colors.green : Colors.grey,
+        ),
       ),
-      child: const FittedBox(
-          child: Text(
-        '修改',
-        style: TextStyle(fontSize: 18),
-      )),
+      child: FittedBox(
+        child: Text(
+          widget.editingController.text != ref.watch(abilityProvider).userName ? '修改' : '取消',
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
     );
   }
 

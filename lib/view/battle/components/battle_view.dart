@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rpg/helper/screen_size.dart';
 
 class BattleView extends StatefulWidget {
   const BattleView({Key? key}) : super(key: key);
@@ -40,75 +39,82 @@ class _BattleViewState extends State<BattleView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          const Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              // 向上飄移
-              child: SlideTransition(
-                position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, -1)).animate(
-                  CurvedAnimation(
-                    parent: slide,
-                    curve: Curves.fastOutSlowIn,
-                  ),
-                ),
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: List.generate(4, (i) {
-                    // 選中的置中
-                    return AnimatedPositioned(
-                      duration: const Duration(milliseconds: 500),
-                      top: selectedList[i] ? 40 : (i < 2 ? 0 : screenHeight / 8),
-                      left: selectedList[i] ? screenWidth / 3 - 40 : (i % 2 == 1 ? 0 : screenWidth / 2 - 20),
-                      // 放大
-                      child: ScaleTransition(
-                        scale: Tween<double>(begin: 1.0, end: 1.6).animate(CurvedAnimation(
-                          parent: scales[i],
-                          curve: Curves.fastOutSlowIn,
-                        )),
-                        // 沒選中的消失
-                        child: FadeTransition(
-                          opacity: Tween<double>(begin: 1.0, end: 0.0).animate(fades[i]),
-                          // 正確時旋轉
-                          child: RotationTransition(
-                            turns: Tween<double>(begin: 0, end: 1).animate(
-                              CurvedAnimation(parent: rotation, curve: Curves.easeInOutExpo),
-                            ),
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 500),
-                              transitionBuilder: (Widget child, Animation<double> animation) {
-                                return ScaleTransition(scale: animation, child: child);
-                              },
-                              child: isSelected ? buildAction(i) : buildCard(i),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: SizedBox(),
+              ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  // 向上飄移
+                  child: SlideTransition(
+                    position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, -1)).animate(
+                      CurvedAnimation(
+                        parent: slide,
+                        curve: Curves.fastOutSlowIn,
+                      ),
+                    ),
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: List.generate(4, (i) {
+                        // 選中的置中
+                        return AnimatedPositioned(
+                          duration: const Duration(milliseconds: 500),
+                          top: selectedList[i] ? 40 : (i < 2 ? 0 : constraints.maxHeight / 8),
+                          left:
+                              selectedList[i] ? constraints.maxWidth / 3 - 40 : (i % 2 == 1 ? 0 : constraints.maxWidth / 2 - 20),
+                          // 放大
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 1.0, end: 1.6).animate(CurvedAnimation(
+                              parent: scales[i],
+                              curve: Curves.fastOutSlowIn,
+                            )),
+                            // 沒選中的消失
+                            child: FadeTransition(
+                              opacity: Tween<double>(begin: 1.0, end: 0.0).animate(fades[i]),
+                              // 正確時旋轉
+                              child: RotationTransition(
+                                turns: Tween<double>(begin: 0, end: 1).animate(
+                                  CurvedAnimation(parent: rotation, curve: Curves.easeInOutExpo),
+                                ),
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  transitionBuilder: (Widget child, Animation<double> animation) {
+                                    return ScaleTransition(scale: animation, child: child);
+                                  },
+                                  child: isSelected
+                                      ? buildAction(i, constraints.maxWidth * 0.4)
+                                      : buildCard(i, constraints.maxWidth * 0.4),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
 
-  Card buildCard(int i) {
+  Card buildCard(int i, double width) {
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.black12),
         borderRadius: BorderRadius.circular(10),
       ),
       child: SizedBox(
-        width: screenWidth * 0.4,
+        width: width,
         height: 80,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
@@ -133,10 +139,10 @@ class _BattleViewState extends State<BattleView> with TickerProviderStateMixin {
     );
   }
 
-  Widget buildAction(int i) {
+  Widget buildAction(int i, double width) {
     return Container(
       alignment: Alignment.center,
-      width: screenWidth * 0.4,
+      width: width,
       height: 85,
       child: Container(
         height: 50,

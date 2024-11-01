@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/helper/screen_size.dart';
 
 class BreakfastView extends StatelessWidget {
   const BreakfastView({
@@ -67,56 +66,60 @@ class BreakfastView extends StatelessWidget {
       ),
     );
 
-    return SlideTransition(
-      position: firstHalfAnimation,
-      child: SlideTransition(
-        position: secondHalfAnimation,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SlideTransition(
-              position: titleAnimation,
-              child: Container(
-                width: screenWidth,
-                alignment: Alignment.center,
-                child: const Text(
-                  "早餐的荷包蛋應該沾...?",
-                  style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SlideTransition(
+          position: firstHalfAnimation,
+          child: SlideTransition(
+            position: secondHalfAnimation,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SlideTransition(
+                  position: titleAnimation,
+                  child: Container(
+                    width: constraints.maxWidth,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "早餐的荷包蛋應該沾...?",
+                      style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SlideTransition(
-              position: optionsAnimation,
-              child: Container(
-                height: screenHeight * 0.5,
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 36),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (String i in options)
-                      SizedBox(
-                        height: 50,
-                        width: screenWidth * 0.7,
-                        child: ElevatedButton(
-                          onPressed: () => onNextClick(options.indexOf(i)),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
+                SlideTransition(
+                  position: optionsAnimation,
+                  child: Container(
+                    height: constraints.maxHeight * 0.5,
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 36),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        for (String i in options)
+                          SizedBox(
+                            height: 50,
+                            width: constraints.maxWidth * 0.7,
+                            child: ElevatedButton(
+                              onPressed: () => onNextClick(options.indexOf(i)),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.white,
+                              ),
+                              child: Text(i, style: const TextStyle(fontSize: 20)),
+                            ),
                           ),
-                          child: Text(i, style: const TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                SlideTransition(
+                  position: imageAnimation,
+                  child: Lottie.asset('assets/lottie/breakfast.json', height: 150),
+                ),
+              ],
             ),
-            SlideTransition(
-              position: imageAnimation,
-              child: Lottie.asset('assets/lottie/breakfast.json', height: 150),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/helper/app_theme.dart';
-import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +12,12 @@ void main() async {
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final hasData = prefs.getString('ability') != null;
+  await SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
 
   runApp(
     ProviderScope(
@@ -40,8 +46,6 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

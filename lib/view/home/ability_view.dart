@@ -19,7 +19,8 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
     final ability = ref.watch(abilityProvider);
     final waterHeight = 1 - ability.exp / ability.expL;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 26),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.black26),
@@ -40,7 +41,7 @@ class _AbilityViewState extends ConsumerState<AbilityView> {
           fontWeight: FontWeight.bold,
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [

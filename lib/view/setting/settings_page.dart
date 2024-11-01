@@ -33,30 +33,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> with TickerProvider
     super.dispose();
   }
 
-  void renameGetData() {
-    editingController.text = ref.watch(abilityProvider).userName!;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: BackButton(
-                onPressed: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  animationController.value > 0 ? animationController.animateBack(0) : Navigator.pop(context);
-                },
-              ),
-            ),
-          ),
           MenuView(
             animationController: animationController,
-            renameSet: renameGetData,
           ),
           RenameView(
             animationController: animationController,

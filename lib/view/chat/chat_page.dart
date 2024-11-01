@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/entity/message_entity.dart';
 import 'package:rpg/env/env.dart';
 import 'package:rpg/provider/message_provider.dart';
-import 'package:rpg/helper/screen_size.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   const ChatPage({super.key});
@@ -120,38 +119,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 reverse: true,
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.09,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: screenWidth * 0.8,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "你怎麼不問問神奇米卡...?",
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      controller: txtController,
-                    ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "你怎麼不問問神奇米卡?",
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  _isLoading
-                      ? Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 30,
-                          width: 30,
-                          child: const CircularProgressIndicator(),
-                        )
+                  suffixIcon: _isLoading
+                      ? const Icon(Icons.stop_circle, color: Colors.grey)
                       : IconButton(
                           onPressed: () => _sendMessage(txtController.text),
                           icon: const Icon(Icons.send),
                         ),
-                ],
+                ),
+                controller: txtController,
               ),
             )
           ],

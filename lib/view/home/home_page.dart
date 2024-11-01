@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
 import 'package:rpg/helper/app_theme.dart';
-import 'package:rpg/helper/screen_size.dart';
 import 'package:rpg/view/home/ability_view.dart';
 import 'package:rpg/view/home/home_button.dart';
 
@@ -99,25 +98,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildFlipAnimation() {
-    return GestureDetector(
-      onTap: () => setState(() => _showFrontSide = !_showFrontSide),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 600),
-        transitionBuilder: __transitionBuilder,
-        layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
-        switchInCurve: Curves.easeInBack,
-        switchOutCurve: Curves.easeInBack.flipped,
-        child: _showFrontSide ? _buildFront() : _buildRear(),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return GestureDetector(
+          onTap: () => setState(() => _showFrontSide = !_showFrontSide),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 600),
+            transitionBuilder: __transitionBuilder,
+            layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
+            switchInCurve: Curves.easeInBack,
+            switchOutCurve: Curves.easeInBack.flipped,
+            child: _showFrontSide ? _buildFront(constraints.maxWidth * 0.85) : _buildRear(constraints.maxWidth * 0.85),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildFront() {
+  Widget _buildFront(double width) {
     return __buildLayout(
       key: const ValueKey(true),
       backgroundColor: AppTheme.background,
       child: Container(
         padding: const EdgeInsets.only(top: 20),
+        width: width,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.black26),
@@ -154,18 +158,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildRear() {
+  Widget _buildRear(double width) {
     return __buildLayout(
       key: const ValueKey(false),
       backgroundColor: AppTheme.background,
-      child: const AbilityView(),
+      child: SizedBox(width: width, child: const AbilityView()),
     );
   }
 
   Widget __buildLayout({required Key key, required Color backgroundColor, required Widget child}) {
     return Container(
       key: key,
-      width: screenWidth * 0.85,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(20.0),
