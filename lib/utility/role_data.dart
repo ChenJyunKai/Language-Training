@@ -15,6 +15,7 @@ final adventurerAbility = AbilityEntity(
   def: 25,
   agi: 10,
   luk: 10,
+  skillLv: [1, 0, 0, 0],
 );
 
 const adventurer = Role(
@@ -36,6 +37,7 @@ final gmAbility = AbilityEntity(
   def: 9999,
   agi: 9999,
   luk: 9999,
+  skillLv: [5, 5, 5, 5],
 );
 
 const gm = Role(

@@ -12,7 +12,7 @@ part of 'ability_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AbilityEntity _$AbilityEntityFromJson(Map<String, dynamic> json) {
   return _AbilityEntity.fromJson(json);
@@ -32,9 +32,14 @@ mixin _$AbilityEntity {
   int get def => throw _privateConstructorUsedError;
   int get agi => throw _privateConstructorUsedError;
   int get luk => throw _privateConstructorUsedError;
+  List<int> get skillLv => throw _privateConstructorUsedError;
 
+  /// Serializes this AbilityEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AbilityEntityCopyWith<AbilityEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,7 +62,8 @@ abstract class $AbilityEntityCopyWith<$Res> {
       int atk,
       int def,
       int agi,
-      int luk});
+      int luk,
+      List<int> skillLv});
 
   $RoleCopyWith<$Res>? get roleData;
 }
@@ -72,6 +78,8 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,6 +95,7 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
     Object? def = null,
     Object? agi = null,
     Object? luk = null,
+    Object? skillLv = null,
   }) {
     return _then(_value.copyWith(
       userName: freezed == userName
@@ -137,9 +146,15 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
           ? _value.luk
           : luk // ignore: cast_nullable_to_non_nullable
               as int,
+      skillLv: null == skillLv
+          ? _value.skillLv
+          : skillLv // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RoleCopyWith<$Res>? get roleData {
@@ -154,11 +169,11 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
 }
 
 /// @nodoc
-abstract class _$$_AbilityEntityCopyWith<$Res>
+abstract class _$$AbilityEntityImplCopyWith<$Res>
     implements $AbilityEntityCopyWith<$Res> {
-  factory _$$_AbilityEntityCopyWith(
-          _$_AbilityEntity value, $Res Function(_$_AbilityEntity) then) =
-      __$$_AbilityEntityCopyWithImpl<$Res>;
+  factory _$$AbilityEntityImplCopyWith(
+          _$AbilityEntityImpl value, $Res Function(_$AbilityEntityImpl) then) =
+      __$$AbilityEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -173,20 +188,23 @@ abstract class _$$_AbilityEntityCopyWith<$Res>
       int atk,
       int def,
       int agi,
-      int luk});
+      int luk,
+      List<int> skillLv});
 
   @override
   $RoleCopyWith<$Res>? get roleData;
 }
 
 /// @nodoc
-class __$$_AbilityEntityCopyWithImpl<$Res>
-    extends _$AbilityEntityCopyWithImpl<$Res, _$_AbilityEntity>
-    implements _$$_AbilityEntityCopyWith<$Res> {
-  __$$_AbilityEntityCopyWithImpl(
-      _$_AbilityEntity _value, $Res Function(_$_AbilityEntity) _then)
+class __$$AbilityEntityImplCopyWithImpl<$Res>
+    extends _$AbilityEntityCopyWithImpl<$Res, _$AbilityEntityImpl>
+    implements _$$AbilityEntityImplCopyWith<$Res> {
+  __$$AbilityEntityImplCopyWithImpl(
+      _$AbilityEntityImpl _value, $Res Function(_$AbilityEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -202,8 +220,9 @@ class __$$_AbilityEntityCopyWithImpl<$Res>
     Object? def = null,
     Object? agi = null,
     Object? luk = null,
+    Object? skillLv = null,
   }) {
-    return _then(_$_AbilityEntity(
+    return _then(_$AbilityEntityImpl(
       userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
@@ -252,14 +271,18 @@ class __$$_AbilityEntityCopyWithImpl<$Res>
           ? _value.luk
           : luk // ignore: cast_nullable_to_non_nullable
               as int,
+      skillLv: null == skillLv
+          ? _value._skillLv
+          : skillLv // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_AbilityEntity implements _AbilityEntity {
-  const _$_AbilityEntity(
+class _$AbilityEntityImpl implements _AbilityEntity {
+  const _$AbilityEntityImpl(
       {this.userName,
       this.role,
       this.roleData,
@@ -271,10 +294,12 @@ class _$_AbilityEntity implements _AbilityEntity {
       this.atk = 0,
       this.def = 0,
       this.agi = 0,
-      this.luk = 0});
+      this.luk = 0,
+      final List<int> skillLv = const [0, 0, 0, 0]})
+      : _skillLv = skillLv;
 
-  factory _$_AbilityEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_AbilityEntityFromJson(json);
+  factory _$AbilityEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AbilityEntityImplFromJson(json);
 
   @override
   final String? userName;
@@ -313,17 +338,25 @@ class _$_AbilityEntity implements _AbilityEntity {
   @override
   @JsonKey()
   final int luk;
-
+  final List<int> _skillLv;
   @override
-  String toString() {
-    return 'AbilityEntity(userName: $userName, role: $role, roleData: $roleData, lv: $lv, exp: $exp, expL: $expL, hp: $hp, mp: $mp, atk: $atk, def: $def, agi: $agi, luk: $luk)';
+  @JsonKey()
+  List<int> get skillLv {
+    if (_skillLv is EqualUnmodifiableListView) return _skillLv;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_skillLv);
   }
 
   @override
-  bool operator ==(dynamic other) {
+  String toString() {
+    return 'AbilityEntity(userName: $userName, role: $role, roleData: $roleData, lv: $lv, exp: $exp, expL: $expL, hp: $hp, mp: $mp, atk: $atk, def: $def, agi: $agi, luk: $luk, skillLv: $skillLv)';
+  }
+
+  @override
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AbilityEntity &&
+            other is _$AbilityEntityImpl &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.role, role) || other.role == role) &&
@@ -337,23 +370,39 @@ class _$_AbilityEntity implements _AbilityEntity {
             (identical(other.atk, atk) || other.atk == atk) &&
             (identical(other.def, def) || other.def == def) &&
             (identical(other.agi, agi) || other.agi == agi) &&
-            (identical(other.luk, luk) || other.luk == luk));
+            (identical(other.luk, luk) || other.luk == luk) &&
+            const DeepCollectionEquality().equals(other._skillLv, _skillLv));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, userName, role, roleData, lv,
-      exp, expL, hp, mp, atk, def, agi, luk);
+  int get hashCode => Object.hash(
+      runtimeType,
+      userName,
+      role,
+      roleData,
+      lv,
+      exp,
+      expL,
+      hp,
+      mp,
+      atk,
+      def,
+      agi,
+      luk,
+      const DeepCollectionEquality().hash(_skillLv));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AbilityEntityCopyWith<_$_AbilityEntity> get copyWith =>
-      __$$_AbilityEntityCopyWithImpl<_$_AbilityEntity>(this, _$identity);
+  _$$AbilityEntityImplCopyWith<_$AbilityEntityImpl> get copyWith =>
+      __$$AbilityEntityImplCopyWithImpl<_$AbilityEntityImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AbilityEntityToJson(
+    return _$$AbilityEntityImplToJson(
       this,
     );
   }
@@ -372,24 +421,25 @@ abstract class _AbilityEntity implements AbilityEntity {
       final int atk,
       final int def,
       final int agi,
-      final int luk}) = _$_AbilityEntity;
+      final int luk,
+      final List<int> skillLv}) = _$AbilityEntityImpl;
 
   factory _AbilityEntity.fromJson(Map<String, dynamic> json) =
-      _$_AbilityEntity.fromJson;
+      _$AbilityEntityImpl.fromJson;
 
   @override
-  String? get userName;
-  @override // 玩家名稱
-  String? get role;
-  @override // 職業
-  Role? get roleData;
-  @override // 角色資料
+  String? get userName; // 玩家名稱
+  @override
+  String? get role; // 職業
+  @override
+  Role? get roleData; // 角色資料
+  @override
   int get lv;
   @override
   int get exp;
   @override
-  int get expL;
-  @override // 下一級所需要經驗
+  int get expL; // 下一級所需要經驗
+  @override
   int get hp;
   @override
   int get mp;
@@ -402,8 +452,13 @@ abstract class _AbilityEntity implements AbilityEntity {
   @override
   int get luk;
   @override
-  @JsonKey(ignore: true)
-  _$$_AbilityEntityCopyWith<_$_AbilityEntity> get copyWith =>
+  List<int> get skillLv;
+
+  /// Create a copy of AbilityEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AbilityEntityImplCopyWith<_$AbilityEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -416,8 +471,12 @@ mixin _$Role {
   String? get imageAsset => throw _privateConstructorUsedError; // 角色圖片位置
   String? get describe => throw _privateConstructorUsedError;
 
+  /// Serializes this Role to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Role
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RoleCopyWith<Role> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -439,6 +498,8 @@ class _$RoleCopyWithImpl<$Res, $Val extends Role>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Role
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -459,27 +520,31 @@ class _$RoleCopyWithImpl<$Res, $Val extends Role>
 }
 
 /// @nodoc
-abstract class _$$_RoleCopyWith<$Res> implements $RoleCopyWith<$Res> {
-  factory _$$_RoleCopyWith(_$_Role value, $Res Function(_$_Role) then) =
-      __$$_RoleCopyWithImpl<$Res>;
+abstract class _$$RoleImplCopyWith<$Res> implements $RoleCopyWith<$Res> {
+  factory _$$RoleImplCopyWith(
+          _$RoleImpl value, $Res Function(_$RoleImpl) then) =
+      __$$RoleImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? imageAsset, String? describe});
 }
 
 /// @nodoc
-class __$$_RoleCopyWithImpl<$Res> extends _$RoleCopyWithImpl<$Res, _$_Role>
-    implements _$$_RoleCopyWith<$Res> {
-  __$$_RoleCopyWithImpl(_$_Role _value, $Res Function(_$_Role) _then)
+class __$$RoleImplCopyWithImpl<$Res>
+    extends _$RoleCopyWithImpl<$Res, _$RoleImpl>
+    implements _$$RoleImplCopyWith<$Res> {
+  __$$RoleImplCopyWithImpl(_$RoleImpl _value, $Res Function(_$RoleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Role
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? imageAsset = freezed,
     Object? describe = freezed,
   }) {
-    return _then(_$_Role(
+    return _then(_$RoleImpl(
       imageAsset: freezed == imageAsset
           ? _value.imageAsset
           : imageAsset // ignore: cast_nullable_to_non_nullable
@@ -494,10 +559,11 @@ class __$$_RoleCopyWithImpl<$Res> extends _$RoleCopyWithImpl<$Res, _$_Role>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Role implements _Role {
-  const _$_Role({this.imageAsset, this.describe});
+class _$RoleImpl implements _Role {
+  const _$RoleImpl({this.imageAsset, this.describe});
 
-  factory _$_Role.fromJson(Map<String, dynamic> json) => _$$_RoleFromJson(json);
+  factory _$RoleImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RoleImplFromJson(json);
 
   @override
   final String? imageAsset;
@@ -511,29 +577,31 @@ class _$_Role implements _Role {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Role &&
+            other is _$RoleImpl &&
             (identical(other.imageAsset, imageAsset) ||
                 other.imageAsset == imageAsset) &&
             (identical(other.describe, describe) ||
                 other.describe == describe));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, imageAsset, describe);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Role
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RoleCopyWith<_$_Role> get copyWith =>
-      __$$_RoleCopyWithImpl<_$_Role>(this, _$identity);
+  _$$RoleImplCopyWith<_$RoleImpl> get copyWith =>
+      __$$RoleImplCopyWithImpl<_$RoleImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RoleToJson(
+    return _$$RoleImplToJson(
       this,
     );
   }
@@ -541,15 +609,19 @@ class _$_Role implements _Role {
 
 abstract class _Role implements Role {
   const factory _Role({final String? imageAsset, final String? describe}) =
-      _$_Role;
+      _$RoleImpl;
 
-  factory _Role.fromJson(Map<String, dynamic> json) = _$_Role.fromJson;
+  factory _Role.fromJson(Map<String, dynamic> json) = _$RoleImpl.fromJson;
 
   @override
-  String? get imageAsset;
-  @override // 角色圖片位置
+  String? get imageAsset; // 角色圖片位置
+  @override
   String? get describe;
+
+  /// Create a copy of Role
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_RoleCopyWith<_$_Role> get copyWith => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RoleImplCopyWith<_$RoleImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

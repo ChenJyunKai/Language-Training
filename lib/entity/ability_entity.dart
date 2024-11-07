@@ -1,10 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'ability_entity.freezed.dart';
+
 part 'ability_entity.g.dart';
 
 @freezed
-class AbilityEntity with _$AbilityEntity{
+class AbilityEntity with _$AbilityEntity {
   const factory AbilityEntity({
     String? userName, // 玩家名稱
     String? role, // 職業
@@ -18,6 +19,7 @@ class AbilityEntity with _$AbilityEntity{
     @Default(0) int def,
     @Default(0) int agi,
     @Default(0) int luk,
+    @Default([0, 0, 0, 0]) List<int> skillLv,
   }) = _AbilityEntity;
 
   factory AbilityEntity.fromJson(Map<String, dynamic> json) => _$AbilityEntityFromJson(json);

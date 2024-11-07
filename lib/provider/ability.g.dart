@@ -6,7 +6,7 @@ part of 'ability.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$abilityHash() => r'6f65dfc6b416bedb2c448e3e08ce3bb2b388e0e2';
+String _$abilityHash() => r'42fba5a2e49e2d62dbd17b3ccb8b15d87f98d044';
 
 /// See also [Ability].
 @ProviderFor(Ability)
@@ -21,4 +21,4 @@ final abilityProvider = NotifierProvider<Ability, AbilityEntity>.internal(
 
 typedef _$Ability = Notifier<AbilityEntity>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

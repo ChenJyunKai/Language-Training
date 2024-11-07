@@ -33,10 +33,10 @@ class ButtonEntity {
     ButtonEntity(
       imagePath: 'assets/lottie/chat.json',
       imageSize: 120,
-      titleTxt: '聊天',
+      titleTxt: '技能',
       startColor: '#FF5287',
       endColor: '#FE95B6',
-      navigatorUrl: chatUrl,
+      navigatorUrl: skillUrl,
     ),
     ButtonEntity(
       imagePath: 'assets/lottie/sword.json',
