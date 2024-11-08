@@ -23,9 +23,9 @@ application developed using Flutter.
 - Experience Rewards and Class Selection: Earn experience points and choose different classes,
   allowing your character to grow stronger as you progress through the training.
 - PVE Battles: Engage in player-vs-environment (PVE) battles where correct answers trigger different
-  skill-based attacks.
-- Multiplayer Connectivity: Compete against other players or team up to challenge bosses (coming
-  soon).
+  skill-based attacks. (coming soon)
+- Multiplayer Connectivity: Compete against other players or team up to challenge bosses. (coming
+  soon)
 
 ## Screenshot
 
