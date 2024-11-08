@@ -41,7 +41,7 @@ final gmAbility = AbilityEntity(
   agi: 9999,
   luk: 9999,
   sp: 199,
-  skill: [s.a001, s.a002, s.a003, s.a004],
+  skill: [s.gm001.copyWith(level: 5), s.gm002.copyWith(level: 5), s.gm003.copyWith(level: 5), s.gm004.copyWith(level: 5)],
 );
 
 const gm = Role(

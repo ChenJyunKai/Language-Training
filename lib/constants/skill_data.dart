@@ -37,4 +37,40 @@ class SkillData {
     coolDown: 3,
     skillType: SkillType.recovery,
   );
+
+  final gm001 = const SkillEntity(
+    skillCode: 'gm001',
+    skillName: '雙重扇形斬',
+    skillDescription: '二刀流重突擊技',
+    levelRestriction: 0,
+    coolDown: 0,
+    skillType: SkillType.attack,
+  );
+
+  final gm002 = const SkillEntity(
+    skillCode: 'gm002',
+    skillName: '星爆氣流斬',
+    skillDescription: '十六連擊二刀流上位劍技',
+    levelRestriction: 0,
+    coolDown: 0,
+    skillType: SkillType.attack,
+  );
+
+  final gm003 = const SkillEntity(
+    skillCode: 'gm003',
+    skillName: '迴旋盾',
+    skillDescription: '雖說是盾，但其實是用劍快速旋轉所形成的',
+    levelRestriction: 0,
+    coolDown: 0,
+    skillType: SkillType.gain,
+  );
+
+  final gm004 = const SkillEntity(
+    skillCode: 'gm004',
+    skillName: '日蝕',
+    skillDescription: '二十七連擊二刀流最上位劍技',
+    levelRestriction: 0,
+    coolDown: 0,
+    skillType: SkillType.attack,
+  );
 }
