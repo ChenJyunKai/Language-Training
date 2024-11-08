@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/entity/language_entity.dart';
-import 'package:rpg/provider/word_provider.dart';
+import 'package:rpg/provider/word.dart';
 
 class SelectLanguage extends ConsumerWidget {
   const SelectLanguage({

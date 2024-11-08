@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/provider/locales.dart';
 import 'package:rpg/utils/app_theme.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/router/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     if (widget.hasData) {
-      Future.delayed(Duration.zero, () => ref.read(abilityProvider.notifier).getAbility());
+      Future.delayed(Duration.zero, () {
+        ref.read(localesProvider.notifier).init();
+        ref.read(abilityProvider.notifier).getAbility();
+      });
     }
     super.initState();
   }
@@ -49,7 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Language Training',
+      title: 'Polyglot Trainer',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: const ColorScheme.light(
@@ -71,15 +75,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         return MaterialPageRoute(builder: routes[settings.name]!, settings: settings);
       },
       initialRoute: widget.hasData ? homeUrl : welcomeUrl,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW'),
-        Locale('en', 'US'),
-      ],
+      locale: ref.watch(localesProvider),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

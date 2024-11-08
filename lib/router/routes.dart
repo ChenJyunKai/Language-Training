@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rpg/view/battle/components/battle_view.dart';
+import 'package:rpg/view/setting/locales_page.dart';
 import 'package:rpg/view/setting/settings_page.dart';
 import 'package:rpg/view/skill/skill_page.dart';
 import 'package:rpg/view/train/train_page.dart';
@@ -14,6 +15,7 @@ const skillUrl = 'skill';
 const trainUrl = 'train';
 const settingUrl = 'setting';
 const battleUrl = 'battle';
+const localesUrl = 'locales';
 
 final Map<String, WidgetBuilder> routes = {
   homeUrl: (context) => const HomePage(),
@@ -23,4 +25,5 @@ final Map<String, WidgetBuilder> routes = {
   trainUrl: (context) => const TrainPage(),
   settingUrl: (context) => const SettingsPage(),
   battleUrl: (context) => const BattleView(),
+  localesUrl: (context) => const LocalesPage(),
 };

@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/utils/hex_color.dart';
 import 'package:rpg/provider/ability.dart';
-import 'package:rpg/provider/word_provider.dart';
+import 'package:rpg/provider/word.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 

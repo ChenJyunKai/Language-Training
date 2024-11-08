@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/entity/message_entity.dart';
 import 'package:rpg/env/env.dart';
-import 'package:rpg/provider/message_provider.dart';
+import 'package:rpg/provider/message.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   const ChatPage({super.key});

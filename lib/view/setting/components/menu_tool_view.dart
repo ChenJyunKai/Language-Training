@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/provider/ability.dart';
+import 'package:rpg/router/routes.dart';
 
 class MenuToolView extends ConsumerStatefulWidget {
   const MenuToolView({
@@ -158,7 +159,7 @@ class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStat
                     Colors.green.shade200,
                     Colors.green.shade400,
                     '更改語系',
-                    () {},
+                    () => Navigator.of(context).pushNamed(localesUrl),
                     'assets/image/Eevee1.png',
                     Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
