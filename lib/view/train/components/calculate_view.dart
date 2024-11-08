@@ -33,11 +33,10 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
     return SlideTransition(
       position: Tween(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
-        curve: const Interval(0.666, 1, curve: Curves.fastOutSlowIn),
+        curve: const Interval(2 / 3, 1, curve: Curves.fastOutSlowIn),
       )),
-      child: (ref.watch(wordProvider).totalScore != null && widget.animationController.value >= 0.666)
-          ? calulate()
-          : buildColumn(),
+      child:
+          (ref.watch(wordProvider).totalScore != null && widget.animationController.value >= 0.666) ? calulate() : buildColumn(),
     );
   }
 
@@ -48,14 +47,14 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
         SlideTransition(
           position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
             parent: widget.animationController,
-            curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
+            curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
           )),
           child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
         ),
         SlideTransition(
           position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
             parent: widget.animationController,
-            curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
+            curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
           )),
           child: const Align(
             alignment: Alignment.center,
@@ -82,7 +81,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
     return SlideTransition(
       position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
-        curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn),
+        curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
       )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

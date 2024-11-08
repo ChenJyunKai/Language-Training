@@ -15,8 +15,10 @@ class TrainPage extends StatefulWidget {
 
 class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
   late AnimationController animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
-  late AnimationController fadeAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+  late AnimationController fadeAnimationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 600),
+  );
 
   @override
   void dispose() {
@@ -61,7 +63,7 @@ class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
   void _onBackClick() {
     if (animationController.value == 0) {
       Navigator.pop(context);
-    } else if (animationController.value > 0 && animationController.value <= 0.333) {
+    } else if (animationController.value > 0 && animationController.value <= 1 / 3) {
       animationController.animateTo(0.0);
     }
   }
