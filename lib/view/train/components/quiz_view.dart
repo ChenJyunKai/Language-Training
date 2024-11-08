@@ -35,8 +35,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
       AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
   late AnimationController skipAnimationController =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
-  late AnimationController lottieAnimationController =
-      AnimationController(vsync: this, duration: const Duration(seconds: 1));
+  late AnimationController lottieAnimationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
   @override
   void initState() {
@@ -101,8 +100,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return SlideTransition(
       position: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(
-        CurvedAnimation(
-            parent: widget.animationController, curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn)),
+        CurvedAnimation(parent: widget.animationController, curve: const Interval(0.333, 0.666, curve: Curves.fastOutSlowIn)),
       ),
       child: AnimatedBuilder(
           animation: widget.fadeAnimationController,
@@ -182,9 +180,9 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     ),
                                   ),
                                   SlideTransition(
-                                    position: Tween<Offset>(begin: const Offset(1, 0), end: const Offset(-1, 0))
-                                        .animate(CurvedAnimation(
-                                            parent: lottieAnimationController, curve: Curves.slowMiddle)),
+                                    position: Tween<Offset>(begin: const Offset(1.2, 0), end: const Offset(-1.2, 0)).animate(
+                                      CurvedAnimation(parent: lottieAnimationController, curve: Curves.slowMiddle),
+                                    ),
                                     child: !_isCalculate
                                         ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
                                         : const SizedBox(
@@ -207,9 +205,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     TextButton.icon(
                                       onPressed: () {
                                         if (ref.watch(wordProvider).count < 10) {
-                                          lottieAnimationController
-                                              .forward()
-                                              .then((value) => lottieAnimationController.reset());
+                                          lottieAnimationController.forward().then((value) => lottieAnimationController.reset());
                                           skipAnimationController.forward().then((value) {
                                             ref.read(wordProvider.notifier).answer(0);
                                             _tipVisable = false;
