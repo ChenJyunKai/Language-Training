@@ -1,4 +1,10 @@
 {
   "@@locale": "en",
-  "change_language": "Change Language"
+  "exercise": "Exercise",
+  "skill": "Skill",
+  "battle": "Battle",
+  "setting": "Setting",
+  "change_name": "Change Name",
+  "change_language": "Change Language",
+  "character_rebirth": "Character Rebirth"
 }

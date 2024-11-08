@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
+import 'package:rpg/utils/app_localizations.dart';
 import 'package:rpg/utils/app_theme.dart';
 import 'package:rpg/utils/hex_color.dart';
 
@@ -18,11 +19,20 @@ class HomeButton extends StatefulWidget {
 
 class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
   AnimationController? animationController;
+  late AppLocalizations _str;
+  late List<String> _title;
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
+    animationController = AnimationController(duration: const Duration(milliseconds: 1600), vsync: this);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _str = L10n.of(context)!;
+    _title = [_str.exercise, _str.skill, _str.battle, _str.setting];
   }
 
   @override
@@ -76,7 +86,7 @@ class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              widget.data.titleTxt,
+                              _title[index],
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontFamily: AppTheme.fontName,

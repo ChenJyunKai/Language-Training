@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/provider/locales.dart';
 import 'package:rpg/utils/time_format.dart';
 
-class MenuTitleView extends StatefulWidget {
+class MenuTitleView extends ConsumerStatefulWidget {
   const MenuTitleView({
     Key? key,
     required this.mainAnimationController,
@@ -14,10 +16,10 @@ class MenuTitleView extends StatefulWidget {
   final Animation<double> mainAnimation;
 
   @override
-  State<MenuTitleView> createState() => _MenuTitleViewState();
+  ConsumerState<MenuTitleView> createState() => _MenuTitleViewState();
 }
 
-class _MenuTitleViewState extends State<MenuTitleView> {
+class _MenuTitleViewState extends ConsumerState<MenuTitleView> {
   late Timer _timer;
   late DateTime _currentTime;
 
@@ -103,7 +105,7 @@ class _MenuTitleViewState extends State<MenuTitleView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          TimeFormat().local('yyyy-MM-dd EEEE', _currentTime),
+                          TimeFormat().localFormat('yyyy-MM-dd EEEE', _currentTime, ref.watch(localesProvider).languageCode),
                           style: const TextStyle(
                             fontSize: 16,
                           ),

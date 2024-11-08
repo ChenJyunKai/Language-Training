@@ -1,4 +1,10 @@
 {
   "@@locale": "zh",
-  "change_language": "更改语系"
+  "exercise": "锻炼",
+  "skill": "技能",
+  "battle": "对战",
+  "setting": "设置",
+  "change_name": "更改名称",
+  "change_language": "更改语言",
+  "character_rebirth": "角色重生"
 }

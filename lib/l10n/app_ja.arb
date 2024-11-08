@@ -1,4 +1,10 @@
 {
   "@@locale": "ja",
-  "change_language": "言語を変更"
+  "exercise": "鍛錬",
+  "skill": "スキル",
+  "battle": "対戦",
+  "setting": "設定",
+  "change_name": "名前変更",
+  "change_language": "言語変更",
+  "character_rebirth": "キャラクター再生"
 }

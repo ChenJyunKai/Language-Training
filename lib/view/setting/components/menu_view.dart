@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rpg/utils/app_localizations.dart';
 import 'package:rpg/view/setting/components/menu_appbar_view.dart';
 import 'package:rpg/view/setting/components/menu_title_view.dart';
 import 'package:rpg/view/setting/components/menu_tool_view.dart';
@@ -19,6 +20,7 @@ class MenuView extends ConsumerStatefulWidget {
 class _MenuViewState extends ConsumerState<MenuView> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> topBarAnimation;
+  late AppLocalizations _str;
   final List<Widget> _listViews = [];
   final ScrollController _scrollController = ScrollController();
   double topBarOpacity = 0.0;
@@ -49,6 +51,12 @@ class _MenuViewState extends ConsumerState<MenuView> with TickerProviderStateMix
       }
     });
     addAllWidget();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _str = L10n.of(context)!;
   }
 
   @override
@@ -89,7 +97,7 @@ class _MenuViewState extends ConsumerState<MenuView> with TickerProviderStateMix
           MenuAppbarView(
             animationController: _animationController,
             topBarOpacity: topBarOpacity,
-            title: '設定',
+            title: _str.setting,
           ),
         ],
       ),

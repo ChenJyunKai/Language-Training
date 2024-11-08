@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/router/routes.dart';
+import 'package:rpg/utils/app_localizations.dart';
 
 class MenuToolView extends ConsumerStatefulWidget {
   const MenuToolView({
@@ -21,11 +22,18 @@ class MenuToolView extends ConsumerStatefulWidget {
 
 class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStateMixin {
   late AnimationController animationController;
+  late AppLocalizations _str;
 
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _str = L10n.of(context)!;
   }
 
   @override
@@ -64,14 +72,18 @@ class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStat
                       ),
                       width: double.infinity,
                       height: 90,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            title,
-                            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Expanded(flex: 1, child: SizedBox()),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              title,
+                              style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -145,7 +157,7 @@ class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStat
                   buildCard(
                     Colors.blue.shade300,
                     Colors.blue.shade200,
-                    '更改名稱',
+                    _str.change_name,
                     () => widget.pageAnimationController.forward(),
                     'assets/image/Eevee.png',
                     Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -158,7 +170,7 @@ class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStat
                   buildCard(
                     Colors.green.shade200,
                     Colors.green.shade400,
-                    '更改語系',
+                    _str.change_language,
                     () => Navigator.of(context).pushNamed(localesUrl),
                     'assets/image/Eevee1.png',
                     Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -171,7 +183,7 @@ class _MenuViewState extends ConsumerState<MenuToolView> with TickerProviderStat
                   buildCard(
                     Colors.pink.shade300,
                     Colors.pink.shade200,
-                    '角色重生',
+                    _str.character_rebirth,
                     () => showGeneralDialog(
                       context: context,
                       pageBuilder: (ctx, a1, a2) => const SizedBox(),
