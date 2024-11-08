@@ -3,6 +3,8 @@
 Language: [English](README.md) | 繁體中文
 
 <div align=center>
+<img src="./assets/image/app_icon.png" width = "150" alt="" align=center />
+<br><br>
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ChenJyunKai/Polyglot-Trainer/main.yml?color=%238BC34A&style=for-the-badge)
 [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/ChenJyunKai/Polyglot-Trainer?include_prereleases&style=for-the-badge)](https://github.com/ChenJyunKai/Polyglot-Trainer/releases)
@@ -17,8 +19,23 @@ Language: [English](README.md) | 繁體中文
 
 - 多語言支援：從多種語言中選擇進行練習，包括英語、韓語、日語等！
 - 經驗獎勵與職業選擇：獲取經驗值並選擇不同職業，隨著訓練進展讓您的角色更強大。
-- PVE 戰鬥：參加玩家對環境（PVE）的戰鬥，正確回答可觸發不同的技能攻擊。
+- PVE 戰鬥：參加玩家對環境（PVE）的戰鬥，正確回答可觸發不同的技能攻擊（即將推出）。
 - 多人連線：與其他玩家競爭或組隊挑戰 Boss（即將推出）。
+
+## 截圖
+
+<div align=center>
+<img src="assets/screenshot/home_page.png" width = "200" />
+<img src="assets/screenshot/train_page.png" width = "200"  />
+<img src="assets/screenshot/settlement_page.png" width = "200"  />
+<img src="assets/screenshot/upgrade_page.png" width = "200" />
+<img src="assets/screenshot/skill_page.png" width = "200" />
+<img src="assets/screenshot/settings_page.png" width = "200" />
+<img src="assets/screenshot/rename_page.png" width = "200" />
+<img src="assets/screenshot/welcome_page.png" width = "200" />
+<img src="assets/screenshot/generate_page.png" width = "200" />
+<img src="assets/screenshot/settings_page_jp.png" width = "200" />
+</div>
 
 ## 貢獻
 
