@@ -74,7 +74,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
-      if (result.recognizedWords == ref.watch(wordProvider).words.first.word) {
+      if (result.recognizedWords.toLowerCase() == ref.watch(wordProvider).words.first.word.toLowerCase()) {
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
               ref.read(wordProvider.notifier).answer(_tipVisable ? 5 : 10);
               _lastWord = '';
