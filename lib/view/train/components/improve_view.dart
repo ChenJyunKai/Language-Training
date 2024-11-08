@@ -66,12 +66,12 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   }
 
   void improvedAbility() {
-    final hp = 50 + 50 * (Random().nextInt(3));
+    final hp = 50 + 25 * (Random().nextInt(3));
     final mp = 10 + 5 * (Random().nextInt(3));
-    final atk = Random().nextInt(5);
-    final def = Random().nextInt(5);
-    final agi = Random().nextInt(5);
-    final luk = Random().nextInt(5);
+    final atk = 1 + Random().nextInt(5);
+    final def = 1 + Random().nextInt(5);
+    final agi = 1 + Random().nextInt(5);
+    final luk = 1 + Random().nextInt(5);
     setState(() {
       improveAbility = AbilityEntity(
         hp: hp,
@@ -80,6 +80,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
         def: def,
         agi: agi,
         luk: luk,
+        sp: 1,
       );
     });
     improveAnimationController.forward();

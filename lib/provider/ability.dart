@@ -50,6 +50,7 @@ class Ability extends _$Ability {
       def: state.def + ability.def,
       agi: state.agi + ability.agi,
       luk: state.luk + ability.luk,
+      sp: state.sp + ability.sp,
     );
     saveData();
   }
