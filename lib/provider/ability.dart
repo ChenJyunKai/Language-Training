@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/entity/skill_entity.dart';
-import 'package:rpg/utility/role_data.dart';
+import 'package:rpg/constants/role_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'ability.g.dart';

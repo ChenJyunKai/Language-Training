@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rpg/helper/time_format.dart';
+import 'package:rpg/utils/time_format.dart';
 
 class MenuTitleView extends StatefulWidget {
   const MenuTitleView({

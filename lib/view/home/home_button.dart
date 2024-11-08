@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/button_entity.dart';
-import 'package:rpg/helper/app_theme.dart';
-import 'package:rpg/helper/hex_color.dart';
+import 'package:rpg/utils/app_theme.dart';
+import 'package:rpg/utils/hex_color.dart';
 
 class HomeButton extends StatefulWidget {
   const HomeButton({

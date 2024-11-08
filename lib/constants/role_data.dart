@@ -1,6 +1,6 @@
 import 'package:rpg/entity/ability_entity.dart';
-import 'package:rpg/helper/time_format.dart';
-import 'package:rpg/utility/skill_data.dart';
+import 'package:rpg/utils/time_format.dart';
+import 'package:rpg/constants/skill_data.dart';
 
 final s = SkillData();
 

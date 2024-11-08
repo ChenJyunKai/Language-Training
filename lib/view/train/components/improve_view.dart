@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/ability_entity.dart';
-import 'package:rpg/helper/hex_color.dart';
+import 'package:rpg/utils/hex_color.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/provider/word_provider.dart';
 import 'package:wave/config.dart';
