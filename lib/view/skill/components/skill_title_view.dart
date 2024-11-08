@@ -49,46 +49,49 @@ class _SkillTitleViewState extends ConsumerState<SkillTitleView> {
                       child: SizedBox(
                         width: double.infinity,
                         height: 160,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 220, top: 16),
-                              child: Text(
-                                ability.userName!,
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  letterSpacing: 0.0,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 220, top: 4),
-                              child: Text(
-                                ability.role!,
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 220, top: 4),
-                              child: Text(
-                                'SP : ${ability.sp}',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  color: Colors.black45,
-                                ),
+                        child: Row(
+                          children: [
+                            const Expanded(flex: 3, child: SizedBox()),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    ability.userName!,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      letterSpacing: 0.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    child: Text(
+                                      ability.role!,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        letterSpacing: 0.0,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'SP : ${ability.sp}',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      letterSpacing: 0.0,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -97,7 +100,6 @@ class _SkillTitleViewState extends ConsumerState<SkillTitleView> {
                     ),
                     Positioned(
                       top: -8,
-                      left: 6,
                       child: SizedBox(
                         width: 180,
                         height: 180,
