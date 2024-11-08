@@ -33,8 +33,48 @@ class _SkillListViewState extends ConsumerState<SkillListView> with TickerProvid
     super.dispose();
   }
 
-  Widget buildSkill(Animation<double> animation, SkillEntity skill, int skillLv) {
-    final color = skillLv == 0
+  Widget _dialog(BuildContext context, SkillEntity skill) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: Column(
+        children: [
+          Icon(skill.level == 0 ? Icons.lock_open_outlined : Icons.add_chart_outlined, size: 48),
+          Text('${skill.level == 0 ? '解鎖' : '升級'}提示', style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+      content: Builder(
+        builder: (context) {
+          return SizedBox(
+            width: 400,
+            child: Text(
+              '將對【 ${skill.skillName} 】進行${skill.level == 0 ? '解鎖' : '升級'}，確認後將消耗1技能點',
+              style: const TextStyle(fontSize: 16),
+            ),
+          );
+        },
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            ref.read(abilityProvider.notifier).skillUpgrade(skill);
+            Navigator.of(context).pop();
+          },
+          child: const Text("確定"),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(
+            "取消",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildSkill(Animation<double> animation, SkillEntity skill) {
+    final color = skill.level == 0
         ? Colors.black
         : skill.skillType == SkillType.attack
             ? Colors.red
@@ -92,10 +132,10 @@ class _SkillListViewState extends ConsumerState<SkillListView> with TickerProvid
                       ),
                       Row(
                         children: [
-                          skillLv > 0
+                          skill.level > 0
                               ? Padding(
                                   padding: const EdgeInsets.only(right: 20),
-                                  child: Text('LV. ${skillLv == 5 ? 'Max' : skillLv}'),
+                                  child: Text('LV. ${skill.level == 5 ? 'Max' : skill.level}'),
                                 )
                               : const SizedBox(),
                           const Icon(Icons.hourglass_empty_outlined, size: 18),
@@ -106,12 +146,27 @@ class _SkillListViewState extends ConsumerState<SkillListView> with TickerProvid
                   ),
                   subtitle: Text(skill.skillDescription),
                   trailing: IconButton(
-                    onPressed: skillLv == 5 ? null : () {},
+                    onPressed: skill.level == 5
+                        ? null
+                        : ref.watch(abilityProvider).sp > 0
+                            ? () => showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (ctx, a1, a2) => const SizedBox(),
+                                  transitionBuilder: (ctx, a1, a2, child) {
+                                    final curve = Curves.easeInOut.transform(a1.value);
+                                    return Transform.scale(
+                                      scale: curve,
+                                      child: _dialog(ctx, skill),
+                                    );
+                                  },
+                                  transitionDuration: const Duration(milliseconds: 300),
+                                )
+                            : () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('技能點不足'))),
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
                       visualDensity: VisualDensity.compact,
                     ),
-                    icon: Icon(skillLv > 0 ? Icons.upload_outlined : Icons.lock_open_outlined),
+                    icon: Icon(skill.level > 0 ? Icons.upload_outlined : Icons.lock_open_outlined),
                   ),
                 ),
               ),
@@ -124,7 +179,6 @@ class _SkillListViewState extends ConsumerState<SkillListView> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final skillLv = ref.watch(abilityProvider).skillLv;
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: AnimatedBuilder(
@@ -136,70 +190,20 @@ class _SkillListViewState extends ConsumerState<SkillListView> with TickerProvid
               transform: Matrix4.translationValues(0.0, 30 * (1.0 - widget.mainAnimation.value), 0.0),
               child: Column(
                 children: [
-                  buildSkill(
-                    Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: const Interval((1 / 5) * 1, 1.0, curve: Curves.fastOutSlowIn),
+                  for (final skill in ref.watch(abilityProvider).skill)
+                    buildSkill(
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(
+                          parent: animationController,
+                          curve: Interval(
+                            (1 / 5) * ((ref.watch(abilityProvider).skill.indexWhere((e) => e.skillCode == skill.skillCode) + 1)),
+                            1.0,
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                        ),
                       ),
+                      skill,
                     ),
-                    SkillEntity(
-                      skillName: '斬擊',
-                      skillDescription: '強力打擊敵人造成物理傷害',
-                      levelRestriction: 0,
-                      coolDown: 3,
-                      skillType: SkillType.attack,
-                    ),
-                    skillLv[0],
-                  ),
-                  buildSkill(
-                    Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: const Interval((1 / 5) * 2, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    ),
-                    SkillEntity(
-                      skillName: '橫揮斬',
-                      skillDescription: '揮動武器對全體敵人造成物理傷害',
-                      levelRestriction: 0,
-                      coolDown: 3,
-                      skillType: SkillType.attack,
-                    ),
-                    skillLv[1],
-                  ),
-                  buildSkill(
-                    Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: const Interval((1 / 5) * 3, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    ),
-                    SkillEntity(
-                      skillName: '守護',
-                      skillDescription: '短時間增加施術者的防禦數值',
-                      levelRestriction: 0,
-                      coolDown: 3,
-                      skillType: SkillType.gain,
-                    ),
-                    skillLv[2],
-                  ),
-                  buildSkill(
-                    Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: const Interval((1 / 5) * 4, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    ),
-                    SkillEntity(
-                      skillName: '治療術',
-                      skillDescription: '恢復自身失去的部分生命值',
-                      levelRestriction: 0,
-                      coolDown: 3,
-                      skillType: SkillType.recovery,
-                    ),
-                    skillLv[3],
-                  ),
                 ],
               ),
             ),

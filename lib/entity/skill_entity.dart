@@ -1,40 +1,22 @@
-class SkillEntity {
-  SkillEntity({
-    required this.skillName,
-    required this.skillDescription,
-    required this.levelRestriction,
-    required this.coolDown,
-    required this.skillType,
-    this.fixedDamage,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String skillName;
-  final String skillDescription;
-  final int levelRestriction;
-  final int coolDown;
-  final SkillType skillType;
-  final int? fixedDamage;
+part 'skill_entity.freezed.dart';
 
-  factory SkillEntity.fromJson(Map<String, dynamic> json) => SkillEntity(
-        skillName: json["skillName"],
-        skillDescription: json["skillDescription"],
-        levelRestriction: json["levelRestriction"],
-        coolDown: json["coolDown"],
-        skillType: SkillType.values.firstWhere(
-          (e) => e.toString().split('.').last == json["skillType"],
-          orElse: () => SkillType.attack,
-        ),
-        fixedDamage: json["fixedDamage"],
-      );
+part 'skill_entity.g.dart';
 
-  Map<String, dynamic> toJson() => {
-        "skillName": skillName,
-        "skillDescription": skillDescription,
-        "levelRestriction": levelRestriction,
-        "coolDown": coolDown,
-        "skillType": skillType.toString().split('.').last,
-        "fixedDamage": fixedDamage,
-      };
+@freezed
+class SkillEntity with _$SkillEntity {
+  const factory SkillEntity({
+    @Default('') String skillCode,
+    @Default('') String skillName,
+    @Default('') String skillDescription,
+    @Default(0) int levelRestriction,
+    @Default(0) int coolDown,
+    @Default(SkillType.attack) SkillType skillType,
+    @Default(0) level,
+  }) = _SkillEntity;
+
+  factory SkillEntity.fromJson(Map<String, dynamic> json) => _$SkillEntityFromJson(json);
 }
 
 enum SkillType { attack, gain, recovery }

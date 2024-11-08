@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rpg/entity/skill_entity.dart';
 
 part 'ability_entity.freezed.dart';
-
 part 'ability_entity.g.dart';
 
 @freezed
@@ -19,7 +19,8 @@ class AbilityEntity with _$AbilityEntity {
     @Default(0) int def,
     @Default(0) int agi,
     @Default(0) int luk,
-    @Default([0, 0, 0, 0]) List<int> skillLv,
+    @Default(0) int sp, // 技能點
+    @Default([]) List<SkillEntity> skill,
   }) = _AbilityEntity;
 
   factory AbilityEntity.fromJson(Map<String, dynamic> json) => _$AbilityEntityFromJson(json);

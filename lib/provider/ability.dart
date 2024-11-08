@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rpg/entity/ability_entity.dart';
+import 'package:rpg/entity/skill_entity.dart';
 import 'package:rpg/utility/role_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +25,7 @@ class Ability extends _$Ability {
     }
   }
 
-  // 獲取當前角色數據
+  // 讀檔
   void getAbility() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     state = AbilityEntity.fromJson(jsonDecode(prefs.getString('ability')!));
@@ -58,6 +59,16 @@ class Ability extends _$Ability {
     await Future.delayed(const Duration(seconds: 1), () => state = state.copyWith(userName: name));
     saveData();
     return true;
+  }
+
+  // 學習技能
+  void skillUpgrade(SkillEntity skill) {
+    final newSkill = skill.copyWith(level: skill.level + 1);
+    state = state.copyWith(
+      sp: state.sp - 1,
+      skill: state.skill.map((s) => s.skillCode == newSkill.skillCode ? newSkill : s).toList(),
+    );
+    saveData();
   }
 
   void removeData() async {

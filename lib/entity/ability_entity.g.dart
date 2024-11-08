@@ -22,10 +22,11 @@ _$AbilityEntityImpl _$$AbilityEntityImplFromJson(Map<String, dynamic> json) =>
       def: (json['def'] as num?)?.toInt() ?? 0,
       agi: (json['agi'] as num?)?.toInt() ?? 0,
       luk: (json['luk'] as num?)?.toInt() ?? 0,
-      skillLv: (json['skillLv'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
+      sp: (json['sp'] as num?)?.toInt() ?? 0,
+      skill: (json['skill'] as List<dynamic>?)
+              ?.map((e) => SkillEntity.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const [0, 0, 0, 0],
+          const [],
     );
 
 Map<String, dynamic> _$$AbilityEntityImplToJson(_$AbilityEntityImpl instance) =>
@@ -42,7 +43,8 @@ Map<String, dynamic> _$$AbilityEntityImplToJson(_$AbilityEntityImpl instance) =>
       'def': instance.def,
       'agi': instance.agi,
       'luk': instance.luk,
-      'skillLv': instance.skillLv,
+      'sp': instance.sp,
+      'skill': instance.skill,
     };
 
 _$RoleImpl _$$RoleImplFromJson(Map<String, dynamic> json) => _$RoleImpl(

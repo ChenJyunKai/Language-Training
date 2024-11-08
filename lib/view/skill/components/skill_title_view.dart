@@ -51,6 +51,7 @@ class _SkillTitleViewState extends ConsumerState<SkillTitleView> {
                         height: 160,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(left: 220, top: 16),
@@ -65,9 +66,22 @@ class _SkillTitleViewState extends ConsumerState<SkillTitleView> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 220, bottom: 20, top: 4),
+                              padding: const EdgeInsets.only(left: 220, top: 4),
                               child: Text(
                                 ability.role!,
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  letterSpacing: 0.0,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 220, top: 4),
+                              child: Text(
+                                'SP : ${ability.sp}',
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,

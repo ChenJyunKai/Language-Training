@@ -32,7 +32,8 @@ mixin _$AbilityEntity {
   int get def => throw _privateConstructorUsedError;
   int get agi => throw _privateConstructorUsedError;
   int get luk => throw _privateConstructorUsedError;
-  List<int> get skillLv => throw _privateConstructorUsedError;
+  int get sp => throw _privateConstructorUsedError; // 技能點
+  List<SkillEntity> get skill => throw _privateConstructorUsedError;
 
   /// Serializes this AbilityEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -63,7 +64,8 @@ abstract class $AbilityEntityCopyWith<$Res> {
       int def,
       int agi,
       int luk,
-      List<int> skillLv});
+      int sp,
+      List<SkillEntity> skill});
 
   $RoleCopyWith<$Res>? get roleData;
 }
@@ -95,7 +97,8 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
     Object? def = null,
     Object? agi = null,
     Object? luk = null,
-    Object? skillLv = null,
+    Object? sp = null,
+    Object? skill = null,
   }) {
     return _then(_value.copyWith(
       userName: freezed == userName
@@ -146,10 +149,14 @@ class _$AbilityEntityCopyWithImpl<$Res, $Val extends AbilityEntity>
           ? _value.luk
           : luk // ignore: cast_nullable_to_non_nullable
               as int,
-      skillLv: null == skillLv
-          ? _value.skillLv
-          : skillLv // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      sp: null == sp
+          ? _value.sp
+          : sp // ignore: cast_nullable_to_non_nullable
+              as int,
+      skill: null == skill
+          ? _value.skill
+          : skill // ignore: cast_nullable_to_non_nullable
+              as List<SkillEntity>,
     ) as $Val);
   }
 
@@ -189,7 +196,8 @@ abstract class _$$AbilityEntityImplCopyWith<$Res>
       int def,
       int agi,
       int luk,
-      List<int> skillLv});
+      int sp,
+      List<SkillEntity> skill});
 
   @override
   $RoleCopyWith<$Res>? get roleData;
@@ -220,7 +228,8 @@ class __$$AbilityEntityImplCopyWithImpl<$Res>
     Object? def = null,
     Object? agi = null,
     Object? luk = null,
-    Object? skillLv = null,
+    Object? sp = null,
+    Object? skill = null,
   }) {
     return _then(_$AbilityEntityImpl(
       userName: freezed == userName
@@ -271,10 +280,14 @@ class __$$AbilityEntityImplCopyWithImpl<$Res>
           ? _value.luk
           : luk // ignore: cast_nullable_to_non_nullable
               as int,
-      skillLv: null == skillLv
-          ? _value._skillLv
-          : skillLv // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      sp: null == sp
+          ? _value.sp
+          : sp // ignore: cast_nullable_to_non_nullable
+              as int,
+      skill: null == skill
+          ? _value._skill
+          : skill // ignore: cast_nullable_to_non_nullable
+              as List<SkillEntity>,
     ));
   }
 }
@@ -295,8 +308,9 @@ class _$AbilityEntityImpl implements _AbilityEntity {
       this.def = 0,
       this.agi = 0,
       this.luk = 0,
-      final List<int> skillLv = const [0, 0, 0, 0]})
-      : _skillLv = skillLv;
+      this.sp = 0,
+      final List<SkillEntity> skill = const []})
+      : _skill = skill;
 
   factory _$AbilityEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$AbilityEntityImplFromJson(json);
@@ -338,18 +352,23 @@ class _$AbilityEntityImpl implements _AbilityEntity {
   @override
   @JsonKey()
   final int luk;
-  final List<int> _skillLv;
   @override
   @JsonKey()
-  List<int> get skillLv {
-    if (_skillLv is EqualUnmodifiableListView) return _skillLv;
+  final int sp;
+// 技能點
+  final List<SkillEntity> _skill;
+// 技能點
+  @override
+  @JsonKey()
+  List<SkillEntity> get skill {
+    if (_skill is EqualUnmodifiableListView) return _skill;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_skillLv);
+    return EqualUnmodifiableListView(_skill);
   }
 
   @override
   String toString() {
-    return 'AbilityEntity(userName: $userName, role: $role, roleData: $roleData, lv: $lv, exp: $exp, expL: $expL, hp: $hp, mp: $mp, atk: $atk, def: $def, agi: $agi, luk: $luk, skillLv: $skillLv)';
+    return 'AbilityEntity(userName: $userName, role: $role, roleData: $roleData, lv: $lv, exp: $exp, expL: $expL, hp: $hp, mp: $mp, atk: $atk, def: $def, agi: $agi, luk: $luk, sp: $sp, skill: $skill)';
   }
 
   @override
@@ -371,7 +390,8 @@ class _$AbilityEntityImpl implements _AbilityEntity {
             (identical(other.def, def) || other.def == def) &&
             (identical(other.agi, agi) || other.agi == agi) &&
             (identical(other.luk, luk) || other.luk == luk) &&
-            const DeepCollectionEquality().equals(other._skillLv, _skillLv));
+            (identical(other.sp, sp) || other.sp == sp) &&
+            const DeepCollectionEquality().equals(other._skill, _skill));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -390,7 +410,8 @@ class _$AbilityEntityImpl implements _AbilityEntity {
       def,
       agi,
       luk,
-      const DeepCollectionEquality().hash(_skillLv));
+      sp,
+      const DeepCollectionEquality().hash(_skill));
 
   /// Create a copy of AbilityEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -422,7 +443,8 @@ abstract class _AbilityEntity implements AbilityEntity {
       final int def,
       final int agi,
       final int luk,
-      final List<int> skillLv}) = _$AbilityEntityImpl;
+      final int sp,
+      final List<SkillEntity> skill}) = _$AbilityEntityImpl;
 
   factory _AbilityEntity.fromJson(Map<String, dynamic> json) =
       _$AbilityEntityImpl.fromJson;
@@ -452,7 +474,9 @@ abstract class _AbilityEntity implements AbilityEntity {
   @override
   int get luk;
   @override
-  List<int> get skillLv;
+  int get sp; // 技能點
+  @override
+  List<SkillEntity> get skill;
 
   /// Create a copy of AbilityEntity
   /// with the given fields replaced by the non-null parameter values.

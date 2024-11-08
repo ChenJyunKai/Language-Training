@@ -1,5 +1,8 @@
 import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/helper/time_format.dart';
+import 'package:rpg/utility/skill_data.dart';
+
+final s = SkillData();
 
 // 冒險者
 final adventurerAbility = AbilityEntity(
@@ -15,7 +18,7 @@ final adventurerAbility = AbilityEntity(
   def: 25,
   agi: 10,
   luk: 10,
-  skillLv: [1, 0, 0, 0],
+  skill: [s.a001, s.a002, s.a003, s.a004],
 );
 
 const adventurer = Role(
@@ -37,7 +40,8 @@ final gmAbility = AbilityEntity(
   def: 9999,
   agi: 9999,
   luk: 9999,
-  skillLv: [5, 5, 5, 5],
+  sp: 199,
+  skill: [s.a001, s.a002, s.a003, s.a004],
 );
 
 const gm = Role(

@@ -6,7 +6,7 @@ part of 'ability.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$abilityHash() => r'42fba5a2e49e2d62dbd17b3ccb8b15d87f98d044';
+String _$abilityHash() => r'f5fc9a27e0954826f7990691bf0c2783725486ed';
 
 /// See also [Ability].
 @ProviderFor(Ability)
