@@ -2,6 +2,7 @@ import 'package:rpg/router/routes.dart';
 
 class HomeButtonEntity {
   HomeButtonEntity({
+    this.index = 0,
     this.imagePath = '',
     this.imageSize = 0,
     this.imageTopPosition = -40,
@@ -11,6 +12,7 @@ class HomeButtonEntity {
     this.navigatorUrl,
   });
 
+  final int index;
   final String imagePath;
   final double imageSize;
   final double imageTopPosition;
@@ -21,6 +23,7 @@ class HomeButtonEntity {
 
   static List<HomeButtonEntity> list = <HomeButtonEntity>[
     HomeButtonEntity(
+      index: 0,
       imagePath: 'assets/lottie/dog.json',
       imageSize: 130,
       startColor: '#FA7D82',
@@ -28,6 +31,7 @@ class HomeButtonEntity {
       navigatorUrl: trainUrl,
     ),
     HomeButtonEntity(
+      index: 1,
       imagePath: 'assets/lottie/chat.json',
       imageSize: 120,
       startColor: '#FF5287',
@@ -35,6 +39,7 @@ class HomeButtonEntity {
       navigatorUrl: skillUrl,
     ),
     HomeButtonEntity(
+      index: 2,
       imagePath: 'assets/lottie/sword.json',
       imageSize: 200,
       imageTopPosition: -50,
@@ -44,6 +49,7 @@ class HomeButtonEntity {
       navigatorUrl: battleUrl,
     ),
     HomeButtonEntity(
+      index: 3,
       imagePath: 'assets/lottie/setting.json',
       imageSize: 120,
       startColor: '#46A3FF',

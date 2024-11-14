@@ -16,10 +16,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool _showFrontSide = true;
   final bool _flipXAxis = true;
   DateTime? lastPressedAt;
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController = AnimationController(duration: const Duration(milliseconds: 1600), vsync: this)..forward();
+    super.initState();
+  }
 
   bool closeOnConfirm() {
     DateTime now = DateTime.now();
@@ -68,7 +75,8 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               children: [
-                for (HomeButtonEntity data in HomeButtonEntity.list) HomeButton(data: data),
+                for (HomeButtonEntity data in HomeButtonEntity.list)
+                  HomeButton(data: data, animationController: animationController),
               ],
             ),
           ],

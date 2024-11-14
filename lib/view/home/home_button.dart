@@ -8,23 +8,30 @@ import 'package:rpg/utils/hex_color.dart';
 class HomeButton extends StatefulWidget {
   const HomeButton({
     Key? key,
+    required this.animationController,
     required this.data,
   }) : super(key: key);
 
+  final AnimationController animationController;
   final HomeButtonEntity data;
 
   @override
   State<HomeButton> createState() => _HomeButtonState();
 }
 
-class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
-  AnimationController? animationController;
+class _HomeButtonState extends State<HomeButton> {
+  late Animation<double> _animation;
   late AppLocalizations _str;
   late List<String> _title;
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1600), vsync: this);
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: widget.animationController,
+        curve: Interval((1 / 4) * widget.data.index, 1.0, curve: Curves.fastOutSlowIn),
+      ),
+    );
     super.initState();
   }
 
@@ -37,27 +44,19 @@ class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    animationController?.dispose();
+    widget.animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final index = HomeButtonEntity.list.indexWhere((e) => e == widget.data);
-    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: animationController!,
-        curve: Interval((1 / 4) * index, 1.0, curve: Curves.fastOutSlowIn),
-      ),
-    );
-    animationController?.forward();
     return AnimatedBuilder(
-      animation: animationController!,
+      animation: widget.animationController,
       builder: (context, child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: _animation,
           child: Transform(
-            transform: Matrix4.translationValues(100 * (1.0 - animation.value), 0.0, 0.0),
+            transform: Matrix4.translationValues(100 * (1.0 - _animation.value), 0.0, 0.0),
             child: GestureDetector(
               onTap: () => Navigator.pushNamed(context, widget.data.navigatorUrl!),
               child: Stack(
@@ -86,7 +85,7 @@ class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              _title[index],
+                              _title[widget.data.index],
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontFamily: AppTheme.fontName,
