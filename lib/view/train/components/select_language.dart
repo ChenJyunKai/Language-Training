@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/entity/language_entity.dart';
 import 'package:rpg/provider/word.dart';
 
 class SelectLanguage extends ConsumerWidget {
@@ -10,6 +9,12 @@ class SelectLanguage extends ConsumerWidget {
   });
 
   final AnimationController animationController;
+
+  static List<Language> languages = [
+    Language(name: '日語', id: 'ja_JA'),
+    Language(name: '英語', id: 'en_US'),
+    Language(name: '韓語', id: 'ko_KR'),
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,11 +43,11 @@ class SelectLanguage extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (Language i in Language.list)
+                  for (Language i in languages)
                     SlideTransition(
                       position: Tween(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
                         parent: animationController,
-                        curve: Interval(0.05 * Language.list.indexWhere((e) => e == i), 0.333, curve: Curves.fastOutSlowIn),
+                        curve: Interval(0.05 * languages.indexWhere((e) => e == i), 0.333, curve: Curves.fastOutSlowIn),
                       )),
                       child: SizedBox(
                         height: 50,
@@ -68,4 +73,14 @@ class SelectLanguage extends ConsumerWidget {
       },
     );
   }
+}
+
+class Language {
+  Language({
+    required this.name,
+    required this.id,
+  });
+
+  final String name;
+  final String id;
 }

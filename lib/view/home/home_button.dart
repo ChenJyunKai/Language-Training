@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/entity/button_entity.dart';
+import 'package:rpg/constants/home_button_data.dart';
 import 'package:rpg/utils/app_localizations.dart';
 import 'package:rpg/utils/app_theme.dart';
 import 'package:rpg/utils/hex_color.dart';
@@ -11,7 +11,7 @@ class HomeButton extends StatefulWidget {
     required this.data,
   }) : super(key: key);
 
-  final ButtonEntity data;
+  final HomeButtonEntity data;
 
   @override
   State<HomeButton> createState() => _HomeButtonState();
@@ -43,7 +43,7 @@ class _HomeButtonState extends State<HomeButton> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final index = ButtonEntity.home.indexWhere((e) => e == widget.data);
+    final index = HomeButtonEntity.list.indexWhere((e) => e == widget.data);
     final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: animationController!,

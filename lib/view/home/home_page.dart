@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/entity/button_entity.dart';
+import 'package:rpg/constants/home_button_data.dart';
 import 'package:rpg/utils/app_theme.dart';
 import 'package:rpg/view/home/ability_view.dart';
 import 'package:rpg/view/home/home_button.dart';
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               children: [
-                for (ButtonEntity data in ButtonEntity.home) HomeButton(data: data),
+                for (HomeButtonEntity data in HomeButtonEntity.list) HomeButton(data: data),
               ],
             ),
           ],

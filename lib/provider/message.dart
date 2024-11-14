@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/entity/message_entity.dart';
 
 final messageProvider = StateNotifierProvider<MessageData, List<Message>>((ref) => MessageData());
 
@@ -10,3 +9,14 @@ class MessageData extends StateNotifier<List<Message>> {
     state = [message, ...state];
   }
 }
+
+class Message {
+  Message({
+    required this.isBot,
+    required this.message,
+  });
+
+  final bool isBot;
+  final String message;
+}
+
