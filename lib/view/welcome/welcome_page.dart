@@ -36,34 +36,32 @@ class _WelcomePageState extends ConsumerState<WelcomePage> with TickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF7EBE1),
-      body: ClipRect(
-        child: Stack(
-          children: [
-            OpeningView(
-              animationController: _animationController!,
-            ),
-            BreakfastView(
-              animationController: _animationController!,
-              onNextClick: _onNextClick,
-            ),
-            IslandView(
-              animationController: _animationController!,
-              onNextClick: _onNextClick,
-            ),
-            GreetView(
-              animationController: _animationController!,
-              onNextClick: _onNextClick,
-            ),
-            WelcomeView(
-              animationController: _animationController!,
-            ),
-            TopBackSkipView(
-              onBackClick: _onBackClick,
-              onSkipClick: _onSkipClick,
-              animationController: _animationController!,
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          OpeningView(
+            animationController: _animationController!,
+          ),
+          BreakfastView(
+            animationController: _animationController!,
+            onNextClick: _onNextClick,
+          ),
+          IslandView(
+            animationController: _animationController!,
+            onNextClick: _onNextClick,
+          ),
+          GreetView(
+            animationController: _animationController!,
+            onNextClick: _onNextClick,
+          ),
+          WelcomeView(
+            animationController: _animationController!,
+          ),
+          TopBackSkipView(
+            onBackClick: _onBackClick,
+            onSkipClick: _onSkipClick,
+            animationController: _animationController!,
+          ),
+        ],
       ),
     );
   }

@@ -12,68 +12,34 @@ class GreetView extends StatelessWidget {
   final Function(int) onNextClick;
   static const List<String> options = ["喵哈囉~☆", "我一個人住", "決鬥!! 由我先攻", "小孩的名子就叫.."];
 
+  Animation<Offset> createSlideAnimation(double begin, double end, double startInterval, double endInterval) {
+    return Tween<Offset>(begin: Offset(begin, 0), end: Offset(end, 0)).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Interval(startInterval, endInterval, curve: Curves.fastOutSlowIn),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final firstHalfAnimation = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.5,
-        0.75,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
-    final secondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-1, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
-
-    final moodFirstHalfAnimation = Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.5,
-        0.75,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
-    final moodSecondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
-    final imageFirstHalfAnimation = Tween<Offset>(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
-    final imageSecondHalfAnimation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
-      parent: animationController,
-      curve: const Interval(
-        0.5,
-        0.75,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
+    final titleFirstHalfAnimation = createSlideAnimation(1, 0, 0.5, 0.75);
+    final titleSecondHalfAnimation = createSlideAnimation(0, -1, 0.75, 1);
+    final optionsFirstAnimation = createSlideAnimation(2, 0, 0.5, 0.75);
+    final optoionsSecondAnimation = createSlideAnimation(0, -2, 0.75, 1);
+    final imageFirstHalfAnimation = createSlideAnimation(4, 0, 0.5, 0.75);
+    final imageSecondHalfAnimation = createSlideAnimation(0, -4, 0.75, 1);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SlideTransition(
-          position: firstHalfAnimation,
-          child: SlideTransition(
-            position: secondHalfAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SlideTransition(
+              position: titleFirstHalfAnimation,
+              child: SlideTransition(
+                position: titleSecondHalfAnimation,
+                child: Container(
                   padding: const EdgeInsets.only(top: 16),
                   width: constraints.maxWidth,
                   child: const Text(
@@ -82,44 +48,45 @@ class GreetView extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SlideTransition(
-                  position: moodFirstHalfAnimation,
-                  child: SlideTransition(
-                    position: moodSecondHalfAnimation,
-                    child: Container(
-                      height: constraints.maxHeight * 0.4,
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          for (String i in options)
-                            SizedBox(
-                              height: 50,
-                              width: constraints.maxWidth * 0.7,
-                              child: ElevatedButton(
-                                onPressed: () => onNextClick(options.indexOf(i)),
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: Colors.white,
-                                ),
-                                child: Text(i, style: const TextStyle(fontSize: 20)),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SlideTransition(
-                  position: imageFirstHalfAnimation,
-                  child: SlideTransition(
-                    position: imageSecondHalfAnimation,
-                    child: Lottie.asset('assets/lottie/felix.json', height: 230),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            SlideTransition(
+              position: optionsFirstAnimation,
+              child: SlideTransition(
+                position: optoionsSecondAnimation,
+                child: Container(
+                  height: constraints.maxHeight * 0.4,
+                  width: constraints.maxWidth,
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (String i in options)
+                        SizedBox(
+                          height: 50,
+                          width: constraints.maxWidth * 0.7,
+                          child: ElevatedButton(
+                            onPressed: () => onNextClick(options.indexOf(i)),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.black,
+                              backgroundColor: Colors.white,
+                            ),
+                            child: Text(i, style: const TextStyle(fontSize: 20)),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SlideTransition(
+              position: imageFirstHalfAnimation,
+              child: SlideTransition(
+                position: imageSecondHalfAnimation,
+                child: Lottie.asset('assets/lottie/felix.json', height: 230),
+              ),
+            ),
+          ],
         );
       },
     );

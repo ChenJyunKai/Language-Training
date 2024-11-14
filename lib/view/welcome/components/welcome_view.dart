@@ -17,46 +17,29 @@ class WelcomeView extends ConsumerStatefulWidget {
 }
 
 class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController = AnimationController(
-    duration: const Duration(seconds: 1),
-    vsync: this,
-  );
-  late final Animation<double> _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-    CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeIn,
-    ),
-  );
-  late final firstHalfAnimation = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(
-    CurvedAnimation(
-      parent: widget.animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
       ),
-    ),
-  );
-  late final welcomeFirstHalfAnimation = Tween<Offset>(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(
-    CurvedAnimation(
-      parent: widget.animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  Animation<Offset> createSlideAnimation(double begin) {
+    return Tween<Offset>(begin: Offset(begin, 0), end: const Offset(0, 0)).animate(
+      CurvedAnimation(
+        parent: widget.animationController,
+        curve: const Interval(0.75, 1, curve: Curves.fastOutSlowIn),
       ),
-    ),
-  );
-  late final welcomeImageAnimation = Tween<Offset>(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(
-    CurvedAnimation(
-      parent: widget.animationController,
-      curve: const Interval(
-        0.75,
-        1,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ),
-  );
+    );
+  }
 
   @override
   void dispose() {
@@ -71,25 +54,25 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
         return SizedBox(
           width: constraints.maxWidth,
           child: SlideTransition(
-            position: firstHalfAnimation,
-            child: ref.watch(abilityProvider).roleData != null ? buildFadeTransition() : buildColumn(),
+            position: createSlideAnimation(1),
+            child: ref.watch(abilityProvider).roleData != null ? buildRole() : buildLoading(),
           ),
         );
       },
     );
   }
 
-  Widget buildColumn() {
+  Widget buildLoading() {
     _animationController.animateTo(0);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SlideTransition(
-          position: welcomeImageAnimation,
+          position: createSlideAnimation(4),
           child: Lottie.asset('assets/lottie/rikka.json', height: 250),
         ),
         SlideTransition(
-          position: welcomeFirstHalfAnimation,
+          position: createSlideAnimation(2),
           child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 32),
             child: Text('角色生成中...', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
@@ -99,32 +82,26 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> with SingleTickerProv
     );
   }
 
-  FadeTransition buildFadeTransition() {
+  FadeTransition buildRole() {
     _animationController.animateTo(1);
     return FadeTransition(
-      opacity: _animation,
+      opacity: _fadeAnimation,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SlideTransition(
-            position: welcomeImageAnimation,
-            child: Lottie.asset(ref.watch(abilityProvider).roleData!.imageAsset!, height: 250),
-          ),
-          SlideTransition(
-            position: welcomeFirstHalfAnimation,
-            child: RichText(
-              text: TextSpan(
-                text: "你的職業為",
-                style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black),
-                children: [
-                  TextSpan(
-                    text: "「${ref.watch(abilityProvider).role}」",
-                    style: const TextStyle(fontSize: 28, color: Colors.black54),
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
+          Lottie.asset(ref.watch(abilityProvider).roleData!.imageAsset!, height: 250),
+          RichText(
+            text: TextSpan(
+              text: "你的職業為",
+              style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black),
+              children: [
+                TextSpan(
+                  text: "「${ref.watch(abilityProvider).role}」",
+                  style: const TextStyle(fontSize: 28, color: Colors.black54),
+                ),
+              ],
             ),
+            textAlign: TextAlign.center,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24, left: 64, right: 64, bottom: 48),
