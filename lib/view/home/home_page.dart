@@ -24,8 +24,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1600), vsync: this)..forward();
     super.initState();
+    animationController = AnimationController(duration: const Duration(milliseconds: 1600), vsync: this)..forward();
   }
 
   bool closeOnConfirm() {

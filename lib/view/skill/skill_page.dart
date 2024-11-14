@@ -45,6 +45,12 @@ class _SkillPageState extends State<SkillPage> with TickerProviderStateMixin {
     addAllWidget();
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void addAllWidget() {
     _listViews.add(SkillTitleView(
       mainAnimationController: _animationController,

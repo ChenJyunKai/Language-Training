@@ -28,25 +28,26 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   late AbilityEntity ability;
   AbilityEntity improveAbility = const AbilityEntity();
 
-  late AnimationController fadeAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-  late AnimationController levelUpAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-  late AnimationController improveAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-  late AnimationController nextAnimationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-  late Animation<double> nextAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-    parent: nextAnimationController,
-    curve: const Interval(0, 1, curve: Curves.easeIn),
-  ));
+  late AnimationController fadeAnimationController;
+  late AnimationController levelUpAnimationController;
+  late AnimationController improveAnimationController;
+  late AnimationController nextAnimationController;
+  late Animation<double> nextAnimation;
 
   @override
   void initState() {
+    super.initState();
     Future.delayed(Duration.zero, () {
       ability = ref.watch(abilityProvider);
     });
-    super.initState();
+    fadeAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
+    levelUpAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    improveAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    nextAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    nextAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: nextAnimationController,
+      curve: const Interval(0, 1, curve: Curves.easeIn),
+    ));
   }
 
   @override
@@ -58,13 +59,6 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return (ref.watch(quizProvider).exp != null && widget.animationController.value == 1)
-        ? buildSlideTransition()
-        : buildColumn();
-  }
-
   void improvedAbility() {
     final hp = 50 + 25 * (Random().nextInt(3));
     final mp = 10 + 5 * (Random().nextInt(3));
@@ -73,17 +67,16 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     final agi = 1 + Random().nextInt(5);
     final luk = 1 + Random().nextInt(5);
     setState(() {
-      improveAbility = AbilityEntity(
-        hp: hp,
-        mp: mp,
-        atk: atk,
-        def: def,
-        agi: agi,
-        luk: luk,
-        sp: 1,
-      );
+      improveAbility = AbilityEntity(hp: hp, mp: mp, atk: atk, def: def, agi: agi, luk: luk, sp: 1);
     });
     improveAnimationController.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (ref.watch(quizProvider).exp != null && widget.animationController.value == 1)
+        ? buildSlideTransition()
+        : buildColumn();
   }
 
   Widget buildColumn() {

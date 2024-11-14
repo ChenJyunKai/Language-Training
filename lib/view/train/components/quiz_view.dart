@@ -217,7 +217,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                           setState(() {
                                             _isCalculate = true;
                                           });
-                                          widget.animationController.animateTo(0.666);
+                                          widget.animationController.animateTo(2 / 3);
                                         }
                                       },
                                       icon: const Icon(Icons.skip_next, size: 30),

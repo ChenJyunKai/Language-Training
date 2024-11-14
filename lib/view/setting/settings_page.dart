@@ -12,24 +12,22 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> with TickerProviderStateMixin {
-  late AnimationController animationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1000),
-  );
-  final TextEditingController editingController = TextEditingController();
+  late AnimationController _animationController;
+  final TextEditingController _editingController = TextEditingController();
 
   @override
   void initState() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     Future.delayed(Duration.zero, () {
-      editingController.text = ref.watch(abilityProvider).userName!;
+      _editingController.text = ref.watch(abilityProvider).userName!;
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
-    editingController.dispose();
+    _animationController.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 
@@ -39,11 +37,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> with TickerProvider
       body: Stack(
         children: [
           MenuView(
-            animationController: animationController,
+            animationController: _animationController,
           ),
           RenameView(
-            animationController: animationController,
-            editingController: editingController,
+            animationController: _animationController,
+            editingController: _editingController,
           ),
         ],
       ),

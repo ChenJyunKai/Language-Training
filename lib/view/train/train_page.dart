@@ -14,57 +14,59 @@ class TrainPage extends StatefulWidget {
 }
 
 class _TrainPageState extends State<TrainPage> with TickerProviderStateMixin {
-  late AnimationController animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
-  late AnimationController fadeAnimationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 600),
-  );
+  late AnimationController _animationController;
+  late AnimationController _fadeAnimationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    _fadeAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+  }
 
   @override
   void dispose() {
-    animationController.dispose();
-    fadeAnimationController.dispose();
+    _animationController.dispose();
+    _fadeAnimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ClipRect(
-        child: Stack(
-          children: [
-            SelectLanguage(
-              animationController: animationController,
-            ),
-            RuleView(
-              fadeAnimationController: fadeAnimationController,
-              animationController: animationController,
-            ),
-            QuizView(
-              fadeAnimationController: fadeAnimationController,
-              animationController: animationController,
-            ),
-            CalculateView(
-              animationController: animationController,
-            ),
-            ImproveView(
-              animationController: animationController,
-            ),
-            TopBackView(
-              onBackClick: _onBackClick,
-              animationController: fadeAnimationController,
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SelectLanguage(
+            animationController: _animationController,
+          ),
+          RuleView(
+            fadeAnimationController: _fadeAnimationController,
+            animationController: _animationController,
+          ),
+          QuizView(
+            fadeAnimationController: _fadeAnimationController,
+            animationController: _animationController,
+          ),
+          CalculateView(
+            animationController: _animationController,
+          ),
+          ImproveView(
+            animationController: _animationController,
+          ),
+          TopBackView(
+            onBackClick: _onBackClick,
+            animationController: _fadeAnimationController,
+          ),
+        ],
       ),
     );
   }
 
   void _onBackClick() {
-    if (animationController.value == 0) {
-      Navigator.pop(context);
-    } else if (animationController.value > 0 && animationController.value <= 1 / 3) {
-      animationController.animateTo(0.0);
+    if (_animationController.value == 0) {
+      Navigator.maybePop(context);
+    } else if (_animationController.value > 0 && _animationController.value <= 1 / 3) {
+      _animationController.animateTo(0.0);
     }
   }
 }

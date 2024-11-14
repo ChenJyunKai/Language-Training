@@ -16,17 +16,20 @@ class CalculateView extends ConsumerStatefulWidget {
 }
 
 class _CalculateViewState extends ConsumerState<CalculateView> with TickerProviderStateMixin {
-  late AnimationController fadeAnimaionController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1500),
-  );
+  late AnimationController _fadeAnimaionController;
 
   static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 (*´▽`*)', '才華橫溢 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
   static const lottieList = ['sasuke', 'sakura', 'good-job', 'kakashi', 'lucia'];
 
   @override
+  void initState() {
+    super.initState();
+    _fadeAnimaionController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+  }
+
+  @override
   void dispose() {
-    fadeAnimaionController.dispose();
+    _fadeAnimaionController.dispose();
     super.dispose();
   }
 
@@ -37,8 +40,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
         parent: widget.animationController,
         curve: const Interval(2 / 3, 1, curve: Curves.fastOutSlowIn),
       )),
-      child:
-          (ref.watch(quizProvider).totalScore != null && widget.animationController.value >= 0.666) ? calulate() : buildColumn(),
+      child: (ref.watch(quizProvider).totalScore != null) ? calulate() : buildColumn(),
     );
   }
 
@@ -75,11 +77,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
   }
 
   Widget calulate() {
-    Map map = {};
-    ref.watch(quizProvider).words.map((e) => map[e.score] = !map.containsKey(e.score) ? (1) : (map[e.score] + 1));
-    final level = (ref.watch(quizProvider).totalScore ?? 0) ~/ 25;
-
-    fadeAnimaionController.forward();
+    _fadeAnimaionController.forward();
     return SlideTransition(
       position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
         parent: widget.animationController,
@@ -90,7 +88,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
         children: [
           FadeTransition(
             opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: fadeAnimaionController,
+              parent: _fadeAnimaionController,
               curve: const Interval(0, 0.2, curve: Curves.easeIn),
             )),
             child: Column(
@@ -98,11 +96,11 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
-                    textList[level],
+                    textList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25],
                     style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Lottie.asset('assets/lottie/${lottieList[level]}.json', height: 180),
+                Lottie.asset('assets/lottie/${lottieList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25]}.json', height: 180),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: RichText(
@@ -123,7 +121,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
           ),
           FadeTransition(
             opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: fadeAnimaionController,
+              parent: _fadeAnimaionController,
               curve: const Interval(0.2, 0.4, curve: Curves.easeIn),
             )),
             child: ListTile(
@@ -135,14 +133,14 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
               ),
               title: const Text('完美答題數 ', style: TextStyle(fontSize: 24, color: Colors.green)),
               trailing: Text(
-                '${map[10] ?? 0}',
+                '${ref.watch(quizProvider).words.where((e) => e.score == 10).length}',
                 style: const TextStyle(fontSize: 24, color: Colors.green, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           FadeTransition(
             opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: fadeAnimaionController,
+              parent: _fadeAnimaionController,
               curve: const Interval(0.4, 0.6, curve: Curves.easeIn),
             )),
             child: ListTile(
@@ -154,14 +152,14 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
               ),
               title: const Text('提示答題數 ', style: TextStyle(fontSize: 24, color: Colors.amber)),
               trailing: Text(
-                '${map[5] ?? 0}',
+                '${ref.watch(quizProvider).words.where((e) => e.score == 5).length}',
                 style: const TextStyle(fontSize: 24, color: Colors.amber, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           FadeTransition(
             opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: fadeAnimaionController,
+              parent: _fadeAnimaionController,
               curve: const Interval(0.6, 0.8, curve: Curves.easeIn),
             )),
             child: ListTile(
@@ -173,16 +171,16 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
               ),
               title: const Text('未答題數 ', style: TextStyle(fontSize: 24, color: Colors.grey)),
               trailing: Text(
-                '${map[0] ?? 0}',
+                '${ref.watch(quizProvider).words.where((e) => e.score == 0).length}',
                 style: const TextStyle(fontSize: 24, color: Colors.grey, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           AnimatedBuilder(
-            animation: fadeAnimaionController,
+            animation: _fadeAnimaionController,
             builder: (context, child) {
               final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                parent: fadeAnimaionController,
+                parent: _fadeAnimaionController,
                 curve: const Interval(0.8, 1, curve: Curves.easeIn),
               ));
               return FadeTransition(
