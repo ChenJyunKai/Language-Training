@@ -3,87 +3,87 @@
   "words": [
     {
       "word": "cat",
-      "hiragana": "kӕt"
+      "hint": "kӕt"
     },
     {
       "word": "dog",
-      "hiragana": "dɒɡ"
+      "hint": "dɒɡ"
     },
     {
       "word": "book",
-      "hiragana": "bʊk"
+      "hint": "bʊk"
     },
     {
       "word": "computer",
-      "hiragana": "kəmˈpjuːtər"
+      "hint": "kəmˈpjuːtər"
     },
     {
       "word": "friend",
-      "hiragana": "frɛnd"
+      "hint": "frɛnd"
     },
     {
       "word": "hello",
-      "hiragana": "həˈloʊ"
+      "hint": "həˈloʊ"
     },
     {
       "word": "goodbye",
-      "hiragana": "ɡʊdˈbaɪ"
+      "hint": "ɡʊdˈbaɪ"
     },
     {
       "word": "apple",
-      "hiragana": "ˈæpəl"
+      "hint": "ˈæpəl"
     },
     {
       "word": "banana",
-      "hiragana": "bəˈnænə"
+      "hint": "bəˈnænə"
     },
     {
       "word": "car",
-      "hiragana": "kɑr"
+      "hint": "kɑr"
     },
     {
       "word": "house",
-      "hiragana": "haʊs"
+      "hint": "haʊs"
     },
     {
       "word": "school",
-      "hiragana": "skuːl"
+      "hint": "skuːl"
     },
     {
       "word": "water",
-      "hiragana": "ˈwɔːtər"
+      "hint": "ˈwɔːtər"
     },
     {
       "word": "phone",
-      "hiragana": "foʊn"
+      "hint": "foʊn"
     },
     {
       "word": "sun",
-      "hiragana": "sʌn"
+      "hint": "sʌn"
     },
     {
       "word": "moon",
-      "hiragana": "muːn"
+      "hint": "muːn"
     },
     {
       "word": "food",
-      "hiragana": "fuːd"
+      "hint": "fuːd"
     },
     {
       "word": "drink",
-      "hiragana": "drɪŋk"
+      "hint": "drɪŋk"
     },
     {
       "word": "time",
-      "hiragana": "taɪm"
+      "hint": "taɪm"
     },
     {
       "word": "money",
-      "hiragana": "ˈmʌni"
+      "hint": "ˈmʌni"
     },
     {
       "word": "music",
-      "hiragana": "ˈmjuːzɪk"
+      "hint": "ˈmjuːzɪk"
     }
   ]
 }

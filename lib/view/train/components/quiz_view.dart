@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/provider/word.dart';
+import 'package:rpg/provider/quiz.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -63,7 +63,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   }
 
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult, localeId: ref.watch(wordProvider).languageId);
+    await _speechToText.listen(onResult: _onSpeechResult, localeId: ref.watch(quizProvider).languageId);
     setState(() {});
   }
 
@@ -74,14 +74,14 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
-      if (result.recognizedWords.toLowerCase() == ref.watch(wordProvider).words.first.word.toLowerCase()) {
+      if (result.recognizedWords.toLowerCase() == ref.watch(quizProvider).words.first.word.toLowerCase()) {
         correctAnimationController.forward().then((value) => correctAnimationController.reverse().then((value) {
-              ref.read(wordProvider.notifier).answer(_tipVisable ? 5 : 10);
+              ref.read(quizProvider.notifier).answer(_tipVisable ? 5 : 10);
               _lastWord = '';
               _tipVisable = false;
               setState(() {});
             }));
-        if (ref.watch(wordProvider).count == 10) {
+        if (ref.watch(quizProvider).count == 10) {
           setState(() {
             _isCalculate = true;
           });
@@ -121,7 +121,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                             child: TextButton(
                               onPressed: () {
-                                ref.read(wordProvider.notifier).calculate();
+                                ref.read(quizProvider.notifier).calculate();
                                 setState(() {
                                   _isCalculate = true;
                                 });
@@ -138,7 +138,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 30),
                                 child: Text(
-                                  '${ref.watch(wordProvider).count} / 10 題',
+                                  '${ref.watch(quizProvider).count} / 10 題',
                                   style: const TextStyle(fontSize: 26, color: Colors.blue),
                                 ),
                               ),
@@ -164,11 +164,11 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                         child: Column(
                                           children: [
                                             Text(
-                                              ref.watch(wordProvider).words.first.word,
+                                              ref.watch(quizProvider).words.first.word,
                                               style: const TextStyle(fontSize: 48),
                                             ),
                                             Text(
-                                              ref.watch(wordProvider).words.first.hiragana,
+                                              ref.watch(quizProvider).words.first.hint,
                                               style: TextStyle(
                                                 fontSize: 42,
                                                 color: _tipVisable ? Colors.black : Colors.transparent,
@@ -204,16 +204,16 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     const Text('|'),
                                     TextButton.icon(
                                       onPressed: () {
-                                        if (ref.watch(wordProvider).count < 10) {
+                                        if (ref.watch(quizProvider).count < 10) {
                                           lottieAnimationController.forward().then((value) => lottieAnimationController.reset());
                                           skipAnimationController.forward().then((value) {
-                                            ref.read(wordProvider.notifier).answer(0);
+                                            ref.read(quizProvider.notifier).answer(0);
                                             _tipVisable = false;
                                             _lastWord = '';
                                             skipAnimationController.reverse();
                                           });
                                         } else {
-                                          ref.read(wordProvider.notifier).calculate();
+                                          ref.read(quizProvider.notifier).calculate();
                                           setState(() {
                                             _isCalculate = true;
                                           });

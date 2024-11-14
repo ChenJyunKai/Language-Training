@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/provider/word.dart';
+import 'package:rpg/provider/quiz.dart';
 
 class SelectLanguage extends ConsumerWidget {
   const SelectLanguage({
@@ -55,7 +55,7 @@ class SelectLanguage extends ConsumerWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             animationController.animateTo(1 / 3);
-                            ref.read(wordProvider.notifier).getData(i.id);
+                            ref.read(quizProvider.notifier).getData(i.id);
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.black,

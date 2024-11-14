@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rpg/provider/word.dart';
+import 'package:rpg/provider/quiz.dart';
 
 class CalculateView extends ConsumerStatefulWidget {
   const CalculateView({
@@ -16,8 +16,10 @@ class CalculateView extends ConsumerStatefulWidget {
 }
 
 class _CalculateViewState extends ConsumerState<CalculateView> with TickerProviderStateMixin {
-  late AnimationController fadeAnimaionController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+  late AnimationController fadeAnimaionController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1500),
+  );
 
   static const textList = ['差強人意 (´-ω-｀)', '再接再厲 (๑•̀ㅂ•́)و✧', '表現優異 (*´▽`*)', '才華橫溢 d(`･∀･)b', '完美發揮 ヽ(●´∀`●)ﾉ'];
   static const lottieList = ['sasuke', 'sakura', 'good-job', 'kakashi', 'lucia'];
@@ -36,7 +38,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
         curve: const Interval(2 / 3, 1, curve: Curves.fastOutSlowIn),
       )),
       child:
-          (ref.watch(wordProvider).totalScore != null && widget.animationController.value >= 0.666) ? calulate() : buildColumn(),
+          (ref.watch(quizProvider).totalScore != null && widget.animationController.value >= 0.666) ? calulate() : buildColumn(),
     );
   }
 
@@ -74,8 +76,8 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
 
   Widget calulate() {
     Map map = {};
-    ref.watch(wordProvider).words.forEach((e) => map[e.score] = !map.containsKey(e.score) ? (1) : (map[e.score] + 1));
-    final level = (ref.watch(wordProvider).totalScore ?? 0) ~/ 25;
+    ref.watch(quizProvider).words.map((e) => map[e.score] = !map.containsKey(e.score) ? (1) : (map[e.score] + 1));
+    final level = (ref.watch(quizProvider).totalScore ?? 0) ~/ 25;
 
     fadeAnimaionController.forward();
     return SlideTransition(
@@ -108,7 +110,7 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
                       style: const TextStyle(fontSize: 36, color: Colors.blue),
                       children: [
                         TextSpan(
-                          text: ref.watch(wordProvider).totalScore.toString(),
+                          text: ref.watch(quizProvider).totalScore.toString(),
                           style: const TextStyle(fontSize: 56),
                         ),
                         const TextSpan(text: ' /100')
@@ -177,36 +179,37 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
             ),
           ),
           AnimatedBuilder(
-              animation: fadeAnimaionController,
-              builder: (context, child) {
-                final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                  parent: fadeAnimaionController,
-                  curve: const Interval(0.8, 1, curve: Curves.easeIn),
-                ));
-                return FadeTransition(
-                  opacity: btnAnimation,
-                  child: Transform(
-                    transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.animationController.animateTo(1);
-                            ref.read(wordProvider.notifier).getExp();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.blueGrey,
-                          ),
-                          child: const Text("Next", style: TextStyle(fontSize: 18)),
+            animation: fadeAnimaionController,
+            builder: (context, child) {
+              final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                parent: fadeAnimaionController,
+                curve: const Interval(0.8, 1, curve: Curves.easeIn),
+              ));
+              return FadeTransition(
+                opacity: btnAnimation,
+                child: Transform(
+                  transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          widget.animationController.animateTo(1);
+                          ref.read(quizProvider.notifier).getExp();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blueGrey,
                         ),
+                        child: const Text("Next", style: TextStyle(fontSize: 18)),
                       ),
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

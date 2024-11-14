@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/ability_entity.dart';
 import 'package:rpg/utils/hex_color.dart';
 import 'package:rpg/provider/ability.dart';
-import 'package:rpg/provider/word.dart';
+import 'package:rpg/provider/quiz.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -60,7 +60,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return (ref.watch(wordProvider).exp != null && widget.animationController.value == 1)
+    return (ref.watch(quizProvider).exp != null && widget.animationController.value == 1)
         ? buildSlideTransition()
         : buildColumn();
   }
@@ -121,9 +121,9 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
   SlideTransition buildSlideTransition() {
     fadeAnimationController.forward();
     if (!fall) {
-      plusExp = ref.watch(wordProvider).exp!;
+      plusExp = ref.watch(quizProvider).exp!;
     }
-    final getExp = ref.watch(wordProvider).totalScore! * 10;
+    final getExp = ref.watch(quizProvider).totalScore! * 10;
     if (getExp == 0) {
       nextAnimationController.forward();
     }

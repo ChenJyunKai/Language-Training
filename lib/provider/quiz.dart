@@ -1,28 +1,35 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rpg/entity/word_entity.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rpg/entity/quiz_entity.dart';
 
-final wordProvider = StateNotifierProvider<WordNotifier, WordEntity>((ref) => WordNotifier());
+part 'quiz.g.dart';
 
-class WordNotifier extends StateNotifier<WordEntity> {
-  WordNotifier() : super(WordEntity(words: [], languageId: 'ja_JA'));
+@Riverpod(keepAlive: true)
+class Quiz extends _$Quiz {
+  @override
+  QuizEntity build() {
+    return const QuizEntity();
+  }
 
   void getData(String languageId) async {
-    final data = wordEntityFromJson(await rootBundle.loadString('assets/json/word_${languageId.substring(0, 2)}.json'));
-    final words = <Word>{};
+    final data = QuizEntity.fromJson(jsonDecode(
+      await rootBundle.loadString('assets/json/word_${languageId.substring(0, 2)}.json'),
+    ));
+    final words = <WordEntity>{};
     while (words.length < 10) {
       words.add(data.words[Random().nextInt(data.words.length)]);
     }
-    state = WordEntity(words: words.toList(), languageId: languageId);
+    state = QuizEntity(words: words.toList(), languageId: languageId);
   }
 
   void answer(int score) async {
-    final newWords = state.words;
-    final word = newWords.removeAt(0);
-    word.score = score;
-    state = WordEntity(
+    final newWords = List.from(state.words);
+    final word = newWords.removeAt(0).copyWith(score: score);
+
+    state = QuizEntity(
       words: state.count == 10 ? [word, ...newWords] : [...newWords, word],
       languageId: state.languageId,
       count: (state.count < 10 ? state.count + 1 : state.count),
@@ -35,13 +42,14 @@ class WordNotifier extends StateNotifier<WordEntity> {
   void calculate() async {
     final totalScore = [for (final i in state.words) i.score].reduce((value, current) => value + current);
     Future.delayed(const Duration(seconds: 2), () {
-      state = state.copywith(totalScore: totalScore);
+      state = state.copyWith(totalScore: totalScore);
     });
   }
 
   void getExp() async {
     Future.delayed(const Duration(seconds: 2), () {
-      state = state.copywith(exp: state.totalScore! * 10);
+      state = state.copyWith(exp: state.totalScore! * 10);
     });
   }
 }
+

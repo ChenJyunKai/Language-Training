@@ -3,87 +3,87 @@
   "words": [
     {
       "word": "안녕하세요",
-      "hiragana": "annyeonghaseyo"
+      "hint": "annyeonghaseyo"
     },
     {
       "word": "감사합니다",
-      "hiragana": "kamsahamnida"
+      "hint": "kamsahamnida"
     },
     {
       "word": "사랑해요",
-      "hiragana": "saranghaeyo"
+      "hint": "saranghaeyo"
     },
     {
       "word": "미안합니다",
-      "hiragana": "mianhamnida"
+      "hint": "mianhamnida"
     },
     {
       "word": "네",
-      "hiragana": "ne"
+      "hint": "ne"
     },
     {
       "word": "아니요",
-      "hiragana": "aniyo"
+      "hint": "aniyo"
     },
     {
       "word": "물",
-      "hiragana": "mul"
+      "hint": "mul"
     },
     {
       "word": "음식",
-      "hiragana": "eumsik"
+      "hint": "eumsik"
     },
     {
       "word": "친구",
-      "hiragana": "chingu"
+      "hint": "chingu"
     },
     {
       "word": "가방",
-      "hiragana": "gabang"
+      "hint": "gabang"
     },
     {
       "word": "학교",
-      "hiragana": "hakgyo"
+      "hint": "hakgyo"
     },
     {
       "word": "집",
-      "hiragana": "jip"
+      "hint": "jip"
     },
     {
       "word": "시간",
-      "hiragana": "sigan"
+      "hint": "sigan"
     },
     {
       "word": "돈",
-      "hiragana": "don"
+      "hint": "don"
     },
     {
       "word": "고양이",
-      "hiragana": "goyangi"
+      "hint": "goyangi"
     },
     {
       "word": "개",
-      "hiragana": "gae"
+      "hint": "gae"
     },
     {
       "word": "컴퓨터",
-      "hiragana": "keompyuteo"
+      "hint": "keompyuteo"
     },
     {
       "word": "읽다",
-      "hiragana": "ikda"
+      "hint": "ikda"
     },
     {
       "word": "쓰다",
-      "hiragana": "sseuda"
+      "hint": "sseuda"
     },
     {
       "word": "듣다",
-      "hiragana": "deutda"
+      "hint": "deutda"
     },
     {
       "word": "보다",
-      "hiragana": "boda"
+      "hint": "boda"
     }
   ]
 }
