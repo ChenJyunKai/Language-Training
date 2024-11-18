@@ -11,6 +11,15 @@ class RuleView extends StatelessWidget {
   final AnimationController fadeAnimationController;
   final AnimationController animationController;
 
+  Animation<Offset> createSlideAnimation(double begin) {
+    return Tween<Offset>(begin: Offset(begin, 0), end: const Offset(0, 0)).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0, 1 / 3, curve: Curves.fastOutSlowIn),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -24,17 +33,11 @@ class RuleView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SlideTransition(
-                position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-                  parent: animationController,
-                  curve: const Interval(0, 1 / 3, curve: Curves.fastOutSlowIn),
-                )),
+                position: createSlideAnimation(2),
                 child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
               ),
               SlideTransition(
-                position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-                  parent: animationController,
-                  curve: const Interval(0, 1 / 3, curve: Curves.fastOutSlowIn),
-                )),
+                position: createSlideAnimation(4),
                 child: Align(
                   alignment: Alignment.center,
                   child: SizedBox(
@@ -48,22 +51,18 @@ class RuleView extends StatelessWidget {
                 ),
               ),
               SlideTransition(
-                position: Tween(begin: const Offset(4, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-                  parent: animationController,
-                  curve: const Interval(0.2, 1 / 3, curve: Curves.fastOutSlowIn),
-                )),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: SizedBox(
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () => fadeAnimationController.forward(),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: const Color(0xff132137),
-                      ),
-                      child: const Text("Let's begin", style: TextStyle(fontSize: 18)),
+                position: createSlideAnimation(8),
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () => fadeAnimationController.forward(),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0xff132137),
                     ),
+                    child: const Text("Let's begin", style: TextStyle(fontSize: 18)),
                   ),
                 ),
               ),
