@@ -9,7 +9,7 @@ class QuizEntity with _$QuizEntity {
   const factory QuizEntity({
     @Default([]) List<WordEntity> words,
     @Default('') String languageId,
-    @Default(0) count,
+    @Default(1) count,
     int? totalScore,
     int? exp,
   }) = _QuizEntity;

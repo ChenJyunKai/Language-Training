@@ -26,8 +26,8 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   bool _tipVisable = false;
-  String _lastWord = '';
   bool _isCalculate = false;
+  String _errorWord = '';
 
   late AnimationController _correctAnimationController;
   late AnimationController _shackAnimationController;
@@ -78,19 +78,19 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
       if (result.recognizedWords.toLowerCase() == ref.watch(quizProvider).words.first.word.toLowerCase()) {
         _correctAnimationController.forward().then((value) => _correctAnimationController.reverse().then((value) {
               ref.read(quizProvider.notifier).answer(_tipVisable ? 5 : 10);
-              _lastWord = '';
-              _tipVisable = false;
-              setState(() {});
+              setState(() {
+                _errorWord = '';
+                _tipVisable = false;
+              });
             }));
         if (ref.watch(quizProvider).count == 10) {
-          setState(() {
-            _isCalculate = true;
-          });
+          ref.read(quizProvider.notifier).calculate();
+          setState(() => _isCalculate = true);
           widget.animationController.animateTo(2 / 3);
         }
       } else {
         setState(() {
-          _lastWord = result.recognizedWords;
+          _errorWord = result.recognizedWords;
           _shackAnimationController.forward();
         });
       }
@@ -120,10 +120,8 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                       child: TextButton(
                         onPressed: () {
                           ref.read(quizProvider.notifier).calculate();
-                          setState(() {
-                            _isCalculate = true;
-                          });
-                          widget.animationController.animateTo(0.666);
+                          setState(() => _isCalculate = true);
+                          widget.animationController.animateTo(2 / 3);
                         },
                         child: const Text('結算', style: TextStyle(fontSize: 18, color: Colors.grey)),
                       ),
@@ -183,9 +181,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                               ),
                               child: !_isCalculate
                                   ? Lottie.asset('assets/lottie/dog-running.json', height: 150)
-                                  : const SizedBox(
-                                      height: 150,
-                                    ),
+                                  : const SizedBox(height: 150),
                             )
                           ],
                         ),
@@ -207,14 +203,12 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                                     _skipAnimationController.forward().then((value) {
                                       ref.read(quizProvider.notifier).answer(0);
                                       _tipVisable = false;
-                                      _lastWord = '';
+                                      _errorWord = '';
                                       _skipAnimationController.reverse();
                                     });
                                   } else {
                                     ref.read(quizProvider.notifier).calculate();
-                                    setState(() {
-                                      _isCalculate = true;
-                                    });
+                                    setState(() => _isCalculate = true);
                                     widget.animationController.animateTo(2 / 3);
                                   }
                                 },
@@ -229,7 +223,7 @@ class _QuizViewState extends ConsumerState<QuizView> with TickerProviderStateMix
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(_lastWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
+                    child: Text(_errorWord, style: const TextStyle(fontSize: 38, color: Colors.red)),
                   ),
                   Align(
                     alignment: Alignment.center,

@@ -22,21 +22,17 @@ class Quiz extends _$Quiz {
     while (words.length < 10) {
       words.add(data.words[Random().nextInt(data.words.length)]);
     }
-    state = QuizEntity(words: words.toList(), languageId: languageId);
+    state = state.copyWith(words: words.toList(), languageId: languageId, count: 1);
   }
 
   void answer(int score) async {
-    final newWords = List.from(state.words);
-    final word = newWords.removeAt(0).copyWith(score: score);
+    final updatedWord = state.words.first.copyWith(score: score);
+    final updatedWords = state.words.skip(1).toList();
 
-    state = QuizEntity(
-      words: state.count == 10 ? [word, ...newWords] : [...newWords, word],
-      languageId: state.languageId,
-      count: (state.count < 10 ? state.count + 1 : state.count),
+    state = state.copyWith(
+      words: state.count == 10 ? [updatedWord, ...updatedWords] : [...updatedWords, updatedWord],
+      count: state.count == 10 ? state.count : state.count + 1,
     );
-    if (state.count == 10) {
-      calculate();
-    }
   }
 
   void calculate() async {
@@ -52,4 +48,3 @@ class Quiz extends _$Quiz {
     });
   }
 }
-
