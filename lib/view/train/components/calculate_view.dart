@@ -33,33 +33,42 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SlideTransition(
-      position: Tween(begin: const Offset(0, 0), end: const Offset(-2, 0)).animate(CurvedAnimation(
+  Animation<Offset> createSlideAnimation(double begin, double end, double startInterval, double endInterval) {
+    return Tween<Offset>(begin: Offset(begin, 0), end: Offset(end, 0)).animate(
+      CurvedAnimation(
         parent: widget.animationController,
-        curve: const Interval(2 / 3, 1, curve: Curves.fastOutSlowIn),
-      )),
-      child: (ref.watch(quizProvider).totalScore != null) ? calulate() : buildColumn(),
+        curve: Interval(startInterval, endInterval, curve: Curves.fastOutSlowIn),
+      ),
     );
   }
 
-  Widget buildColumn() {
+  Animation<double> createFadeAnimation(double startInterval, double endInterval) {
+    return Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _fadeAnimaionController,
+        curve: Interval(startInterval, endInterval, curve: Curves.easeIn),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: createSlideAnimation(0, -2, 2 / 3, 1),
+      child: (ref.watch(quizProvider).totalScore != null) ? buildCalculate() : buildLoading(),
+    );
+  }
+
+  Widget buildLoading() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SlideTransition(
-          position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
-          )),
+          position: createSlideAnimation(2, 0, 1 / 3, 2 / 3),
           child: Lottie.asset('assets/lottie/animation-elf.json', height: 200),
         ),
         SlideTransition(
-          position: Tween(begin: const Offset(3, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
-          )),
+          position: createSlideAnimation(3, 0, 1 / 3, 2 / 3),
           child: const Align(
             alignment: Alignment.center,
             child: Padding(
@@ -76,139 +85,94 @@ class _CalculateViewState extends ConsumerState<CalculateView> with TickerProvid
     );
   }
 
-  Widget calulate() {
+  Widget buildCalculate() {
     _fadeAnimaionController.forward();
-    return SlideTransition(
-      position: Tween(begin: const Offset(2, 0), end: const Offset(0, 0)).animate(CurvedAnimation(
-        parent: widget.animationController,
-        curve: const Interval(1 / 3, 2 / 3, curve: Curves.fastOutSlowIn),
-      )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FadeTransition(
-            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: _fadeAnimaionController,
-              curve: const Interval(0, 0.2, curve: Curves.easeIn),
-            )),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    textList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25],
-                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FadeTransition(
+          opacity: createFadeAnimation(0, 0.2),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Text(
+                  textList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25],
+                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
-                Lottie.asset('assets/lottie/${lottieList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25]}.json', height: 180),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 36, color: Colors.blue),
-                      children: [
-                        TextSpan(
-                          text: ref.watch(quizProvider).totalScore.toString(),
-                          style: const TextStyle(fontSize: 56),
-                        ),
-                        const TextSpan(text: ' /100')
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          FadeTransition(
-            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: _fadeAnimaionController,
-              curve: const Interval(0.2, 0.4, curve: Curves.easeIn),
-            )),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 40),
-              leading: const Icon(
-                Icons.thumb_up_alt_outlined,
-                size: 30,
-                color: Colors.green,
               ),
-              title: const Text('完美答題數 ', style: TextStyle(fontSize: 24, color: Colors.green)),
-              trailing: Text(
-                '${ref.watch(quizProvider).words.where((e) => e.score == 10).length}',
-                style: const TextStyle(fontSize: 24, color: Colors.green, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FadeTransition(
-            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: _fadeAnimaionController,
-              curve: const Interval(0.4, 0.6, curve: Curves.easeIn),
-            )),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 40),
-              leading: const Icon(
-                Icons.tips_and_updates_outlined,
-                size: 30,
-                color: Colors.amber,
-              ),
-              title: const Text('提示答題數 ', style: TextStyle(fontSize: 24, color: Colors.amber)),
-              trailing: Text(
-                '${ref.watch(quizProvider).words.where((e) => e.score == 5).length}',
-                style: const TextStyle(fontSize: 24, color: Colors.amber, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          FadeTransition(
-            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-              parent: _fadeAnimaionController,
-              curve: const Interval(0.6, 0.8, curve: Curves.easeIn),
-            )),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 40),
-              leading: const Icon(
-                Icons.dangerous_outlined,
-                size: 30,
-                color: Colors.grey,
-              ),
-              title: const Text('未答題數 ', style: TextStyle(fontSize: 24, color: Colors.grey)),
-              trailing: Text(
-                '${ref.watch(quizProvider).words.where((e) => e.score == 0).length}',
-                style: const TextStyle(fontSize: 24, color: Colors.grey, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          AnimatedBuilder(
-            animation: _fadeAnimaionController,
-            builder: (context, child) {
-              final btnAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                parent: _fadeAnimaionController,
-                curve: const Interval(0.8, 1, curve: Curves.easeIn),
-              ));
-              return FadeTransition(
-                opacity: btnAnimation,
-                child: Transform(
-                  transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          widget.animationController.animateTo(1);
-                          ref.read(quizProvider.notifier).getExp();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blueGrey,
-                        ),
-                        child: const Text("Next", style: TextStyle(fontSize: 18)),
+              Lottie.asset('assets/lottie/${lottieList[(ref.watch(quizProvider).totalScore ?? 0) ~/ 25]}.json', height: 180),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 36, color: Colors.blue),
+                    children: [
+                      TextSpan(
+                        text: ref.watch(quizProvider).totalScore.toString(),
+                        style: const TextStyle(fontSize: 56),
                       ),
+                      const TextSpan(text: ' /100')
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        FadeTransition(
+          opacity: createFadeAnimation(0.2, 0.4),
+          child: buildListTile(Icons.thumb_up_alt_outlined, Colors.green, '完美答題數 ', 10),
+        ),
+        FadeTransition(
+          opacity: createFadeAnimation(0.4, 0.6),
+          child: buildListTile(Icons.tips_and_updates_outlined, Colors.amber, '提示答題數 ', 5),
+        ),
+        FadeTransition(
+          opacity: createFadeAnimation(0.6, 0.8),
+          child: buildListTile(Icons.dangerous_outlined, Colors.grey, '未答題數 ', 0),
+        ),
+        AnimatedBuilder(
+          animation: _fadeAnimaionController,
+          builder: (context, child) {
+            final btnAnimation = createFadeAnimation(0.8, 1);
+            return FadeTransition(
+              opacity: btnAnimation,
+              child: Transform(
+                transform: Matrix4.translationValues(150 * (1.0 - btnAnimation.value), 0.0, 0.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        widget.animationController.animateTo(1);
+                        ref.read(quizProvider.notifier).getExp();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blueGrey,
+                      ),
+                      child: const Text("Next", style: TextStyle(fontSize: 18)),
                     ),
                   ),
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  ListTile buildListTile(IconData iconData, Color color, String title, int standard) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 40),
+      leading: Icon(iconData, size: 30, color: color),
+      title: Text(title, style: TextStyle(fontSize: 24, color: color)),
+      trailing: Text(
+        '${ref.watch(quizProvider).words.where((e) => e.score == standard).length}',
+        style: TextStyle(fontSize: 24, color: color, fontWeight: FontWeight.bold),
       ),
     );
   }
