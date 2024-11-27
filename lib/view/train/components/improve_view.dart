@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rpg/entity/ability_entity.dart';
-import 'package:rpg/utils/hex_color.dart';
 import 'package:rpg/provider/ability.dart';
 import 'package:rpg/provider/quiz.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
+import 'package:rpg/view/train/components/level_view.dart';
 
 class ImproveView extends ConsumerStatefulWidget {
   const ImproveView({
@@ -23,11 +21,10 @@ class ImproveView extends ConsumerStatefulWidget {
 }
 
 class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderStateMixin {
-  bool fall = false;
-  int plusExp = 0;
-  late AbilityEntity ability;
   AbilityEntity improveAbility = const AbilityEntity();
-
+  int plusExp = 0;
+  bool fall = false;
+  late AbilityEntity ability;
   late AnimationController fadeAnimationController;
   late AnimationController levelUpAnimationController;
   late AnimationController improveAnimationController;
@@ -72,14 +69,36 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     improveAnimationController.forward();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return (ref.watch(quizProvider).exp != null && widget.animationController.value == 1)
-        ? buildSlideTransition()
-        : buildColumn();
+  void handleLevelUp() {
+    levelUpAnimationController.forward().then((value) {
+      // 計算升等公式
+      int remainExp = ref.watch(quizProvider).exp! - ability.expL + ability.exp;
+      int newLv = ability.lv + 1;
+      int nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+      nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
+      improvedAbility();
+      // 跳級計算
+      while (remainExp > nextExpL) {
+        remainExp -= nextExpL;
+        newLv++;
+        nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
+        nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
+        improvedAbility();
+      }
+      // 修改數值
+      fall = true;
+      plusExp = remainExp;
+      ability = ability.copyWith(lv: newLv, exp: remainExp, expL: nextExpL);
+      levelUpAnimationController.reverse();
+    });
   }
 
-  Widget buildColumn() {
+  @override
+  Widget build(BuildContext context) {
+    return (ref.watch(quizProvider).exp != null && widget.animationController.value == 1) ? buildImprove() : buildLoading();
+  }
+
+  Widget buildLoading() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -111,13 +130,12 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
     );
   }
 
-  SlideTransition buildSlideTransition() {
+  SlideTransition buildImprove() {
     fadeAnimationController.forward();
     if (!fall) {
       plusExp = ref.watch(quizProvider).exp!;
     }
-    final getExp = ref.watch(quizProvider).totalScore! * 10;
-    if (getExp == 0) {
+    if (ref.watch(quizProvider).exp == 0) {
       nextAnimationController.forward();
     }
     return SlideTransition(
@@ -134,7 +152,7 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Text('本次獲得 +$getExp Exp', style: const TextStyle(fontSize: 24)),
+              child: Text('本次獲得 +${ref.watch(quizProvider).exp} Exp', style: const TextStyle(fontSize: 24)),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
@@ -143,89 +161,13 @@ class _ImproveViewState extends ConsumerState<ImproveView> with TickerProviderSt
                 style: const TextStyle(fontSize: 24),
               ),
             ),
-            TweenAnimationBuilder<double>(
-              duration: const Duration(milliseconds: 1500),
-              curve: Curves.easeInOut,
-              tween: Tween<double>(
-                begin: ability.exp / ability.expL,
-                end: ((ability.exp + (fall ? 0 : plusExp)) / ability.expL) >= 1
-                    ? 1.1
-                    : (ability.exp + (fall ? 0 : plusExp)) / ability.expL,
-              ),
-              onEnd: () => Future.delayed(const Duration(milliseconds: 300)).then(
-                (value) => nextAnimationController.forward(),
-              ),
-              builder: (context, value, _) {
-                final waterHeight = 1 - value;
-                // 升等
-                if (waterHeight < -0.1 && !fall) {
-                  // 確認只進入一次
-                  fall = !fall;
-                  levelUpAnimationController.forward().then((value) {
-                    // 計算升等公式
-                    int lastExp = getExp - ability.expL + ability.exp;
-                    int newLv = ability.lv + 1;
-                    int nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
-                    nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
-                    improvedAbility();
-                    // 跳級計算
-                    while (lastExp > nextExpL) {
-                      lastExp -= nextExpL;
-                      newLv++;
-                      nextExpL = ((pow((newLv - 1), 3) + 60) / 5 * ((newLv - 1) * 2 + 60) + 60).floor();
-                      nextExpL = (50 - ((nextExpL % 50).floor() == 0 ? 50 : (nextExpL % 50).floor())) + nextExpL;
-                      improvedAbility();
-                    }
-                    // 修改數值
-                    // plusExp == lastExp
-                    plusExp = lastExp;
-                    ability = ability.copyWith(lv: newLv, exp: lastExp, expL: nextExpL);
-                    levelUpAnimationController.reverse();
-                  });
-                }
-                return ScaleTransition(
-                  scale: Tween<double>(begin: 1.0, end: 1.1).animate(CurvedAnimation(
-                    parent: levelUpAnimationController,
-                    curve: Curves.easeOut,
-                  )),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.blue.withAlpha(40), width: 2),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey.withAlpha(30), width: 2),
-                          ),
-                          child: ClipOval(
-                            child: WaveWidget(
-                              config: CustomConfig(
-                                colors: [HexColor('FDD1E9FB'), HexColor('FFC8E7FB'), HexColor('FFBBDEFB')],
-                                durations: [5000, 4000, 3000],
-                                heightPercentages: [waterHeight, waterHeight + 0.01, waterHeight + 0.02],
-                              ),
-                              backgroundColor: Colors.white,
-                              size: const Size(double.infinity, double.infinity),
-                              waveAmplitude: 0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'lv ${ability.lv}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black54),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            LevelView(
+              levelUpAnimationController: levelUpAnimationController,
+              nextAnimationController: nextAnimationController,
+              ability: ability,
+              plusExp: plusExp,
+              fall: fall,
+              handleLevelUp: handleLevelUp,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 24, left: 8, right: 8),
