@@ -31,42 +31,39 @@ class SelectLanguage extends ConsumerWidget {
               child: Container(
                 width: constraints.maxWidth,
                 alignment: Alignment.center,
+                margin: const EdgeInsets.only(bottom: 30),
                 child: const Text(
                   "請選擇語言模式",
                   style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            Container(
-              height: constraints.maxHeight * 0.3,
-              padding: const EdgeInsets.only(top: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  for (Language i in languages)
-                    SlideTransition(
-                      position: Tween(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
-                        parent: animationController,
-                        curve: Interval(0.05 * languages.indexWhere((e) => e == i), 0.333, curve: Curves.fastOutSlowIn),
-                      )),
-                      child: SizedBox(
-                        height: 50,
-                        width: constraints.maxWidth * 0.7,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            animationController.animateTo(1 / 3);
-                            ref.read(quizProvider.notifier).getData(i.id);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white70,
-                          ),
-                          child: Text(i.name, style: const TextStyle(fontSize: 20)),
+            Column(
+              children: [
+                for (Language i in languages)
+                  SlideTransition(
+                    position: Tween(begin: const Offset(0, 0), end: const Offset(-4, 0)).animate(CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval(0.05 * languages.indexWhere((e) => e == i), 1 / 3, curve: Curves.fastOutSlowIn),
+                    )),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      height: 50,
+                      width: constraints.maxWidth * 0.7,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          animationController.animateTo(1 / 3);
+                          ref.read(quizProvider.notifier).getData(i.id);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.white70,
                         ),
+                        child: Text(i.name, style: const TextStyle(fontSize: 20)),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ],
         );
